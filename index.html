@@ -36,7 +36,7 @@
         </div>
       </div>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 pt-4 border-t border-slate-700">
-        <div><p class="text-2xl font-bold text-white">4</p><p class="text-slate-400 text-xs mt-0.5">Full-time matches (≥ 60%)</p></div>
+        <div><p class="text-2xl font-bold text-white">5</p><p class="text-slate-400 text-xs mt-0.5">Full-time matches (≥ 60%)</p></div>
         <div><p class="text-2xl font-bold text-green-400">0</p><p class="text-slate-400 text-xs mt-0.5">Strong (≥ 90%)</p></div>
         <div><p class="text-2xl font-bold text-purple-400">0</p><p class="text-slate-400 text-xs mt-0.5">Fractional &amp; Advisory matches</p></div>
         <div>
@@ -54,7 +54,7 @@
     <div class="max-w-5xl mx-auto px-4 sm:px-6 flex gap-1 pt-1">
       <button onclick="switchTab('fulltime')" id="tab-fulltime"
         class="tab-btn px-4 py-2.5 text-sm font-semibold rounded-t-lg bg-slate-50 text-navy-900">
-        Full-Time Roles <span class="ml-1.5 bg-sky-100 text-sky-700 text-xs px-1.5 py-0.5 rounded-full">4</span>
+        Full-Time Roles <span class="ml-1.5 bg-sky-100 text-sky-700 text-xs px-1.5 py-0.5 rounded-full">5</span>
       </button>
       <button onclick="switchTab('fractional')" id="tab-fractional"
         class="tab-btn px-4 py-2.5 text-sm font-semibold rounded-t-lg text-slate-400 hover:bg-slate-700 hover:text-slate-100 transition-colors">
@@ -62,7 +62,7 @@
       </button>
       <button onclick="switchTab('sources')" id="tab-sources"
         class="tab-btn px-4 py-2.5 text-sm font-semibold rounded-t-lg text-slate-400 hover:bg-slate-700 hover:text-slate-100 transition-colors">
-        All Evaluated <span class="ml-1.5 bg-slate-700 text-slate-300 text-xs px-1.5 py-0.5 rounded-full">20</span>
+        All Evaluated <span class="ml-1.5 bg-slate-700 text-slate-300 text-xs px-1.5 py-0.5 rounded-full">21</span>
       </button>
     </div>
   </header>
@@ -72,10 +72,10 @@
     <div class="max-w-5xl mx-auto px-4 sm:px-6 py-2.5">
       <div class="filter-bar flex items-center gap-2 overflow-x-auto">
         <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider shrink-0">Filter:</span>
-        <button class="shrink-0 px-2.5 py-1 rounded-full text-xs font-medium bg-navy-900 text-white">All (4)</button>
+        <button class="shrink-0 px-2.5 py-1 rounded-full text-xs font-medium bg-navy-900 text-white">All (5)</button>
         <button class="shrink-0 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 hover:bg-green-200">90–100% (0)</button>
         <button class="shrink-0 px-2.5 py-1 rounded-full text-xs font-medium bg-sky-100 text-sky-700 hover:bg-sky-200">80–89% (3)</button>
-        <button class="shrink-0 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700 hover:bg-amber-200">70–79% (0)</button>
+        <button class="shrink-0 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700 hover:bg-amber-200">70–79% (1)</button>
         <button class="shrink-0 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200">60–69% (1)</button>
         <div class="ml-auto hidden sm:flex items-center gap-2 shrink-0">
           <span class="text-xs text-slate-400">Sort:</span>
@@ -100,7 +100,7 @@
         <span class="text-amber-500 text-lg shrink-0">⚠</span>
         <div class="text-xs text-amber-800">
           <p class="font-semibold">Location note — Jun 14, 2026</p>
-          <p class="mt-0.5">The 3 Good/Strong matches are at OpenAI and require San Francisco hybrid (3d/wk). 1 Seattle role found in the Stretch band: Amazon PPM, Selling Partner Trust — passes location but comp is significantly below the $280K floor.</p>
+          <p class="mt-0.5">The 3 Good matches are at OpenAI and require San Francisco hybrid (3d/wk). 2 Seattle roles found: Amazon Prime Video T&amp;S (73% Potential, on-site, comp below floor) and Amazon PPM Selling Partner Trust (65% Stretch, hybrid, comp below floor). New big-tech company searches (Google, Apple, Microsoft, NVIDIA, Salesforce, and 22 others) added this run — most returned no qualifying Director+ T&amp;S/Privacy/Responsible AI openings today.</p>
         </div>
       </div>
     </div>
@@ -181,6 +181,10 @@
                 <li>· Liaison across research, product, engineering, legal, policy — your 16-year cross-functional pattern</li>
               </ul>
             </div>
+            <div class="mt-2 bg-slate-50 rounded-lg px-3 py-2">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Gaps</p>
+              <p class="text-xs text-slate-500">Only flag is location — SF hybrid 3 days/week falls outside your Seattle/Remote constraint. Comp ($207K–$335K base, ~$720K total) clears the floor. Worth a back-channel conversation if remote is negotiable.</p>
+            </div>
           </div>
         </div>
       </article>
@@ -239,8 +243,12 @@
               <ul class="space-y-0.5 text-xs text-slate-600">
                 <li>· Leads programs testing safety/robustness of models via red-teaming — maps to your GenAI Trust work at Meta Reality Labs</li>
                 <li>· Converts ambiguous risk signals into research priorities — the TPM translation skill you've built for 16 years</li>
-                <li>· Light gap: prefers LLM eval/prompt engineering familiarity; your exposure is through program oversight, not hands-on research</li>
+                <li>· Cross-functional coordination between research, policy, and engineering mirrors your Head-of-TPM operating model at both Google and Meta</li>
               </ul>
+            </div>
+            <div class="mt-2 bg-slate-50 rounded-lg px-3 py-2">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Gaps</p>
+              <p class="text-xs text-slate-500">SF hybrid 3d/week is outside your location constraint. Light technical gap: role prefers hands-on LLM eval / prompt engineering familiarity; your exposure is through program oversight, not direct research execution.</p>
             </div>
           </div>
         </div>
@@ -295,8 +303,16 @@
               <span class="px-2 py-0.5 bg-red-50 text-red-600 text-xs font-medium rounded-full border border-red-200">✗ Comp below floor</span>
             </div>
             <div class="mt-2.5 bg-slate-50 rounded-lg px-3 py-2">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Why it matches</p>
+              <ul class="space-y-0.5 text-xs text-slate-600">
+                <li>· Safety launch readiness and incident management at a frontier AI lab — maps to your T&amp;S program delivery across Google and Meta</li>
+                <li>· Content moderation policy implementation is core to the role, aligning with your content integrity work across Instagram Trust and Meta Reality Labs</li>
+                <li>· Cross-functional coordination between product, engineering, and policy mirrors your 16-year operating pattern as Head of TPM</li>
+              </ul>
+            </div>
+            <div class="mt-2 bg-slate-50 rounded-lg px-3 py-2">
               <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Gaps</p>
-              <p class="text-xs text-slate-500">Domain is right. Two hard gaps: SF hybrid + base comp ($162K–$240K) below your $280K floor. Included at threshold; treat as a back-channel conversation starter, not a primary application.</p>
+              <p class="text-xs text-slate-500">Two hard flags: SF hybrid 3d/week falls outside your location constraint, and base comp ($162K–$240K) is well below your $280K floor. Treat as a back-channel conversation starter, not a primary application.</p>
             </div>
           </div>
         </div>
@@ -309,9 +325,77 @@
         <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shrink-0"></span>
         <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">70–79% · Potential</span>
         <div class="flex-1 h-px bg-slate-200"></div>
-        <span class="text-xs text-slate-400 shrink-0">0 roles today</span>
+        <span class="text-xs text-slate-400 shrink-0">1 role today</span>
       </div>
-      <p class="text-xs text-slate-400 italic pl-5 mb-5">No roles in this range today.</p>
+      <div class="space-y-3 mb-5">
+
+      <!-- Card: Amazon Prime Video Principal PM-T T&S 73% -->
+      <article class="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow overflow-hidden opacity-85">
+        <div class="flex flex-col sm:flex-row">
+          <div class="flex sm:flex-col items-center gap-2.5 sm:gap-0 sm:justify-center
+                      px-3 py-2.5 sm:py-5 sm:w-20
+                      bg-amber-50 border-b sm:border-b-0 sm:border-r border-amber-100 shrink-0">
+            <div class="relative w-11 h-11 sm:w-12 sm:h-12">
+              <svg class="w-11 h-11 sm:w-12 sm:h-12 -rotate-90" viewBox="0 0 56 56">
+                <circle cx="28" cy="28" r="24" stroke="#fef3c7" stroke-width="6" fill="none"/>
+                <circle cx="28" cy="28" r="24" stroke="#f59e0b" stroke-width="6" fill="none"
+                  stroke-dasharray="150.8" stroke-dashoffset="40.7" stroke-linecap="round"/>
+              </svg>
+              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold text-amber-700">73%</span>
+            </div>
+            <span class="text-xs font-semibold text-amber-600 sm:mt-1.5">Potential</span>
+          </div>
+          <div class="flex-1 p-3 sm:p-4">
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+              <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap items-center gap-1.5 mb-1">
+                  <span class="px-1.5 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700">● Verified active</span>
+                  <span class="px-1.5 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">✓ Seattle</span>
+                  <span class="px-1.5 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-700">⚠ Comp below floor</span>
+                  <span class="text-xs text-slate-400">checked 8:01 AM</span>
+                </div>
+                <h2 class="text-base sm:text-lg font-bold text-slate-900 leading-snug">Principal PM-T, Trust &amp; Safety, Prime Video</h2>
+                <div class="flex items-center gap-1.5 mt-0.5">
+                  <img src="https://www.google.com/s2/favicons?domain=amazon.com&sz=64" class="w-5 h-5 rounded object-contain bg-white" alt="" onerror="this.style.display='none'" />
+                  <span class="text-slate-600 font-medium text-sm">Amazon</span>
+                </div>
+              </div>
+              <a href="https://www.amazon.jobs/en/jobs/10413229/principal-pm-t-trust-safety-prime-video"
+                 target="_blank"
+                 class="w-full sm:w-auto shrink-0 text-center bg-navy-900 text-white text-xs font-semibold px-3 py-2 rounded-lg hover:bg-slate-700 transition-colors">
+                Apply →
+              </a>
+            </div>
+            <div class="flex flex-wrap gap-x-3 gap-y-1 mt-2 text-xs text-slate-500">
+              <span>📍 Seattle, WA · On-site</span>
+              <span>💰 $179K–$243K base + RSUs</span>
+              <span>🗓 Active on amazon.jobs</span>
+            </div>
+            <div class="flex flex-wrap gap-1.5 mt-2.5">
+              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ Seattle HQ</span>
+              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ Principal (L7) level</span>
+              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ AI-first Trust &amp; Safety</span>
+              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ Content moderation at scale</span>
+              <span class="px-2 py-0.5 bg-amber-50 text-amber-700 text-xs font-medium rounded-full border border-amber-200">⚠ Base $179–$243K (below $280K floor)</span>
+              <span class="px-2 py-0.5 bg-amber-50 text-amber-700 text-xs font-medium rounded-full border border-amber-200">⚠ On-site 5d/wk Seattle</span>
+            </div>
+            <div class="mt-2.5 bg-slate-50 rounded-lg px-3 py-2">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Why it matches</p>
+              <ul class="space-y-0.5 text-xs text-slate-600">
+                <li>· Prime Video T&amp;S builds AI/ML products for content ratings, trust signals, and safe content supply chain — aligns with your AI-native T&amp;S ops expertise from Meta Reality Labs and Instagram Trust</li>
+                <li>· Principal PM-T (Amazon L7 equivalent) leading the full AI model development lifecycle — analogous to your Head-of-TPM scope driving T&amp;S programs across Google and Meta</li>
+                <li>· Cross-functional leadership across data science, engineering, and policy for safety infrastructure — mirrors your 16-year track record across consumer T&amp;S surfaces</li>
+              </ul>
+            </div>
+            <div class="mt-2 bg-slate-50 rounded-lg px-3 py-2">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Gaps</p>
+              <p class="text-xs text-slate-500">Base comp ($179K–$243K) is well below your $280K floor, and the role is on-site 5 days/week in Seattle. Scope is product management (not TPM) — role owns AI model development roadmap, not program execution.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      </div><!-- end 70–79% cards -->
 
       <!-- ── 60–69% Stretch ── -->
       <div class="flex items-center gap-2.5 pt-1 pb-1.5">
@@ -371,12 +455,16 @@
               <span class="px-2 py-0.5 bg-red-50 text-red-600 text-xs font-medium rounded-full border border-red-200">✗ Comp well below floor</span>
             </div>
             <div class="mt-2.5 bg-slate-50 rounded-lg px-3 py-2">
-              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Why it matches · Gaps</p>
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Why it matches</p>
               <ul class="space-y-0.5 text-xs text-slate-600">
                 <li>· Principal PM (L7) bridging enforcement strategy with regional seller policy — maps to your cross-functional trust program delivery at Meta/Google</li>
                 <li>· Amazon Developer Platform T&amp;S adjacency: your Meta Developer Platform trust experience translates to marketplace ecosystem enforcement</li>
-                <li>· Gaps: Domain is marketplace fraud, not social/AI T&amp;S. Base comp ($137K–$186K) significantly below $280K floor — treat as network-building at Amazon, not primary pursuit</li>
+                <li>· Seller ecosystem trust and integrity work shares the policy-to-engineering translation pattern you've applied across 16 years of T&amp;S programs</li>
               </ul>
+            </div>
+            <div class="mt-2 bg-slate-50 rounded-lg px-3 py-2">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Gaps</p>
+              <p class="text-xs text-slate-500">Domain is marketplace fraud/seller trust, not social T&amp;S or AI governance. Base comp ($137K–$186K) is significantly below your $280K floor. Treat as a network-building touchpoint at Amazon, not a primary application.</p>
             </div>
           </div>
         </div>
@@ -440,7 +528,7 @@
         <span class="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></span>
         <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Included on this page</span>
         <div class="flex-1 h-px bg-slate-200"></div>
-        <span class="text-xs text-slate-400 shrink-0">4 postings</span>
+        <span class="text-xs text-slate-400 shrink-0">5 postings</span>
       </div>
       <div class="bg-white rounded-xl border border-slate-200 overflow-hidden mb-6">
         <table class="w-full text-xs">
@@ -489,6 +577,18 @@
               <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">San Francisco · Hybrid 3d/wk</td>
               <td class="px-3 py-2.5 text-slate-500 hidden md:table-cell">$162K–$240K base</td>
               <td class="px-3 py-2.5"><span class="px-1.5 py-0.5 bg-sky-100 text-sky-700 rounded font-medium">Good</span></td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5 font-bold text-amber-600">73%</td>
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=amazon.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <a href="https://www.amazon.jobs/en/jobs/10413229/principal-pm-t-trust-safety-prime-video" target="_blank" class="font-medium text-slate-800 hover:text-sky-600 hover:underline">Amazon · Principal PM-T, Trust &amp; Safety, Prime Video</a>
+                </div>
+              </td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">Seattle, WA · On-site</td>
+              <td class="px-3 py-2.5 text-slate-500 hidden md:table-cell">$179K–$243K base + RSUs</td>
+              <td class="px-3 py-2.5"><span class="px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded font-medium">Potential</span></td>
             </tr>
             <tr class="hover:bg-slate-50">
               <td class="px-3 py-2.5 font-bold text-slate-600">65%</td>
