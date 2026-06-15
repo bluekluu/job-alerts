@@ -123,201 +123,19 @@
         <div class="flex-1 h-px bg-slate-200"></div>
         <span class="text-xs text-slate-400 shrink-0">3 roles today</span>
       </div>
+      <!-- ══ AGENT: INSERT 80–89% MATCHED ROLE CARDS HERE ══
+           LOCATION HARD FILTER — only these are allowed in included cards:
+             ✓ Remote (US) — fully remote or remote-first
+             ✓ Seattle, WA — hybrid acceptable
+             ✓ Redmond, WA — hybrid acceptable
+             ✗ San Francisco hybrid → HARD DISCARD. Never render as an included card.
+             ✗ NYC, Bay Area, LA hybrid → HARD DISCARD.
+           For card format reference, see the 70–79% and 60–69% cards below.
+           Sky-blue ring: stroke="#0284c7", bg-sky-50/border-sky-100.
+           Dashoffset formula: 150.8 × (1 – score/100). E.g. 85%→22.6, 82%→27.1, 80%→30.2
+           If no roles scored 80–89% today, leave the div below empty and update the band header count to "0 roles today".
+      -->
       <div class="space-y-3 mb-5">
-
-      <!-- Card 1: TPM Safety Systems Eng 88% -->
-      <article class="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
-        <div class="flex flex-col sm:flex-row">
-          <div class="flex sm:flex-col items-center gap-2.5 sm:gap-0 sm:justify-center
-                      px-3 py-2.5 sm:py-5 sm:w-20
-                      bg-sky-50 border-b sm:border-b-0 sm:border-r border-sky-100 shrink-0">
-            <div class="relative w-11 h-11 sm:w-12 sm:h-12">
-              <svg class="w-11 h-11 sm:w-12 sm:h-12 -rotate-90" viewBox="0 0 56 56">
-                <circle cx="28" cy="28" r="24" stroke="#e0f2fe" stroke-width="6" fill="none"/>
-                <circle cx="28" cy="28" r="24" stroke="#0284c7" stroke-width="6" fill="none"
-                  stroke-dasharray="150.8" stroke-dashoffset="18" stroke-linecap="round"/>
-              </svg>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold text-sky-700">88%</span>
-            </div>
-            <span class="text-xs font-semibold text-sky-600 sm:mt-1.5">Good</span>
-          </div>
-          <div class="flex-1 p-3 sm:p-4">
-            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
-              <div class="flex-1 min-w-0">
-                <div class="flex flex-wrap items-center gap-1.5 mb-1">
-                  <span class="px-1.5 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700">● Verified active</span>
-                  <span class="px-1.5 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-700">⚠ SF hybrid</span>
-                  <span class="text-xs text-slate-400">checked 8:01 AM</span>
-                </div>
-                <h2 class="text-base sm:text-lg font-bold text-slate-900 leading-snug">Technical Program Manager, Safety Systems Engineering</h2>
-                <div class="flex items-center gap-1.5 mt-0.5">
-                  <img src="https://www.google.com/s2/favicons?domain=openai.com&sz=64" class="w-5 h-5 rounded object-contain bg-white" alt="" onerror="this.style.display='none'" />
-                  <span class="text-slate-600 font-medium text-sm">OpenAI</span>
-                </div>
-              </div>
-              <a href="https://openai.com/careers/technical-program-manager-safety-systems-engineering-san-francisco/"
-                 target="_blank"
-                 class="w-full sm:w-auto shrink-0 text-center bg-navy-900 text-white text-xs font-semibold px-3 py-2 rounded-lg hover:bg-slate-700 transition-colors">
-                Apply →
-              </a>
-            </div>
-            <div class="flex flex-wrap gap-x-3 gap-y-1 mt-2 text-xs text-slate-500">
-              <span>📍 San Francisco, CA · Hybrid 3d/wk</span>
-              <span>💰 $207K–$335K base · ~$720K total comp</span>
-              <span>🗓 Active on openai.com/careers</span>
-            </div>
-            <div class="flex flex-wrap gap-1.5 mt-2.5">
-              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ TPM</span>
-              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ Content Integrity &amp; Moderation</span>
-              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ Safety Systems</span>
-              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ Cross-functional Eng Liaison</span>
-              <span class="px-2 py-0.5 bg-red-50 text-red-600 text-xs font-medium rounded-full border border-red-200">✗ SF hybrid required</span>
-            </div>
-            <div class="mt-2.5 bg-slate-50 rounded-lg px-3 py-2">
-              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Why it matches</p>
-              <ul class="space-y-0.5 text-xs text-slate-600">
-                <li>· Org-wide safety engineering tracking + risk management — matches your Head-of-TPM scope at Meta/Google</li>
-                <li>· Explicitly requires content integrity, moderation, and regulatory guideline knowledge</li>
-                <li>· Liaison across research, product, engineering, legal, policy — your 16-year cross-functional pattern</li>
-              </ul>
-            </div>
-            <div class="mt-2 bg-slate-50 rounded-lg px-3 py-2">
-              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Gaps</p>
-              <p class="text-xs text-slate-500">Only flag is location — SF hybrid 3 days/week falls outside your Seattle/Remote constraint. Comp ($207K–$335K base, ~$720K total) clears the floor. Worth a back-channel conversation if remote is negotiable.</p>
-            </div>
-          </div>
-        </div>
-      </article>
-
-
-      <!-- Card 3: TPM Adversarial Model Research 82% -->
-      <article class="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
-        <div class="flex flex-col sm:flex-row">
-          <div class="flex sm:flex-col items-center gap-2.5 sm:gap-0 sm:justify-center
-                      px-3 py-2.5 sm:py-5 sm:w-20
-                      bg-sky-50 border-b sm:border-b-0 sm:border-r border-sky-100 shrink-0">
-            <div class="relative w-11 h-11 sm:w-12 sm:h-12">
-              <svg class="w-11 h-11 sm:w-12 sm:h-12 -rotate-90" viewBox="0 0 56 56">
-                <circle cx="28" cy="28" r="24" stroke="#e0f2fe" stroke-width="6" fill="none"/>
-                <circle cx="28" cy="28" r="24" stroke="#0284c7" stroke-width="6" fill="none"
-                  stroke-dasharray="150.8" stroke-dashoffset="27.1" stroke-linecap="round"/>
-              </svg>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold text-sky-700">82%</span>
-            </div>
-            <span class="text-xs font-semibold text-sky-600 sm:mt-1.5">Good</span>
-          </div>
-          <div class="flex-1 p-3 sm:p-4">
-            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
-              <div class="flex-1 min-w-0">
-                <div class="flex flex-wrap items-center gap-1.5 mb-1">
-                  <span class="px-1.5 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700">● Verified active</span>
-                  <span class="px-1.5 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-700">⚠ SF hybrid</span>
-                  <span class="text-xs text-slate-400">checked 8:01 AM</span>
-                </div>
-                <h2 class="text-base sm:text-lg font-bold text-slate-900 leading-snug">Technical Program Manager, Adversarial Model Research</h2>
-                <div class="flex items-center gap-1.5 mt-0.5">
-                  <img src="https://www.google.com/s2/favicons?domain=openai.com&sz=64" class="w-5 h-5 rounded object-contain bg-white" alt="" onerror="this.style.display='none'" />
-                  <span class="text-slate-600 font-medium text-sm">OpenAI</span>
-                </div>
-              </div>
-              <a href="https://openai.com/careers/technical-program-manager-adversarial-model-research-san-francisco/"
-                 target="_blank"
-                 class="w-full sm:w-auto shrink-0 text-center bg-navy-900 text-white text-xs font-semibold px-3 py-2 rounded-lg hover:bg-slate-700 transition-colors">
-                Apply →
-              </a>
-            </div>
-            <div class="flex flex-wrap gap-x-3 gap-y-1 mt-2 text-xs text-slate-500">
-              <span>📍 San Francisco, CA · Hybrid 3d/wk</span>
-              <span>💰 $207K–$285K base · ~$720K total comp</span>
-              <span>🗓 Active on openai.com/careers</span>
-            </div>
-            <div class="flex flex-wrap gap-1.5 mt-2.5">
-              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ TPM</span>
-              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ GenAI Safety / Red-teaming</span>
-              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ AI Risk Evaluation</span>
-              <span class="px-2 py-0.5 bg-amber-50 text-amber-700 text-xs font-medium rounded-full border border-amber-200">~ LLM eval familiarity preferred</span>
-              <span class="px-2 py-0.5 bg-red-50 text-red-600 text-xs font-medium rounded-full border border-red-200">✗ SF hybrid required</span>
-            </div>
-            <div class="mt-2.5 bg-slate-50 rounded-lg px-3 py-2">
-              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Why it matches</p>
-              <ul class="space-y-0.5 text-xs text-slate-600">
-                <li>· Leads programs testing safety/robustness of models via red-teaming — maps to your GenAI Trust work at Meta Reality Labs</li>
-                <li>· Converts ambiguous risk signals into research priorities — the TPM translation skill you've built for 16 years</li>
-                <li>· Cross-functional coordination between research, policy, and engineering mirrors your Head-of-TPM operating model at both Google and Meta</li>
-              </ul>
-            </div>
-            <div class="mt-2 bg-slate-50 rounded-lg px-3 py-2">
-              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Gaps</p>
-              <p class="text-xs text-slate-500">SF hybrid 3d/week is outside your location constraint. Light technical gap: role prefers hands-on LLM eval / prompt engineering familiarity; your exposure is through program oversight, not direct research execution.</p>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- Card 4: PM Safety 80% -->
-      <article class="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow overflow-hidden opacity-85">
-        <div class="flex flex-col sm:flex-row">
-          <div class="flex sm:flex-col items-center gap-2.5 sm:gap-0 sm:justify-center
-                      px-3 py-2.5 sm:py-5 sm:w-20
-                      bg-sky-50 border-b sm:border-b-0 sm:border-r border-sky-100 shrink-0">
-            <div class="relative w-11 h-11 sm:w-12 sm:h-12">
-              <svg class="w-11 h-11 sm:w-12 sm:h-12 -rotate-90" viewBox="0 0 56 56">
-                <circle cx="28" cy="28" r="24" stroke="#e0f2fe" stroke-width="6" fill="none"/>
-                <circle cx="28" cy="28" r="24" stroke="#0284c7" stroke-width="6" fill="none"
-                  stroke-dasharray="150.8" stroke-dashoffset="30.2" stroke-linecap="round"/>
-              </svg>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold text-sky-700">80%</span>
-            </div>
-            <span class="text-xs font-semibold text-sky-600 sm:mt-1.5">Good</span>
-          </div>
-          <div class="flex-1 p-3 sm:p-4">
-            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
-              <div class="flex-1 min-w-0">
-                <div class="flex flex-wrap items-center gap-1.5 mb-1">
-                  <span class="px-1.5 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700">● Verified active</span>
-                  <span class="px-1.5 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-700">⚠ SF hybrid</span>
-                  <span class="text-xs text-slate-400">checked 8:01 AM · Posted May 13</span>
-                </div>
-                <h2 class="text-base sm:text-lg font-bold text-slate-900 leading-snug">Program Manager, Safety</h2>
-                <div class="flex items-center gap-1.5 mt-0.5">
-                  <img src="https://www.google.com/s2/favicons?domain=openai.com&sz=64" class="w-5 h-5 rounded object-contain bg-white" alt="" onerror="this.style.display='none'" />
-                  <span class="text-slate-600 font-medium text-sm">OpenAI</span>
-                </div>
-              </div>
-              <a href="https://openai.com/careers/program-manager-safety-san-francisco/"
-                 target="_blank"
-                 class="w-full sm:w-auto shrink-0 text-center bg-navy-900 text-white text-xs font-semibold px-3 py-2 rounded-lg hover:bg-slate-700 transition-colors">
-                Apply →
-              </a>
-            </div>
-            <div class="flex flex-wrap gap-x-3 gap-y-1 mt-2 text-xs text-slate-500">
-              <span>📍 San Francisco, CA · Hybrid 3d/wk</span>
-              <span>💰 $162K–$240K base</span>
-              <span>🗓 Posted May 13 · Active on openai.com/careers</span>
-            </div>
-            <div class="flex flex-wrap gap-1.5 mt-2.5">
-              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ Safety launch readiness</span>
-              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ Content moderation</span>
-              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ Incident management</span>
-              <span class="px-2 py-0.5 bg-red-50 text-red-600 text-xs font-medium rounded-full border border-red-200">✗ SF hybrid required</span>
-              <span class="px-2 py-0.5 bg-red-50 text-red-600 text-xs font-medium rounded-full border border-red-200">✗ Comp below floor</span>
-            </div>
-            <div class="mt-2.5 bg-slate-50 rounded-lg px-3 py-2">
-              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Why it matches</p>
-              <ul class="space-y-0.5 text-xs text-slate-600">
-                <li>· Safety launch readiness and incident management at a frontier AI lab — maps to your T&amp;S program delivery across Google and Meta</li>
-                <li>· Content moderation policy implementation is core to the role, aligning with your content integrity work across Instagram Trust and Meta Reality Labs</li>
-                <li>· Cross-functional coordination between product, engineering, and policy mirrors your 16-year operating pattern as Head of TPM</li>
-              </ul>
-            </div>
-            <div class="mt-2 bg-slate-50 rounded-lg px-3 py-2">
-              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Gaps</p>
-              <p class="text-xs text-slate-500">Two hard flags: SF hybrid 3d/week falls outside your location constraint, and base comp ($162K–$240K) is well below your $280K floor. Treat as a back-channel conversation starter, not a primary application.</p>
-            </div>
-          </div>
-        </div>
-      </article>
-
       </div><!-- end 80–89% cards -->
 
       <!-- ── 70–79% Potential ── -->
@@ -528,7 +346,7 @@
         <span class="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></span>
         <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Included on this page</span>
         <div class="flex-1 h-px bg-slate-200"></div>
-        <span class="text-xs text-slate-400 shrink-0">5 postings</span>
+        <span class="text-xs text-slate-400 shrink-0">FULLTIME_INCLUDED_COUNT postings</span>
       </div>
       <div class="bg-white rounded-xl border border-slate-200 overflow-hidden mb-6">
         <table class="w-full text-xs">
@@ -542,42 +360,7 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-100">
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2.5 font-bold text-sky-700">88%</td>
-              <td class="px-3 py-2.5">
-                <div class="flex items-center gap-2">
-                  <img src="https://www.google.com/s2/favicons?domain=openai.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
-                  <a href="https://openai.com/careers/technical-program-manager-safety-systems-engineering-san-francisco/" target="_blank" class="font-medium text-slate-800 hover:text-sky-600 hover:underline">OpenAI · TPM, Safety Systems Engineering</a>
-                </div>
-              </td>
-              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">San Francisco · Hybrid 3d/wk</td>
-              <td class="px-3 py-2.5 text-slate-500 hidden md:table-cell">$207K–$335K base</td>
-              <td class="px-3 py-2.5"><span class="px-1.5 py-0.5 bg-sky-100 text-sky-700 rounded font-medium">Good</span></td>
-            </tr>
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2.5 font-bold text-sky-700">82%</td>
-              <td class="px-3 py-2.5">
-                <div class="flex items-center gap-2">
-                  <img src="https://www.google.com/s2/favicons?domain=openai.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
-                  <a href="https://openai.com/careers/technical-program-manager-adversarial-model-research-san-francisco/" target="_blank" class="font-medium text-slate-800 hover:text-sky-600 hover:underline">OpenAI · TPM, Adversarial Model Research</a>
-                </div>
-              </td>
-              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">San Francisco · Hybrid 3d/wk</td>
-              <td class="px-3 py-2.5 text-slate-500 hidden md:table-cell">$207K–$285K base</td>
-              <td class="px-3 py-2.5"><span class="px-1.5 py-0.5 bg-sky-100 text-sky-700 rounded font-medium">Good</span></td>
-            </tr>
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2.5 font-bold text-sky-700">80%</td>
-              <td class="px-3 py-2.5">
-                <div class="flex items-center gap-2">
-                  <img src="https://www.google.com/s2/favicons?domain=openai.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
-                  <a href="https://openai.com/careers/program-manager-safety-san-francisco/" target="_blank" class="font-medium text-slate-800 hover:text-sky-600 hover:underline">OpenAI · Program Manager, Safety</a>
-                </div>
-              </td>
-              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">San Francisco · Hybrid 3d/wk</td>
-              <td class="px-3 py-2.5 text-slate-500 hidden md:table-cell">$162K–$240K base</td>
-              <td class="px-3 py-2.5"><span class="px-1.5 py-0.5 bg-sky-100 text-sky-700 rounded font-medium">Good</span></td>
-            </tr>
+            <!-- AGENT: Insert one <tr> row per included role card. Only Remote US / Seattle WA / Redmond WA roles appear here. -->
             <tr class="hover:bg-slate-50">
               <td class="px-3 py-2.5 font-bold text-amber-600">73%</td>
               <td class="px-3 py-2.5">
@@ -712,7 +495,7 @@
         <span class="w-2 h-2 rounded-full bg-amber-400 shrink-0"></span>
         <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Discarded — Fails hard filter</span>
         <div class="flex-1 h-px bg-slate-200"></div>
-        <span class="text-xs text-slate-400 shrink-0">3 postings</span>
+        <span class="text-xs text-slate-400 shrink-0">HARD_FILTER_COUNT postings</span>
       </div>
       <div class="bg-white rounded-xl border border-slate-200 overflow-hidden mb-6">
         <table class="w-full text-xs">
@@ -724,6 +507,37 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-100">
+            <!-- AGENT: These 3 OpenAI SF hybrid roles FAIL the location hard filter. They must stay in this discarded section only — never render as included cards. -->
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=openai.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <a href="https://openai.com/careers/technical-program-manager-safety-systems-engineering-san-francisco/" target="_blank" class="font-medium text-slate-600 hover:text-sky-600 hover:underline">OpenAI · TPM, Safety Systems Engineering</a>
+                </div>
+              </td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">~88% · $207K–$335K base</td>
+              <td class="px-3 py-2.5 text-slate-500"><span class="px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded">Location</span> San Francisco CA, hybrid 3d/wk</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=openai.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <a href="https://openai.com/careers/technical-program-manager-adversarial-model-research-san-francisco/" target="_blank" class="font-medium text-slate-600 hover:text-sky-600 hover:underline">OpenAI · TPM, Adversarial Model Research</a>
+                </div>
+              </td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">~82% · $207K–$285K base</td>
+              <td class="px-3 py-2.5 text-slate-500"><span class="px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded">Location</span> San Francisco CA, hybrid 3d/wk</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=openai.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <a href="https://openai.com/careers/program-manager-safety-san-francisco/" target="_blank" class="font-medium text-slate-600 hover:text-sky-600 hover:underline">OpenAI · Program Manager, Safety</a>
+                </div>
+              </td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">~80% · $162K–$240K base</td>
+              <td class="px-3 py-2.5 text-slate-500"><span class="px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded">Location</span> San Francisco CA, hybrid 3d/wk</td>
+            </tr>
             <tr class="hover:bg-slate-50">
               <td class="px-3 py-2.5">
                 <div class="flex items-center gap-2">
@@ -754,6 +568,7 @@
               <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">~72% · $186K–$240K</td>
               <td class="px-3 py-2.5 text-slate-500"><span class="px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded">Location</span> Denver CO, in-office</td>
             </tr>
+            <!-- AGENT: Add additional location-fail rows here -->
           </tbody>
         </table>
       </div>
