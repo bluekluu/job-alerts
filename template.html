@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kevin's Daily Job Alert</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { navy: { 900: '#0f172a', 800: '#1e293b', 700: '#334155' } } } }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .filter-bar { -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .filter-bar::-webkit-scrollbar { display: none; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+  </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-navy-900 text-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-5 sm:py-7">
+      <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+        <div>
+          <p class="text-slate-400 text-xs font-medium tracking-widest uppercase mb-0.5">Daily Job Alert</p>
+          <h1 class="text-2xl sm:text-3xl font-bold">Kevin Luu</h1>
+          <p class="text-slate-400 mt-0.5 text-xs">Trust &amp; Safety · Privacy · GenAI · TPM</p>
+        </div>
+        <div class="sm:text-right">
+          <p class="text-xl sm:text-2xl font-semibold">TODAY_DATE</p>
+          <p class="text-xs text-slate-500 mt-0.5">Generated GENERATION_TIME PT · Links verified at generation time</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 pt-4 border-t border-slate-700">
+        <div><p class="text-2xl font-bold text-white">FULLTIME_COUNT</p><p class="text-slate-400 text-xs mt-0.5">Full-time matches (≥ 60%)</p></div>
+        <div><p class="text-2xl font-bold text-green-400">STRONG_FULLTIME_COUNT</p><p class="text-slate-400 text-xs mt-0.5">Strong (≥ 90%)</p></div>
+        <div><p class="text-2xl font-bold text-purple-400">FRACTIONAL_COUNT</p><p class="text-slate-400 text-xs mt-0.5">Fractional &amp; Advisory matches</p></div>
+        <div>
+          <p class="text-slate-400 text-xs mt-0.5 mb-0.5">Postings crawled</p>
+          <div class="flex items-baseline gap-1.5">
+            <span class="text-xl font-bold text-white">FT_CRAWLED_COUNT</span>
+            <span class="text-slate-500 text-xs">FT</span>
+            <span class="text-slate-600 text-xs">/</span>
+            <span class="text-xl font-bold text-purple-400">FA_CRAWLED_COUNT</span>
+            <span class="text-slate-500 text-xs">F&amp;A</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 flex gap-1 pt-1">
+      <button onclick="switchTab('fulltime')" id="tab-fulltime"
+        class="tab-btn px-4 py-2.5 text-sm font-semibold rounded-t-lg bg-slate-50 text-navy-900">
+        Full-Time Roles <span class="ml-1.5 bg-sky-100 text-sky-700 text-xs px-1.5 py-0.5 rounded-full">5</span>
+      </button>
+      <button onclick="switchTab('fractional')" id="tab-fractional"
+        class="tab-btn px-4 py-2.5 text-sm font-semibold rounded-t-lg text-slate-400 hover:bg-slate-700 hover:text-slate-100 transition-colors">
+        Fractional &amp; Advisory <span class="ml-1.5 bg-slate-700 text-slate-300 text-xs px-1.5 py-0.5 rounded-full">0</span>
+      </button>
+      <button onclick="switchTab('sources')" id="tab-sources"
+        class="tab-btn px-4 py-2.5 text-sm font-semibold rounded-t-lg text-slate-400 hover:bg-slate-700 hover:text-slate-100 transition-colors">
+        All Evaluated <span class="ml-1.5 bg-slate-700 text-slate-300 text-xs px-1.5 py-0.5 rounded-full">21</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Filters -->
+  <div class="bg-white border-b border-slate-200 sticky top-0 z-10 shadow-sm">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-2.5">
+      <div class="filter-bar flex items-center gap-2 overflow-x-auto">
+        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider shrink-0">Filter:</span>
+        <button class="shrink-0 px-2.5 py-1 rounded-full text-xs font-medium bg-navy-900 text-white">All (5)</button>
+        <button class="shrink-0 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 hover:bg-green-200">90–100% (0)</button>
+        <button class="shrink-0 px-2.5 py-1 rounded-full text-xs font-medium bg-sky-100 text-sky-700 hover:bg-sky-200">80–89% (3)</button>
+        <button class="shrink-0 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700 hover:bg-amber-200">70–79% (1)</button>
+        <button class="shrink-0 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200">60–69% (1)</button>
+        <div class="ml-auto hidden sm:flex items-center gap-2 shrink-0">
+          <span class="text-xs text-slate-400">Sort:</span>
+          <select class="text-xs border border-slate-200 rounded px-2 py-1 text-slate-600 bg-white">
+            <option>Match % ↓</option><option>Date posted</option><option>Compensation</option>
+          </select>
+        </div>
+      </div>
+      <div class="flex sm:hidden items-center gap-2 mt-1.5">
+        <span class="text-xs text-slate-400">Sort:</span>
+        <select class="text-xs border border-slate-200 rounded px-2 py-1 text-slate-600 bg-white">
+          <option>Match % ↓</option><option>Date posted</option><option>Compensation</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FULL-TIME TAB ── -->
+  <div id="tab-content-fulltime" class="tab-content active">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 pt-5">
+      <div class="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 flex gap-3 items-start mb-1">
+        <span class="text-amber-500 text-lg shrink-0">⚠</span>
+        <div class="text-xs text-amber-800">
+          <p class="font-semibold">Summary note — TODAY_DATE</p>
+          <p class="mt-0.5">SUMMARY_NOTE</p>
+        </div>
+      </div>
+    </div>
+
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 py-4">
+
+      <!-- ── 90–100% Strong ── -->
+      <div class="flex items-center gap-2.5 pt-2 pb-1.5">
+        <span class="w-2.5 h-2.5 rounded-full bg-green-400 shrink-0"></span>
+        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">90–100% · Strong</span>
+        <div class="flex-1 h-px bg-slate-200"></div>
+        <span class="text-xs text-slate-400 shrink-0">0 roles today</span>
+      </div>
+      <p class="text-xs text-slate-400 italic pl-5 mb-5">No roles in this range today.</p>
+
+      <!-- ── 80–89% Good ── -->
+      <div class="flex items-center gap-2.5 pt-1 pb-1.5">
+        <span class="w-2.5 h-2.5 rounded-full bg-sky-400 shrink-0"></span>
+        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">80–89% · Good</span>
+        <div class="flex-1 h-px bg-slate-200"></div>
+        <span class="text-xs text-slate-400 shrink-0">3 roles today</span>
+      </div>
+      <div class="space-y-3 mb-5">
+
+      <!-- Card 1: TPM Safety Systems Eng 88% -->
+      <article class="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+        <div class="flex flex-col sm:flex-row">
+          <div class="flex sm:flex-col items-center gap-2.5 sm:gap-0 sm:justify-center
+                      px-3 py-2.5 sm:py-5 sm:w-20
+                      bg-sky-50 border-b sm:border-b-0 sm:border-r border-sky-100 shrink-0">
+            <div class="relative w-11 h-11 sm:w-12 sm:h-12">
+              <svg class="w-11 h-11 sm:w-12 sm:h-12 -rotate-90" viewBox="0 0 56 56">
+                <circle cx="28" cy="28" r="24" stroke="#e0f2fe" stroke-width="6" fill="none"/>
+                <circle cx="28" cy="28" r="24" stroke="#0284c7" stroke-width="6" fill="none"
+                  stroke-dasharray="150.8" stroke-dashoffset="18" stroke-linecap="round"/>
+              </svg>
+              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold text-sky-700">88%</span>
+            </div>
+            <span class="text-xs font-semibold text-sky-600 sm:mt-1.5">Good</span>
+          </div>
+          <div class="flex-1 p-3 sm:p-4">
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+              <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap items-center gap-1.5 mb-1">
+                  <span class="px-1.5 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700">● Verified active</span>
+                  <span class="px-1.5 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-700">⚠ SF hybrid</span>
+                  <span class="text-xs text-slate-400">checked 8:01 AM</span>
+                </div>
+                <h2 class="text-base sm:text-lg font-bold text-slate-900 leading-snug">Technical Program Manager, Safety Systems Engineering</h2>
+                <div class="flex items-center gap-1.5 mt-0.5">
+                  <img src="https://www.google.com/s2/favicons?domain=openai.com&sz=64" class="w-5 h-5 rounded object-contain bg-white" alt="" onerror="this.style.display='none'" />
+                  <span class="text-slate-600 font-medium text-sm">OpenAI</span>
+                </div>
+              </div>
+              <a href="https://openai.com/careers/technical-program-manager-safety-systems-engineering-san-francisco/"
+                 target="_blank"
+                 class="w-full sm:w-auto shrink-0 text-center bg-navy-900 text-white text-xs font-semibold px-3 py-2 rounded-lg hover:bg-slate-700 transition-colors">
+                Apply →
+              </a>
+            </div>
+            <div class="flex flex-wrap gap-x-3 gap-y-1 mt-2 text-xs text-slate-500">
+              <span>📍 San Francisco, CA · Hybrid 3d/wk</span>
+              <span>💰 $207K–$335K base · ~$720K total comp</span>
+              <span>🗓 Active on openai.com/careers</span>
+            </div>
+            <div class="flex flex-wrap gap-1.5 mt-2.5">
+              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ TPM</span>
+              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ Content Integrity &amp; Moderation</span>
+              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ Safety Systems</span>
+              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ Cross-functional Eng Liaison</span>
+              <span class="px-2 py-0.5 bg-red-50 text-red-600 text-xs font-medium rounded-full border border-red-200">✗ SF hybrid required</span>
+            </div>
+            <div class="mt-2.5 bg-slate-50 rounded-lg px-3 py-2">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Why it matches</p>
+              <ul class="space-y-0.5 text-xs text-slate-600">
+                <li>· Org-wide safety engineering tracking + risk management — matches your Head-of-TPM scope at Meta/Google</li>
+                <li>· Explicitly requires content integrity, moderation, and regulatory guideline knowledge</li>
+                <li>· Liaison across research, product, engineering, legal, policy — your 16-year cross-functional pattern</li>
+              </ul>
+            </div>
+            <div class="mt-2 bg-slate-50 rounded-lg px-3 py-2">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Gaps</p>
+              <p class="text-xs text-slate-500">Only flag is location — SF hybrid 3 days/week falls outside your Seattle/Remote constraint. Comp ($207K–$335K base, ~$720K total) clears the floor. Worth a back-channel conversation if remote is negotiable.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+
+      <!-- Card 3: TPM Adversarial Model Research 82% -->
+      <article class="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+        <div class="flex flex-col sm:flex-row">
+          <div class="flex sm:flex-col items-center gap-2.5 sm:gap-0 sm:justify-center
+                      px-3 py-2.5 sm:py-5 sm:w-20
+                      bg-sky-50 border-b sm:border-b-0 sm:border-r border-sky-100 shrink-0">
+            <div class="relative w-11 h-11 sm:w-12 sm:h-12">
+              <svg class="w-11 h-11 sm:w-12 sm:h-12 -rotate-90" viewBox="0 0 56 56">
+                <circle cx="28" cy="28" r="24" stroke="#e0f2fe" stroke-width="6" fill="none"/>
+                <circle cx="28" cy="28" r="24" stroke="#0284c7" stroke-width="6" fill="none"
+                  stroke-dasharray="150.8" stroke-dashoffset="27.1" stroke-linecap="round"/>
+              </svg>
+              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold text-sky-700">82%</span>
+            </div>
+            <span class="text-xs font-semibold text-sky-600 sm:mt-1.5">Good</span>
+          </div>
+          <div class="flex-1 p-3 sm:p-4">
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+              <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap items-center gap-1.5 mb-1">
+                  <span class="px-1.5 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700">● Verified active</span>
+                  <span class="px-1.5 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-700">⚠ SF hybrid</span>
+                  <span class="text-xs text-slate-400">checked 8:01 AM</span>
+                </div>
+                <h2 class="text-base sm:text-lg font-bold text-slate-900 leading-snug">Technical Program Manager, Adversarial Model Research</h2>
+                <div class="flex items-center gap-1.5 mt-0.5">
+                  <img src="https://www.google.com/s2/favicons?domain=openai.com&sz=64" class="w-5 h-5 rounded object-contain bg-white" alt="" onerror="this.style.display='none'" />
+                  <span class="text-slate-600 font-medium text-sm">OpenAI</span>
+                </div>
+              </div>
+              <a href="https://openai.com/careers/technical-program-manager-adversarial-model-research-san-francisco/"
+                 target="_blank"
+                 class="w-full sm:w-auto shrink-0 text-center bg-navy-900 text-white text-xs font-semibold px-3 py-2 rounded-lg hover:bg-slate-700 transition-colors">
+                Apply →
+              </a>
+            </div>
+            <div class="flex flex-wrap gap-x-3 gap-y-1 mt-2 text-xs text-slate-500">
+              <span>📍 San Francisco, CA · Hybrid 3d/wk</span>
+              <span>💰 $207K–$285K base · ~$720K total comp</span>
+              <span>🗓 Active on openai.com/careers</span>
+            </div>
+            <div class="flex flex-wrap gap-1.5 mt-2.5">
+              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ TPM</span>
+              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ GenAI Safety / Red-teaming</span>
+              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ AI Risk Evaluation</span>
+              <span class="px-2 py-0.5 bg-amber-50 text-amber-700 text-xs font-medium rounded-full border border-amber-200">~ LLM eval familiarity preferred</span>
+              <span class="px-2 py-0.5 bg-red-50 text-red-600 text-xs font-medium rounded-full border border-red-200">✗ SF hybrid required</span>
+            </div>
+            <div class="mt-2.5 bg-slate-50 rounded-lg px-3 py-2">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Why it matches</p>
+              <ul class="space-y-0.5 text-xs text-slate-600">
+                <li>· Leads programs testing safety/robustness of models via red-teaming — maps to your GenAI Trust work at Meta Reality Labs</li>
+                <li>· Converts ambiguous risk signals into research priorities — the TPM translation skill you've built for 16 years</li>
+                <li>· Cross-functional coordination between research, policy, and engineering mirrors your Head-of-TPM operating model at both Google and Meta</li>
+              </ul>
+            </div>
+            <div class="mt-2 bg-slate-50 rounded-lg px-3 py-2">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Gaps</p>
+              <p class="text-xs text-slate-500">SF hybrid 3d/week is outside your location constraint. Light technical gap: role prefers hands-on LLM eval / prompt engineering familiarity; your exposure is through program oversight, not direct research execution.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card 4: PM Safety 80% -->
+      <article class="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow overflow-hidden opacity-85">
+        <div class="flex flex-col sm:flex-row">
+          <div class="flex sm:flex-col items-center gap-2.5 sm:gap-0 sm:justify-center
+                      px-3 py-2.5 sm:py-5 sm:w-20
+                      bg-sky-50 border-b sm:border-b-0 sm:border-r border-sky-100 shrink-0">
+            <div class="relative w-11 h-11 sm:w-12 sm:h-12">
+              <svg class="w-11 h-11 sm:w-12 sm:h-12 -rotate-90" viewBox="0 0 56 56">
+                <circle cx="28" cy="28" r="24" stroke="#e0f2fe" stroke-width="6" fill="none"/>
+                <circle cx="28" cy="28" r="24" stroke="#0284c7" stroke-width="6" fill="none"
+                  stroke-dasharray="150.8" stroke-dashoffset="30.2" stroke-linecap="round"/>
+              </svg>
+              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold text-sky-700">80%</span>
+            </div>
+            <span class="text-xs font-semibold text-sky-600 sm:mt-1.5">Good</span>
+          </div>
+          <div class="flex-1 p-3 sm:p-4">
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+              <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap items-center gap-1.5 mb-1">
+                  <span class="px-1.5 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700">● Verified active</span>
+                  <span class="px-1.5 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-700">⚠ SF hybrid</span>
+                  <span class="text-xs text-slate-400">checked 8:01 AM · Posted May 13</span>
+                </div>
+                <h2 class="text-base sm:text-lg font-bold text-slate-900 leading-snug">Program Manager, Safety</h2>
+                <div class="flex items-center gap-1.5 mt-0.5">
+                  <img src="https://www.google.com/s2/favicons?domain=openai.com&sz=64" class="w-5 h-5 rounded object-contain bg-white" alt="" onerror="this.style.display='none'" />
+                  <span class="text-slate-600 font-medium text-sm">OpenAI</span>
+                </div>
+              </div>
+              <a href="https://openai.com/careers/program-manager-safety-san-francisco/"
+                 target="_blank"
+                 class="w-full sm:w-auto shrink-0 text-center bg-navy-900 text-white text-xs font-semibold px-3 py-2 rounded-lg hover:bg-slate-700 transition-colors">
+                Apply →
+              </a>
+            </div>
+            <div class="flex flex-wrap gap-x-3 gap-y-1 mt-2 text-xs text-slate-500">
+              <span>📍 San Francisco, CA · Hybrid 3d/wk</span>
+              <span>💰 $162K–$240K base</span>
+              <span>🗓 Posted May 13 · Active on openai.com/careers</span>
+            </div>
+            <div class="flex flex-wrap gap-1.5 mt-2.5">
+              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ Safety launch readiness</span>
+              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ Content moderation</span>
+              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ Incident management</span>
+              <span class="px-2 py-0.5 bg-red-50 text-red-600 text-xs font-medium rounded-full border border-red-200">✗ SF hybrid required</span>
+              <span class="px-2 py-0.5 bg-red-50 text-red-600 text-xs font-medium rounded-full border border-red-200">✗ Comp below floor</span>
+            </div>
+            <div class="mt-2.5 bg-slate-50 rounded-lg px-3 py-2">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Why it matches</p>
+              <ul class="space-y-0.5 text-xs text-slate-600">
+                <li>· Safety launch readiness and incident management at a frontier AI lab — maps to your T&amp;S program delivery across Google and Meta</li>
+                <li>· Content moderation policy implementation is core to the role, aligning with your content integrity work across Instagram Trust and Meta Reality Labs</li>
+                <li>· Cross-functional coordination between product, engineering, and policy mirrors your 16-year operating pattern as Head of TPM</li>
+              </ul>
+            </div>
+            <div class="mt-2 bg-slate-50 rounded-lg px-3 py-2">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Gaps</p>
+              <p class="text-xs text-slate-500">Two hard flags: SF hybrid 3d/week falls outside your location constraint, and base comp ($162K–$240K) is well below your $280K floor. Treat as a back-channel conversation starter, not a primary application.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      </div><!-- end 80–89% cards -->
+
+      <!-- ── 70–79% Potential ── -->
+      <div class="flex items-center gap-2.5 pt-1 pb-1.5">
+        <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shrink-0"></span>
+        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">70–79% · Potential</span>
+        <div class="flex-1 h-px bg-slate-200"></div>
+        <span class="text-xs text-slate-400 shrink-0">1 role today</span>
+      </div>
+      <div class="space-y-3 mb-5">
+
+      <!-- Card: Amazon Prime Video Principal PM-T T&S 73% -->
+      <article class="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow overflow-hidden opacity-85">
+        <div class="flex flex-col sm:flex-row">
+          <div class="flex sm:flex-col items-center gap-2.5 sm:gap-0 sm:justify-center
+                      px-3 py-2.5 sm:py-5 sm:w-20
+                      bg-amber-50 border-b sm:border-b-0 sm:border-r border-amber-100 shrink-0">
+            <div class="relative w-11 h-11 sm:w-12 sm:h-12">
+              <svg class="w-11 h-11 sm:w-12 sm:h-12 -rotate-90" viewBox="0 0 56 56">
+                <circle cx="28" cy="28" r="24" stroke="#fef3c7" stroke-width="6" fill="none"/>
+                <circle cx="28" cy="28" r="24" stroke="#f59e0b" stroke-width="6" fill="none"
+                  stroke-dasharray="150.8" stroke-dashoffset="40.7" stroke-linecap="round"/>
+              </svg>
+              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold text-amber-700">73%</span>
+            </div>
+            <span class="text-xs font-semibold text-amber-600 sm:mt-1.5">Potential</span>
+          </div>
+          <div class="flex-1 p-3 sm:p-4">
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+              <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap items-center gap-1.5 mb-1">
+                  <span class="px-1.5 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700">● Verified active</span>
+                  <span class="px-1.5 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">✓ Seattle</span>
+                  <span class="px-1.5 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-700">⚠ Comp below floor</span>
+                  <span class="text-xs text-slate-400">checked 8:01 AM</span>
+                </div>
+                <h2 class="text-base sm:text-lg font-bold text-slate-900 leading-snug">Principal PM-T, Trust &amp; Safety, Prime Video</h2>
+                <div class="flex items-center gap-1.5 mt-0.5">
+                  <img src="https://www.google.com/s2/favicons?domain=amazon.com&sz=64" class="w-5 h-5 rounded object-contain bg-white" alt="" onerror="this.style.display='none'" />
+                  <span class="text-slate-600 font-medium text-sm">Amazon</span>
+                </div>
+              </div>
+              <a href="https://www.amazon.jobs/en/jobs/10413229/principal-pm-t-trust-safety-prime-video"
+                 target="_blank"
+                 class="w-full sm:w-auto shrink-0 text-center bg-navy-900 text-white text-xs font-semibold px-3 py-2 rounded-lg hover:bg-slate-700 transition-colors">
+                Apply →
+              </a>
+            </div>
+            <div class="flex flex-wrap gap-x-3 gap-y-1 mt-2 text-xs text-slate-500">
+              <span>📍 Seattle, WA · On-site</span>
+              <span>💰 $179K–$243K base + RSUs</span>
+              <span>🗓 Active on amazon.jobs</span>
+            </div>
+            <div class="flex flex-wrap gap-1.5 mt-2.5">
+              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ Seattle HQ</span>
+              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ Principal (L7) level</span>
+              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ AI-first Trust &amp; Safety</span>
+              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ Content moderation at scale</span>
+              <span class="px-2 py-0.5 bg-amber-50 text-amber-700 text-xs font-medium rounded-full border border-amber-200">⚠ Base $179–$243K (below $280K floor)</span>
+              <span class="px-2 py-0.5 bg-amber-50 text-amber-700 text-xs font-medium rounded-full border border-amber-200">⚠ On-site 5d/wk Seattle</span>
+            </div>
+            <div class="mt-2.5 bg-slate-50 rounded-lg px-3 py-2">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Why it matches</p>
+              <ul class="space-y-0.5 text-xs text-slate-600">
+                <li>· Prime Video T&amp;S builds AI/ML products for content ratings, trust signals, and safe content supply chain — aligns with your AI-native T&amp;S ops expertise from Meta Reality Labs and Instagram Trust</li>
+                <li>· Principal PM-T (Amazon L7 equivalent) leading the full AI model development lifecycle — analogous to your Head-of-TPM scope driving T&amp;S programs across Google and Meta</li>
+                <li>· Cross-functional leadership across data science, engineering, and policy for safety infrastructure — mirrors your 16-year track record across consumer T&amp;S surfaces</li>
+              </ul>
+            </div>
+            <div class="mt-2 bg-slate-50 rounded-lg px-3 py-2">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Gaps</p>
+              <p class="text-xs text-slate-500">Base comp ($179K–$243K) is well below your $280K floor, and the role is on-site 5 days/week in Seattle. Scope is product management (not TPM) — role owns AI model development roadmap, not program execution.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      </div><!-- end 70–79% cards -->
+
+      <!-- ── 60–69% Stretch ── -->
+      <div class="flex items-center gap-2.5 pt-1 pb-1.5">
+        <span class="w-2.5 h-2.5 rounded-full bg-slate-400 shrink-0"></span>
+        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">60–69% · Stretch</span>
+        <div class="flex-1 h-px bg-slate-200"></div>
+        <span class="text-xs text-slate-400 shrink-0">1 role today</span>
+      </div>
+      <div class="space-y-3 mb-3">
+
+      <!-- Card: Amazon PPM Selling Partner Trust 65% -->
+      <article class="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow overflow-hidden opacity-85">
+        <div class="flex flex-col sm:flex-row">
+          <div class="flex sm:flex-col items-center gap-2.5 sm:gap-0 sm:justify-center
+                      px-3 py-2.5 sm:py-5 sm:w-20
+                      bg-slate-100 border-b sm:border-b-0 sm:border-r border-slate-200 shrink-0">
+            <div class="relative w-11 h-11 sm:w-12 sm:h-12">
+              <svg class="w-11 h-11 sm:w-12 sm:h-12 -rotate-90" viewBox="0 0 56 56">
+                <circle cx="28" cy="28" r="24" stroke="#f1f5f9" stroke-width="6" fill="none"/>
+                <circle cx="28" cy="28" r="24" stroke="#64748b" stroke-width="6" fill="none"
+                  stroke-dasharray="150.8" stroke-dashoffset="52.8" stroke-linecap="round"/>
+              </svg>
+              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold text-slate-600">65%</span>
+            </div>
+            <span class="text-xs font-semibold text-slate-500 sm:mt-1.5">Stretch</span>
+          </div>
+          <div class="flex-1 p-3 sm:p-4">
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+              <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap items-center gap-1.5 mb-1">
+                  <span class="px-1.5 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700">● Verified active</span>
+                  <span class="px-1.5 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">✓ Seattle</span>
+                  <span class="text-xs text-slate-400">checked 8:01 AM</span>
+                </div>
+                <h2 class="text-base sm:text-lg font-bold text-slate-900 leading-snug">Principal Program Manager, Selling Partner Trust</h2>
+                <div class="flex items-center gap-1.5 mt-0.5">
+                  <img src="https://www.google.com/s2/favicons?domain=amazon.com&sz=64" class="w-5 h-5 rounded object-contain bg-white" alt="" onerror="this.style.display='none'" />
+                  <span class="text-slate-600 font-medium text-sm">Amazon</span>
+                </div>
+              </div>
+              <a href="https://amazon.jobs/en/jobs/10433888/principal-program-manager-selling-partner-trust-selling-partner-trust"
+                 target="_blank"
+                 class="w-full sm:w-auto shrink-0 text-center bg-navy-900 text-white text-xs font-semibold px-3 py-2 rounded-lg hover:bg-slate-700 transition-colors">
+                Apply →
+              </a>
+            </div>
+            <div class="flex flex-wrap gap-x-3 gap-y-1 mt-2 text-xs text-slate-500">
+              <span>📍 Seattle, WA · Hybrid</span>
+              <span>💰 $137K–$186K base</span>
+              <span>🗓 Active on amazon.jobs</span>
+            </div>
+            <div class="flex flex-wrap gap-1.5 mt-2.5">
+              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ Seattle HQ</span>
+              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ Principal (L7) level</span>
+              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ Trust &amp; enforcement</span>
+              <span class="px-2 py-0.5 bg-amber-50 text-amber-700 text-xs font-medium rounded-full border border-amber-200">~ Marketplace vs. social T&amp;S</span>
+              <span class="px-2 py-0.5 bg-red-50 text-red-600 text-xs font-medium rounded-full border border-red-200">✗ Comp well below floor</span>
+            </div>
+            <div class="mt-2.5 bg-slate-50 rounded-lg px-3 py-2">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Why it matches</p>
+              <ul class="space-y-0.5 text-xs text-slate-600">
+                <li>· Principal PM (L7) bridging enforcement strategy with regional seller policy — maps to your cross-functional trust program delivery at Meta/Google</li>
+                <li>· Amazon Developer Platform T&amp;S adjacency: your Meta Developer Platform trust experience translates to marketplace ecosystem enforcement</li>
+                <li>· Seller ecosystem trust and integrity work shares the policy-to-engineering translation pattern you've applied across 16 years of T&amp;S programs</li>
+              </ul>
+            </div>
+            <div class="mt-2 bg-slate-50 rounded-lg px-3 py-2">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Gaps</p>
+              <p class="text-xs text-slate-500">Domain is marketplace fraud/seller trust, not social T&amp;S or AI governance. Base comp ($137K–$186K) is significantly below your $280K floor. Treat as a network-building touchpoint at Amazon, not a primary application.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      </div><!-- end 60–69% cards -->
+
+    </main>
+  </div>
+
+  <!-- ── FRACTIONAL & ADVISORY TAB ── -->
+  <div id="tab-content-fractional" class="tab-content">
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+      <div class="text-center py-10">
+        <div class="inline-flex items-center justify-center w-14 h-14 bg-purple-50 rounded-full mb-4">
+          <svg class="w-7 h-7 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          </svg>
+        </div>
+        <h3 class="text-base font-semibold text-slate-700 mb-1">No fractional or advisory listings found today</h3>
+        <p class="text-xs text-slate-500 max-w-lg mx-auto mb-2">
+          This tab covers all non-full-time opportunities: fractional/interim engagements, advisory board seats, and research/analyst roles (e.g. Info-Tech Research &amp; Advisory).
+        </p>
+        <p class="text-xs text-slate-400 max-w-lg mx-auto mb-6">
+          Fractional T&amp;S / Responsible AI engagements rarely surface on public boards — this market is primarily network-driven. 30 postings crawled across all tracks, 0 cleared 80% today.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 max-w-3xl mx-auto text-left">
+          <a href="https://www.bolster.com" target="_blank"
+             class="block bg-white border border-purple-200 rounded-lg p-3 hover:shadow-sm transition-shadow">
+            <p class="text-xs font-semibold text-purple-700 mb-0.5">Bolster</p>
+            <p class="text-xs text-slate-500">Executive fractional marketplace. Strong for VC-backed startups seeking Head-level T&amp;S advisors.</p>
+          </a>
+          <a href="https://alltechishuman.org/trust-and-safety-professional-network" target="_blank"
+             class="block bg-white border border-purple-200 rounded-lg p-3 hover:shadow-sm transition-shadow">
+            <p class="text-xs font-semibold text-purple-700 mb-0.5">All Tech Is Human</p>
+            <p class="text-xs text-slate-500">T&amp;S-specific career network. Posts fractional + advisory roles not found on general boards.</p>
+          </a>
+          <a href="https://www.infotech.com/about/careers" target="_blank"
+             class="block bg-white border border-purple-200 rounded-lg p-3 hover:shadow-sm transition-shadow">
+            <p class="text-xs font-semibold text-purple-700 mb-0.5">Info-Tech Research Group</p>
+            <p class="text-xs text-slate-500">Research &amp; Advisory and Consulting roles advising IT/AI leaders on trust, privacy, and governance.</p>
+          </a>
+          <a href="https://www.linkedin.com/jobs/search/?keywords=fractional%20trust%20safety&f_WT=2" target="_blank"
+             class="block bg-white border border-purple-200 rounded-lg p-3 hover:shadow-sm transition-shadow">
+            <p class="text-xs font-semibold text-purple-700 mb-0.5">LinkedIn Fractional</p>
+            <p class="text-xs text-slate-500">Filter: Remote · Fractional. Thin but worth a daily check alongside this alert.</p>
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ── ALL EVALUATED TAB ── -->
+  <div id="tab-content-sources" class="tab-content">
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6">
+      <p class="text-xs text-slate-500 mb-4">Every posting the agent fetched or searched today — included, discarded, and blocked. Links on discarded/filter-fail rows go to the best available source (aggregator or archived URL); links on included rows go directly to the company ATS.</p>
+
+      <!-- ── On this page (4) ── -->
+      <div class="flex items-center gap-2.5 pb-1.5 mb-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></span>
+        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Included on this page</span>
+        <div class="flex-1 h-px bg-slate-200"></div>
+        <span class="text-xs text-slate-400 shrink-0">5 postings</span>
+      </div>
+      <div class="bg-white rounded-xl border border-slate-200 overflow-hidden mb-6">
+        <table class="w-full text-xs">
+          <thead class="bg-slate-50 border-b border-slate-200">
+            <tr>
+              <th class="text-left px-3 py-2 font-semibold text-slate-500 w-8">Score</th>
+              <th class="text-left px-3 py-2 font-semibold text-slate-500">Company · Role</th>
+              <th class="text-left px-3 py-2 font-semibold text-slate-500 hidden sm:table-cell">Location</th>
+              <th class="text-left px-3 py-2 font-semibold text-slate-500 hidden md:table-cell">Comp signal</th>
+              <th class="text-left px-3 py-2 font-semibold text-slate-500">Band</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5 font-bold text-sky-700">88%</td>
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=openai.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <a href="https://openai.com/careers/technical-program-manager-safety-systems-engineering-san-francisco/" target="_blank" class="font-medium text-slate-800 hover:text-sky-600 hover:underline">OpenAI · TPM, Safety Systems Engineering</a>
+                </div>
+              </td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">San Francisco · Hybrid 3d/wk</td>
+              <td class="px-3 py-2.5 text-slate-500 hidden md:table-cell">$207K–$335K base</td>
+              <td class="px-3 py-2.5"><span class="px-1.5 py-0.5 bg-sky-100 text-sky-700 rounded font-medium">Good</span></td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5 font-bold text-sky-700">82%</td>
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=openai.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <a href="https://openai.com/careers/technical-program-manager-adversarial-model-research-san-francisco/" target="_blank" class="font-medium text-slate-800 hover:text-sky-600 hover:underline">OpenAI · TPM, Adversarial Model Research</a>
+                </div>
+              </td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">San Francisco · Hybrid 3d/wk</td>
+              <td class="px-3 py-2.5 text-slate-500 hidden md:table-cell">$207K–$285K base</td>
+              <td class="px-3 py-2.5"><span class="px-1.5 py-0.5 bg-sky-100 text-sky-700 rounded font-medium">Good</span></td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5 font-bold text-sky-700">80%</td>
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=openai.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <a href="https://openai.com/careers/program-manager-safety-san-francisco/" target="_blank" class="font-medium text-slate-800 hover:text-sky-600 hover:underline">OpenAI · Program Manager, Safety</a>
+                </div>
+              </td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">San Francisco · Hybrid 3d/wk</td>
+              <td class="px-3 py-2.5 text-slate-500 hidden md:table-cell">$162K–$240K base</td>
+              <td class="px-3 py-2.5"><span class="px-1.5 py-0.5 bg-sky-100 text-sky-700 rounded font-medium">Good</span></td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5 font-bold text-amber-600">73%</td>
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=amazon.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <a href="https://www.amazon.jobs/en/jobs/10413229/principal-pm-t-trust-safety-prime-video" target="_blank" class="font-medium text-slate-800 hover:text-sky-600 hover:underline">Amazon · Principal PM-T, Trust &amp; Safety, Prime Video</a>
+                </div>
+              </td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">Seattle, WA · On-site</td>
+              <td class="px-3 py-2.5 text-slate-500 hidden md:table-cell">$179K–$243K base + RSUs</td>
+              <td class="px-3 py-2.5"><span class="px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded font-medium">Potential</span></td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5 font-bold text-slate-600">65%</td>
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=amazon.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <a href="https://amazon.jobs/en/jobs/10433888/principal-program-manager-selling-partner-trust-selling-partner-trust" target="_blank" class="font-medium text-slate-800 hover:text-sky-600 hover:underline">Amazon · PPM, Selling Partner Trust</a>
+                </div>
+              </td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">Seattle, WA · Hybrid</td>
+              <td class="px-3 py-2.5 text-slate-500 hidden md:table-cell">$137K–$186K base</td>
+              <td class="px-3 py-2.5"><span class="px-1.5 py-0.5 bg-slate-100 text-slate-600 rounded font-medium">Stretch</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Discarded — Closed or Unverifiable (8) ── -->
+      <div class="flex items-center gap-2.5 pb-1.5 mb-2">
+        <span class="w-2 h-2 rounded-full bg-red-400 shrink-0"></span>
+        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Discarded — Closed or unverifiable</span>
+        <div class="flex-1 h-px bg-slate-200"></div>
+        <span class="text-xs text-slate-400 shrink-0">8 postings</span>
+      </div>
+      <div class="bg-white rounded-xl border border-slate-200 overflow-hidden mb-6">
+        <table class="w-full text-xs">
+          <thead class="bg-slate-50 border-b border-slate-200">
+            <tr>
+              <th class="text-left px-3 py-2 font-semibold text-slate-500">Company · Role</th>
+              <th class="text-left px-3 py-2 font-semibold text-slate-500 hidden sm:table-cell">Est. score if open</th>
+              <th class="text-left px-3 py-2 font-semibold text-slate-500">Reason discarded</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=upwork.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <span class="font-medium text-slate-600">Upwork · VP Trust &amp; Safety</span> <span class="text-xs text-slate-400 ml-1">· link expired</span>
+                </div>
+              </td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">~90%</td>
+              <td class="px-3 py-2.5 text-slate-500">Greenhouse page shows generic job list — specific posting no longer active</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=onetrust.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <span class="font-medium text-slate-600">OneTrust · Head of Privacy &amp; AI Governance</span> <span class="text-xs text-slate-400 ml-1">· link expired</span>
+                </div>
+              </td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">~85%</td>
+              <td class="px-3 py-2.5 text-slate-500">Confirmed closed — no-longer-accepting-applications on onetrust.com/careers</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=discord.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <a href="https://job-boards.greenhouse.io/discord/jobs/8136117002" target="_blank" class="font-medium text-slate-700 hover:text-sky-600 hover:underline">Discord · Senior Director, Trust &amp; Safety</a>
+                </div>
+              </td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">~85%</td>
+              <td class="px-3 py-2.5 text-slate-500">Not found on Discord's Greenhouse board — posting filled or removed</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=vercel.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <span class="font-medium text-slate-600">Vercel · Director, T&amp;S Engineering</span> <span class="text-xs text-slate-400 ml-1">· link expired</span>
+                </div>
+              </td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">~78%</td>
+              <td class="px-3 py-2.5 text-slate-500">Confirmed closed April 22, 2026 — vercel.com/careers page now redirects</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=microsoft.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <span class="font-medium text-slate-600">Microsoft · Principal PM, Responsible AI (1640362)</span> <span class="text-xs text-slate-400 ml-1">· link expired</span>
+                </div>
+              </td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">~75%</td>
+              <td class="px-3 py-2.5 text-slate-500">Redirects to apply.careers.microsoft.com — posting closed</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=microsoft.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <span class="font-medium text-slate-600">Microsoft · Principal PM (1658202)</span> <span class="text-xs text-slate-400 ml-1">· link expired</span>
+                </div>
+              </td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">~72%</td>
+              <td class="px-3 py-2.5 text-slate-500">Redirects to apply.careers.microsoft.com — posting closed</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=block.xyz&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <span class="font-medium text-slate-600">Block · Chief Risk Officer, Square Financial Services</span> <span class="text-xs text-slate-400 ml-1">· link expired</span>
+                </div>
+              </td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">~75%</td>
+              <td class="px-3 py-2.5 text-slate-500">Removed from Greenhouse December 2025 · Also Salt Lake City UT (location fail)</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=crypto.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <a href="https://jobs.lever.co/crypto/f47b649e-0b55-4ff0-885b-54b0478502fd" target="_blank" class="font-medium text-slate-700 hover:text-sky-600 hover:underline">Crypto.com · Director, US Broker-Dealer Compliance</a>
+                </div>
+              </td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">~68%</td>
+              <td class="px-3 py-2.5 text-slate-500">Lever.co returned 403 — could not verify active status; discarded per policy</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Discarded — Fails Hard Filter (5) ── -->
+      <div class="flex items-center gap-2.5 pb-1.5 mb-2">
+        <span class="w-2 h-2 rounded-full bg-amber-400 shrink-0"></span>
+        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Discarded — Fails hard filter</span>
+        <div class="flex-1 h-px bg-slate-200"></div>
+        <span class="text-xs text-slate-400 shrink-0">3 postings</span>
+      </div>
+      <div class="bg-white rounded-xl border border-slate-200 overflow-hidden mb-6">
+        <table class="w-full text-xs">
+          <thead class="bg-slate-50 border-b border-slate-200">
+            <tr>
+              <th class="text-left px-3 py-2 font-semibold text-slate-500">Company · Role</th>
+              <th class="text-left px-3 py-2 font-semibold text-slate-500 hidden sm:table-cell">Est. score if passed filter</th>
+              <th class="text-left px-3 py-2 font-semibold text-slate-500">Filter failed</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=roblox.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <span class="font-medium text-slate-600">Roblox · Director, Product Safety Platforms</span> <span class="text-xs text-slate-400 ml-1">· link expired</span>
+                </div>
+              </td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">~78% · $368K–$422K</td>
+              <td class="px-3 py-2.5 text-slate-500"><span class="px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded">Location</span> San Mateo CA, hybrid only</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=roblox.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <span class="font-medium text-slate-600">Roblox · Director, Privacy Engineering</span> <span class="text-xs text-slate-400 ml-1">· link expired</span>
+                </div>
+              </td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">~80% · $384K–$440K</td>
+              <td class="px-3 py-2.5 text-slate-500"><span class="px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded">Location</span> San Mateo CA, hybrid only</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=davita.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <span class="font-medium text-slate-600">DaVita · Director, AI Governance</span> <span class="text-xs text-slate-400 ml-1">· link expired</span>
+                </div>
+              </td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">~72% · $186K–$240K</td>
+              <td class="px-3 py-2.5 text-slate-500"><span class="px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded">Location</span> Denver CO, in-office</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ── Fractional sources — Blocked or no results (5) ── -->
+      <div class="flex items-center gap-2.5 pb-1.5 mb-2">
+        <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
+        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Fractional &amp; Advisory sources — blocked or no results</span>
+        <div class="flex-1 h-px bg-slate-200"></div>
+        <span class="text-xs text-slate-400 shrink-0">5 sources</span>
+      </div>
+      <div class="bg-white rounded-xl border border-slate-200 overflow-hidden mb-3">
+        <table class="w-full text-xs">
+          <thead class="bg-slate-50 border-b border-slate-200">
+            <tr>
+              <th class="text-left px-3 py-2 font-semibold text-slate-500">Source</th>
+              <th class="text-left px-3 py-2 font-semibold text-slate-500">Status</th>
+              <th class="text-left px-3 py-2 font-semibold text-slate-500 hidden sm:table-cell">What happened</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=toptal.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <a href="https://www.toptal.com/trust-and-safety" target="_blank" class="font-medium text-slate-700 hover:text-sky-600 hover:underline">Toptal · T&amp;S senior experts</a>
+                </div>
+              </td>
+              <td class="px-3 py-2.5"><span class="px-1.5 py-0.5 bg-red-100 text-red-700 rounded">Blocked</span></td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">HTTP 403 Forbidden — toptal.com blocks automated fetches entirely</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=10xmanagement.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <a href="https://www.10xmanagement.com/hire" target="_blank" class="font-medium text-slate-700 hover:text-sky-600 hover:underline">10x Management · T&amp;S / Responsible AI</a>
+                </div>
+              </td>
+              <td class="px-3 py-2.5"><span class="px-1.5 py-0.5 bg-red-100 text-red-700 rounded">Blocked</span></td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">Page serves a JPEG image — no parseable text content returned</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=infotech.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <a href="https://www.infotech.com/about/careers" target="_blank" class="font-medium text-slate-700 hover:text-sky-600 hover:underline">Info-Tech Research Group · Research &amp; Advisory</a>
+                </div>
+              </td>
+              <td class="px-3 py-2.5"><span class="px-1.5 py-0.5 bg-red-100 text-red-700 rounded">Blocked</span></td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">Careers page links to UltiPro JS portal — requires browser to render, returns browser-compat warning only</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=gartner.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <a href="https://jobs.gartner.com/jobs/job/108973-sr-director-analyst-cybersecurity-governance-risk-compliance-remote-us/" target="_blank" class="font-medium text-slate-700 hover:text-sky-600 hover:underline">Gartner · Sr Director Analyst, Cybersecurity GRC</a>
+                </div>
+              </td>
+              <td class="px-3 py-2.5"><span class="px-1.5 py-0.5 bg-slate-100 text-slate-600 rounded">Closed</span></td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">~72% if open (Remote US, $220K–$320K est.) — jobs.gartner.com URL returned 404; Workday page blank (requires JS)</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <svg class="w-5 h-5 text-slate-300 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="11" cy="11" r="8" stroke-width="2"/><path stroke-linecap="round" stroke-width="2" d="M21 21l-4.35-4.35"/></svg>
+                  <span class="font-medium text-slate-700">5 broad fractional search queries</span>
+                </div>
+              </td>
+              <td class="px-3 py-2.5"><span class="px-1.5 py-0.5 bg-slate-100 text-slate-600 rounded">No results</span></td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">All 5 queries returned articles and aggregators only — no postings with direct company ATS URLs. Fractional T&amp;S is a network-driven market; roles rarely post publicly.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-xs text-slate-400 pl-1">Agent prompt updated for next run: Toptal and 10x Management replaced with AllTechIsHuman jobs board and Gartner HTML search. Info-Tech fallback search added.</p>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="max-w-5xl mx-auto px-4 sm:px-6 pb-8 mt-2">
+    <div class="border-t border-slate-200 pt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5 text-xs text-slate-400">
+      <div>
+        <p>Crawled 45 full-time postings · 9 fractional/advisory sources · 4 cleared 60% threshold · 1 cleared all hard filters (Seattle/Remote + level)</p>
+        <p class="mt-0.5">Filters: Seattle/Remote · Excluded: Meta · Level: Director/VP/Head · Comp: $280K+ · Score: ≥ 60%</p>
+      </div>
+      <p class="sm:text-right shrink-0">Generated by Claude Code · <a href="#" class="underline hover:text-slate-600">Past alerts</a></p>
+    </div>
+  </footer>
+
+  <script>
+    function switchTab(name) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.getElementById('tab-content-' + name).classList.add('active');
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-slate-50', 'text-navy-900');
+        btn.classList.add('text-slate-400');
+      });
+      const active = document.getElementById('tab-' + name);
+      active.classList.add('bg-slate-50', 'text-navy-900');
+      active.classList.remove('text-slate-400');
+    }
+  </script>
+</body>
+</html>
