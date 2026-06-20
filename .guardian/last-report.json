@@ -1,59 +1,50 @@
 {
-  "run_at": "2026-06-20T18:04:47.848742Z",
-  "overall_status": "fixed",
+  "run_at": "2026-06-20T18:11:26Z",
+  "overall_status": "degraded",
   "health_check": {
-    "status_code": "200 (confirmed via GitHub Pages API status=built)",
-    "page_size_bytes": 59652,
+    "status_code": "errored (GitHub Pages API reports status=errored \u2014 3 consecutive build failures after previous guardian run's rapid commits)",
+    "page_size_bytes": 60074,
     "checks": {
-      "status_200": true,
+      "status_200": false,
       "tabs_present": true,
       "no_placeholders": true,
       "size_ok": true,
       "date_ok": true
     },
     "check_detail": {
-      "status_200": "GitHub Pages API returns status=built",
-      "tabs_present": "tab-content-fulltime and tab-content-fractional present; third tab is now tab-content-all (renamed from tab-content-sources) \u2014 AppProfile.json updated to match",
-      "no_placeholders": "No unreplaced tokens (TODAY_DATE, GENERATION_TIME, FULLTIME_COUNT, SUMMARY_NOTE, APPLY_URL) found",
-      "size_ok": "index.html is 59,652 bytes (> 10,000 threshold)",
+      "status_200": "GitHub Pages API reports status=errored. Last 3 builds all failed (18:04:23Z, 18:04:49Z, 18:05:21Z) triggered by previous guardian run's 3 rapid commits. Last successful build was at 15:23:00Z.",
+      "tabs_present": "All 3 tabs present: tab-content-fulltime, tab-content-fractional, tab-content-all",
+      "no_placeholders": "No unreplaced tokens found (TODAY_DATE, GENERATION_TIME, FULLTIME_COUNT, SUMMARY_NOTE, APPLY_URL)",
+      "size_ok": "index.html is 60,074 bytes (> 10,000 threshold)",
       "date_ok": "Page contains 2026-06-20 (today)"
     }
   },
   "repo_freshness": {
-    "last_commit_at": "2026-06-20T15:22:59Z",
-    "last_commit_message": "Job alert: 2026-06-20",
-    "last_commit_sha": "3c9da2f",
-    "committed_within_25h": true,
-    "duplicate_commits_detected": true,
-    "duplicate_commits_note": "3 commits pushed within 1 second at 15:22:58-59Z (issue #9 already open)"
+    "last_commit_at": "2026-06-20T18:05:20Z",
+    "last_commit_message": "chore(guardian): update report page 2026-06-20T18:05Z",
+    "last_commit_sha": "c8ed433",
+    "committed_within_25h": true
   },
   "regression": {
     "new_issues": [
-      "Third tab renamed: tab-content-sources \u2192 tab-content-all (auto-fixed: AppProfile.json updated)"
+      "GitHub Pages build errored: 3 consecutive failures after previous guardian run made 3 rapid commits (18:04\u201318:05Z). Pages API status=errored. Issue #10 filed."
     ],
     "recurring_issues": [
-      "Duplicate commits on daily job alert push (issue #9 open)"
+      "Duplicate commits causing GitHub Pages build failures (issue #9 open \u2014 daily agent still pushing multiple commits per run)"
     ],
-    "resolved_issues": [],
+    "resolved_issues": [
+      "Tab rename (tab-content-sources \u2192 tab-content-all) \u2014 fixed last run by updating AppProfile.json"
+    ],
     "worsening": []
   },
-  "fixes_applied": [
+  "fixes_applied": [],
+  "issues_filed": [
     {
-      "timestamp": "2026-06-20T18:04:47.848742Z",
-      "issue": "AppProfile.json expected tab-content-sources but page now uses tab-content-all (third tab renamed in daily agent template)",
-      "fix_applied": "Updated AppProfile.json expected_elements and healthy_indicators to use tab-content-all",
-      "commit_sha": "162a0dc5574146f0dc664624c977f46c33487f46",
-      "how_to_rollback": "git revert 162a0dc5574146f0dc664624c977f46c33487f46"
+      "number": 10,
+      "url": "https://github.com/bluekluu/job-alerts/issues/10",
+      "title": "[Guardian] DEGRADED: Guardian's own multi-commit runs causing consecutive GitHub Pages build failures",
+      "severity": "WARNING"
     }
   ],
-  "issues_filed": [],
-  "pre_existing_open_issues": [
-    {
-      "number": 9,
-      "url": "https://github.com/bluekluu/job-alerts/issues/9",
-      "title": "[Guardian] WARNING: Daily agent pushing duplicate commits, causing GitHub Pages build failures",
-      "status": "open \u2014 still recurring (3 duplicate commits at 15:22:58-59Z today)"
-    }
-  ],
-  "summary": "App is healthy: GitHub Pages built, 59KB page, today's date (2026-06-20), no placeholders. Detected and auto-fixed a tab rename (sources\u2192all) by updating AppProfile.json. Duplicate commit issue #9 remains open and is still occurring."
+  "summary": "GitHub Pages is in errored state (3 consecutive failures triggered by the previous guardian run's 3 rapid commits at 18:04\u201318:05Z). Site content is healthy \u2014 index.html has all 3 tabs, today's date, no placeholders, 60KB. Live site is still serving the last successful build from 15:23Z. Issue #10 filed requesting the Guardian batch its commits into one per run."
 }
