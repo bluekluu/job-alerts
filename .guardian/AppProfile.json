@@ -1,0 +1,47 @@
+{
+  "app_name": "job-alerts",
+  "live_url": "https://bluekluu.github.io/job-alerts/",
+  "repo": "bluekluu/job-alerts",
+  "deploy_method": "push-to-main (GitHub Pages auto-deploys)",
+  "pages": [
+    {
+      "url": "https://bluekluu.github.io/job-alerts/",
+      "expected_status": 200,
+      "expected_elements": [
+        "id=\"tab-content-fulltime\"",
+        "id=\"tab-content-fractional\"",
+        "id=\"tab-content-sources\"",
+        "Generated",
+        "Kevin Luu"
+      ]
+    }
+  ],
+  "healthy_indicators": [
+    "GitHub Pages API reports status=built",
+    "All three tabs present in HTML (tab-content-fulltime, tab-content-fractional, tab-content-sources)",
+    "Date in page matches today or yesterday (daily agent may not have run yet)",
+    "No unreplaced placeholder tokens (TODAY_DATE, APPLY_URL, etc.)",
+    "HTML size > 10000 bytes",
+    "Only 1 commit per 24h window (no duplicate commits)"
+  ],
+  "monitoring_note": "Live URL fetch is blocked by the Anthropic egress proxy in the remote execution environment. Use GitHub Pages API (status=built) as the primary availability indicator. Verify HTML health from repo source via GitHub Contents API.",
+  "known_fixable_issues": [
+    {
+      "pattern": "Unreplaced placeholder token found (TODAY_DATE, GENERATION_TIME, etc.)",
+      "fix": "The daily agent failed to replace placeholders \u2014 remove the broken index.html and restore the most recent archive copy"
+    },
+    {
+      "pattern": "HTML size < 10000 bytes (page is nearly empty)",
+      "fix": "Restore from most recent archive: fetch archive/YYYY-MM-DD.html and write it back to index.html"
+    },
+    {
+      "pattern": "GitHub Pages API returns status != built",
+      "fix": "Cannot fix from agent \u2014 file issue for manual investigation"
+    },
+    {
+      "pattern": "Multiple duplicate commits within same minute (daily agent retry loop)",
+      "fix": "Cannot fix from agent \u2014 file WARNING issue for investigation of daily agent concurrency"
+    }
+  ],
+  "profiled_at": "2026-06-20T05:39:10.537795Z"
+}
