@@ -1,10 +1,10 @@
 {
-  "run_at": "2026-06-20T06:05:41Z",
+  "run_at": "2026-06-20T12:04:04Z",
   "overall_status": "ok",
   "monitoring_note": "Live URL fetch is blocked by Anthropic egress proxy (SSL cert: Anthropic Egress Gateway SDS). Health assessed via GitHub Pages API (status=built) and repo source via GitHub Contents API.",
   "health_check": {
     "status_code": "200 (confirmed via GitHub Pages API status=built)",
-    "page_size_bytes": 44358,
+    "page_size_bytes": 44628,
     "checks": {
       "status_200": true,
       "tabs_present": true,
@@ -16,13 +16,13 @@
       "status_200": "GitHub Pages API returns status=built",
       "tabs_present": "All three tab IDs found in repo index.html: tab-content-fulltime, tab-content-fractional, tab-content-sources",
       "no_placeholders": "No unreplaced tokens (TODAY_DATE, GENERATION_TIME, FULLTIME_COUNT, SUMMARY_NOTE, APPLY_URL) found",
-      "size_ok": "index.html is 44,358 bytes (>10,000 threshold)",
+      "size_ok": "index.html is 44,628 bytes (>10,000 threshold)",
       "date_ok": "Page contains 2026-06-19 (yesterday) \u2014 acceptable, daily agent runs at ~00:14 UTC"
     }
   },
   "repo_freshness": {
-    "last_commit_at": "2026-06-20T05:39:58Z",
-    "last_commit_message": "chore(guardian): write monitoring report 2026-06-20",
+    "last_commit_at": "2026-06-20T06:06:49Z",
+    "last_commit_message": "chore(guardian): update report page 2026-06-20T06:05Z",
     "committed_within_25h": true,
     "last_job_alert_commit_at": "2026-06-20T00:14:37Z",
     "last_job_alert_commit_message": "Job alert: 2026-06-19"
@@ -43,5 +43,5 @@
       "status": "open \u2014 awaiting fix"
     }
   ],
-  "summary": "All health checks pass: site is live (GitHub Pages status=built), index.html is valid (44KB, all tabs present, no placeholders, yesterday's date). No new issues detected since previous run. Issue #9 (duplicate daily commits) remains open but no new occurrence observed this cycle."
+  "summary": "All health checks pass: site is live (GitHub Pages status=built), index.html is valid (44KB, all tabs present, no placeholders, yesterday's date). No regressions since previous run. Issue #9 (duplicate daily commits) remains open."
 }
