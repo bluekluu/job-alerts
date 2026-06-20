@@ -10,7 +10,7 @@
       "expected_elements": [
         "id=\"tab-content-fulltime\"",
         "id=\"tab-content-fractional\"",
-        "id=\"tab-content-sources\"",
+        "id=\"tab-content-all\"",
         "Generated",
         "Kevin Luu"
       ]
@@ -18,12 +18,15 @@
   ],
   "healthy_indicators": [
     "GitHub Pages API reports status=built",
-    "All three tabs present in HTML (tab-content-fulltime, tab-content-fractional, tab-content-sources)",
+    "All three tabs present in HTML (tab-content-fulltime, tab-content-fractional, tab-content-all)",
     "Date in page matches today or yesterday (daily agent may not have run yet)",
     "No unreplaced placeholder tokens (TODAY_DATE, APPLY_URL, etc.)",
     "HTML size > 10000 bytes",
     "Only 1 commit per 24h window (no duplicate commits)"
   ],
+  "tab_history": {
+    "2026-06-20": "Third tab renamed from tab-content-sources to tab-content-all (now shows all fetched postings)"
+  },
   "monitoring_note": "Live URL fetch is blocked by the Anthropic egress proxy in the remote execution environment. Use GitHub Pages API (status=built) as the primary availability indicator. Verify HTML health from repo source via GitHub Contents API.",
   "known_fixable_issues": [
     {
@@ -41,7 +44,12 @@
     {
       "pattern": "Multiple duplicate commits within same minute (daily agent retry loop)",
       "fix": "Cannot fix from agent \u2014 file WARNING issue for investigation of daily agent concurrency"
+    },
+    {
+      "pattern": "Tab structure changed (new/missing tab IDs)",
+      "fix": "Update AppProfile.json expected_elements and healthy_indicators to reflect new tab names"
     }
   ],
-  "profiled_at": "2026-06-20T05:39:10.537795Z"
+  "profiled_at": "2026-06-20T05:39:10.537795Z",
+  "last_schema_update": "2026-06-20T18:04:22.160378Z"
 }
