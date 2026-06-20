@@ -1,0 +1,47 @@
+{
+  "run_at": "2026-06-20T05:39:57.484094Z",
+  "overall_status": "escalated",
+  "monitoring_note": "Live URL fetch is blocked by the Anthropic egress proxy in the remote execution environment (SSL cert issuer: Anthropic Egress Gateway SDS). Health was assessed using GitHub Pages API (status=built) and repo source via GitHub Contents API instead.",
+  "health_check": {
+    "status_code": "403 (proxy-blocked \u2014 not a real site outage; GitHub Pages API confirms status=built)",
+    "page_size_bytes": 44359,
+    "checks": {
+      "pages_api_status_built": true,
+      "tabs_present": true,
+      "no_placeholders": true,
+      "size_ok": true,
+      "date_ok": true
+    },
+    "check_detail": {
+      "pages_api_status_built": "GitHub Pages API returns status=built, last build 2026-06-20T00:15:14Z",
+      "tabs_present": "All three tab IDs found in repo index.html: tab-content-fulltime, tab-content-fractional, tab-content-sources",
+      "no_placeholders": "No unreplaced tokens (TODAY_DATE, GENERATION_TIME, FULLTIME_COUNT, SUMMARY_NOTE, APPLY_URL) found",
+      "size_ok": "Repo index.html is 44,359 bytes (>10,000 threshold)",
+      "date_ok": "Page contains 2026-06-19 (yesterday) \u2014 acceptable, daily agent runs at ~00:14 UTC"
+    }
+  },
+  "repo_freshness": {
+    "last_commit_at": "2026-06-20T00:14:37Z",
+    "last_commit_message": "Job alert: 2026-06-19",
+    "committed_within_25h": true,
+    "warning": "3 duplicate commits pushed within 3 seconds (00:14:34Z, 00:14:35Z, 00:14:37Z), causing 2 consecutive Pages build failures before the 3rd build succeeded"
+  },
+  "regression": {
+    "new_issues": [
+      "Daily agent pushed 3 duplicate commits in 3 seconds, causing 2 GitHub Pages build failures (builds at 00:14:35Z and 00:14:36Z errored; site recovered from 3rd build at 00:15:14Z)"
+    ],
+    "recurring_issues": [],
+    "resolved_issues": [],
+    "worsening": []
+  },
+  "fixes_applied": [],
+  "issues_filed": [
+    {
+      "number": 9,
+      "url": "https://github.com/bluekluu/job-alerts/issues/9",
+      "title": "[Guardian] WARNING: Daily agent pushing duplicate commits, causing GitHub Pages build failures",
+      "severity": "WARNING"
+    }
+  ],
+  "summary": "Site is healthy: GitHub Pages reports status=built, repo index.html is valid (44KB, all tabs present, no placeholders, yesterday date). One WARNING escalated: the daily agent pushed 3 duplicate commits within 3 seconds at 00:14 UTC, triggering 2 consecutive build failures before recovery. No auto-fix applied (issue requires daily agent code change). GitHub issue #9 filed."
+}
