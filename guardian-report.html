@@ -15,9 +15,9 @@
         <h1 class="text-xl font-bold text-gray-900">Production Guardian</h1>
         <p class="text-sm text-gray-500">job-alerts · <a href="https://bluekluu.github.io/job-alerts/" class="hover:underline">bluekluu.github.io/job-alerts</a></p>
       </div>
-      <span class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-800">OK</span>
+      <span class="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800">FIXED</span>
     </div>
-    <p class="text-xs text-gray-400 mb-8">Last run: June 20, 2026 at 12:04 UTC</p>
+    <p class="text-xs text-gray-400 mb-8">Last run: June 20, 2026 at 6:05 PM UTC</p>
 
     <!-- Health Checks -->
     <div class="bg-white rounded-xl border border-gray-200 p-5 mb-4">
@@ -44,37 +44,50 @@
           <span class="text-xs font-bold text-green-600">PASS</span>
         </div>
       </div>
-      <p class="text-xs text-gray-400 mt-4">Page size: 44,628 bytes &nbsp;·&nbsp; Status: GitHub Pages built &nbsp;·&nbsp; Date in page: 2026-06-19 (yesterday — acceptable)</p>
+      <p class="text-xs text-gray-400 mt-4">Page size: 59,652 bytes &nbsp;·&nbsp; GitHub Pages: built</p>
     </div>
 
     <!-- Repo Freshness -->
     <div class="bg-white rounded-xl border border-gray-200 p-5 mb-4">
       <h2 class="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-3">Repo Freshness</h2>
-      <p class="text-sm text-gray-700">Last commit: <span class="font-mono text-xs bg-gray-100 px-1 rounded">chore(guardian): update report page 2026-06-20T06:05Z</span></p>
-      <p class="text-xs text-gray-400 mt-1">2026-06-20T06:06:49Z &nbsp;·&nbsp; <span class="text-green-600 font-medium">committed within 25h ✓</span></p>
-      <p class="text-sm text-gray-700 mt-3">Last job-alert commit: <span class="font-mono text-xs bg-gray-100 px-1 rounded">Job alert: 2026-06-19</span></p>
-      <p class="text-xs text-gray-400 mt-1">2026-06-20T00:14:37Z &nbsp;·&nbsp; <span class="text-green-600 font-medium">committed within 25h ✓</span></p>
+      <p class="text-sm text-gray-700">Last commit: <span class="font-mono text-xs bg-gray-100 px-1 rounded">Job alert: 2026-06-20</span></p>
+      <p class="text-xs text-gray-400 mt-1">2026-06-20T15:22:59Z &nbsp;·&nbsp; <span class="text-green-600 font-medium">committed within 25h</span></p>
+      <p class="text-xs text-yellow-600 mt-2">3 duplicate commits detected at 15:22:58–59Z &nbsp;·&nbsp; <a href="https://github.com/bluekluu/job-alerts/issues/9" class="underline hover:text-yellow-700">Issue #9 open</a></p>
     </div>
 
     <!-- Regression Delta -->
     <div class="bg-white rounded-xl border border-gray-200 p-5 mb-4">
-      <h2 class="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-2">Regression Delta</h2>
-      <p class="text-sm text-gray-400">No changes from previous run.</p>
+      <h2 class="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-3">Regression Delta</h2>
+      <div class="mb-3">
+        <span class="text-xs font-semibold text-blue-600 uppercase">Auto-Fixed</span>
+        <ul class="mt-1 text-sm text-gray-700 list-disc list-inside">
+          <li>Third tab renamed: <code class="text-xs bg-gray-100 px-1 rounded">tab-content-sources</code> → <code class="text-xs bg-gray-100 px-1 rounded">tab-content-all</code> — AppProfile.json updated to match</li>
+        </ul>
+      </div>
+      <div>
+        <span class="text-xs font-semibold text-yellow-600 uppercase">Recurring</span>
+        <ul class="mt-1 text-sm text-gray-700 list-disc list-inside">
+          <li>Duplicate commits on daily job alert push (<a href="https://github.com/bluekluu/job-alerts/issues/9" class="text-yellow-700 hover:underline">issue #9</a> still open)</li>
+        </ul>
+      </div>
     </div>
 
-    <!-- Open Issues (pre-existing) -->
-    <div class="bg-yellow-50 rounded-xl border border-yellow-100 p-5 mb-4">
-      <h2 class="text-xs font-semibold text-yellow-700 uppercase tracking-widest mb-3">Pre-existing Open Issues</h2>
-      <ul class="space-y-1">
-        <li><a href="https://github.com/bluekluu/job-alerts/issues/9" class="text-sm text-yellow-800 hover:underline">#9 — [Guardian] WARNING: Daily agent pushing duplicate commits, causing GitHub Pages build failures</a></li>
-      </ul>
-      <p class="text-xs text-gray-400 mt-2">Opened 2026-06-20 · awaiting fix</p>
+    <!-- Fixes Applied -->
+    <div class="bg-blue-50 rounded-xl border border-blue-100 p-5 mb-4">
+      <h2 class="text-xs font-semibold text-blue-600 uppercase tracking-widest mb-3">Fixes Applied</h2>
+      <div class="space-y-2">
+        <div class="text-sm">
+          <p class="text-gray-700">Updated AppProfile.json: expected tab <code class="text-xs bg-blue-100 px-1 rounded">tab-content-all</code> (was <code class="text-xs bg-blue-100 px-1 rounded">tab-content-sources</code>) — daily agent template changed its third tab name</p>
+          <a href="https://github.com/bluekluu/job-alerts/commit/162a0dc5574146f0dc664624c977f46c33487f46" class="text-xs font-mono text-blue-600 hover:underline">162a0dc</a>
+          <span class="text-xs text-gray-400 ml-2">Rollback: <code>git revert 162a0dc</code></span>
+        </div>
+      </div>
     </div>
 
     <!-- Summary -->
     <div class="bg-gray-100 rounded-xl p-5 mb-6">
       <h2 class="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-2">Summary</h2>
-      <p class="text-sm text-gray-700">All health checks pass: site is live (GitHub Pages status=built), index.html is valid (44KB, all tabs present, no placeholders, yesterday's date). No regressions since the previous run. Issue #9 (duplicate daily commits) remains open and awaiting a fix.</p>
+      <p class="text-sm text-gray-700">App is healthy: GitHub Pages built, 59KB page, today's date (2026-06-20), no placeholders, all checks passing. Detected and auto-fixed a tab rename (sources → all) by updating AppProfile.json. Duplicate commit issue #9 remains open and is still recurring.</p>
     </div>
 
     <!-- Footer -->
