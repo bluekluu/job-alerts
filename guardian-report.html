@@ -1,105 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Production Guardian — job-alerts</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guardian Report — job-alerts</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 min-h-screen font-sans">
-  <div class="max-w-2xl mx-auto py-10 px-4">
-
-    <!-- Header -->
-    <div class="flex items-start justify-between mb-2">
+<body class="bg-slate-50 text-slate-800 min-h-screen font-sans">
+  <div class="bg-white border-b border-slate-200 shadow-sm">
+    <div class="max-w-4xl mx-auto px-4 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
       <div>
-        <h1 class="text-xl font-bold text-gray-900">Production Guardian</h1>
-        <p class="text-sm text-gray-500">job-alerts · <a href="https://bluekluu.github.io/job-alerts/" class="hover:underline">bluekluu.github.io/job-alerts</a></p>
+        <h1 class="text-xl font-bold text-slate-900">Production Guardian Report</h1>
+        <a href="https://github.com/bluekluu/job-alerts" class="text-xs text-blue-600 hover:underline">bluekluu/job-alerts</a>
       </div>
-      <span class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-800">OK</span>
-    </div>
-    <p class="text-xs text-gray-400 mb-8">Last run: June 20, 2026 at 6:23 PM UTC</p>
-
-    <!-- Health Checks -->
-    <div class="bg-white rounded-xl border border-gray-200 p-5 mb-4">
-      <h2 class="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-4">Health Checks</h2>
-      <div class="space-y-3">
-        <div class="flex items-center justify-between">
-          <div>
-            <span class="text-sm text-gray-700">HTTP 200 OK</span>
-            <p class="text-xs text-gray-400 mt-0.5">Inferred from Pages build status=built (18:11:57Z). Direct fetch blocked by egress policy.</p>
-          </div>
-          <span class="text-xs font-bold text-green-600 shrink-0 ml-4">PASS</span>
-        </div>
-        <div class="flex items-center justify-between">
-          <span class="text-sm text-gray-700">All tabs present</span>
-          <span class="text-xs font-bold text-green-600">PASS</span>
-        </div>
-        <div class="flex items-center justify-between">
-          <span class="text-sm text-gray-700">No unreplaced placeholders</span>
-          <span class="text-xs font-bold text-green-600">PASS</span>
-        </div>
-        <div class="flex items-center justify-between">
-          <span class="text-sm text-gray-700">Page size &gt; 10KB</span>
-          <span class="text-xs font-bold text-green-600">PASS</span>
-        </div>
-        <div class="flex items-center justify-between">
-          <span class="text-sm text-gray-700">Date is current (2026-06-20)</span>
-          <span class="text-xs font-bold text-green-600">PASS</span>
-        </div>
-
-        <!-- Apply Link Check row -->
-        <div class="flex items-start justify-between pt-2 border-t border-gray-100">
-          <div>
-            <span class="text-sm text-gray-700">Apply links (4 found)</span>
-            <p class="text-xs text-gray-400 mt-0.5">All 4 URLs return 403 from Anthropic egress proxy — external domains blocked at the environment level, not actual broken links.</p>
-          </div>
-          <span class="text-xs font-bold text-gray-400 shrink-0 ml-4">SKIP</span>
-        </div>
-
-      </div>
-      <p class="text-xs text-gray-400 mt-4">Page size: 59,652 bytes · Tabs: fulltime, fractional, all</p>
-    </div>
-
-    <!-- Repo Freshness -->
-    <div class="bg-white rounded-xl border border-gray-200 p-5 mb-4">
-      <h2 class="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-3">Repo Freshness</h2>
-      <p class="text-sm text-gray-700">Last commit: <span class="font-mono text-xs bg-gray-100 px-1 rounded">chore(guardian): monitoring report 2026-06-20T18:11Z</span></p>
-      <p class="text-xs text-gray-400 mt-1">2026-06-20T18:11:27Z ·
-        <span class="text-green-600 font-medium">committed within 25h ✓</span>
-      </p>
-      <p class="text-xs text-gray-400 mt-2">Latest Pages build: <span class="text-green-600 font-medium">built ✓</span> at 18:11:57Z UTC</p>
-    </div>
-
-    <!-- Regression Delta -->
-    <div class="bg-white rounded-xl border border-gray-200 p-5 mb-4">
-      <h2 class="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-3">Regression Delta</h2>
-      <div class="mb-3">
-        <span class="text-xs font-semibold text-green-600 uppercase">Resolved</span>
-        <ul class="mt-1 text-sm text-gray-700 list-disc list-inside">
-          <li>GitHub Pages build errored — latest build at 18:11:57Z now <span class="text-green-600 font-medium">status=built</span> ✓</li>
-        </ul>
-      </div>
-      <div>
-        <span class="text-xs font-semibold text-yellow-600 uppercase">Recurring (open issues)</span>
-        <ul class="mt-1 text-sm text-gray-700 list-disc list-inside">
-          <li><a href="https://github.com/bluekluu/job-alerts/issues/9" class="text-yellow-700 hover:underline">#9</a> — Daily agent duplicate commits causing Pages build failures</li>
-          <li><a href="https://github.com/bluekluu/job-alerts/issues/10" class="text-yellow-700 hover:underline">#10</a> — Guardian multi-commit runs causing consecutive Pages build failures</li>
-        </ul>
+      <div class="flex items-center gap-3">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-sm font-semibold bg-green-100 text-green-800 border-green-200">
+          <span class="w-2 h-2 rounded-full bg-green-500"></span>OK
+        </span>
+        <span class="text-xs text-slate-400">2026-06-21T01:18:00Z</span>
       </div>
     </div>
-
-    <!-- Summary -->
-    <div class="bg-gray-100 rounded-xl p-5 mb-6">
-      <h2 class="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-2">Summary</h2>
-      <p class="text-sm text-gray-700">All health checks pass. The GitHub Pages build that was erroring in the previous run has recovered — the latest build completed successfully at 18:11:57Z UTC. Apply link checking is inconclusive due to the environment's egress policy blocking external domains; this is not a site issue. No new issues detected. This run used a single batched commit to avoid triggering multiple Pages builds.</p>
+  </div>
+  <div class="max-w-4xl mx-auto px-4 py-6 space-y-5">
+    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      <div class="px-5 py-3 border-b border-slate-100 bg-slate-50">
+        <h2 class="text-sm font-semibold text-slate-700 uppercase tracking-wider">Health Checks</h2>
+      </div>
+      <div class="divide-y divide-slate-100">
+        <div class="flex items-center justify-between px-5 py-3">
+          <span class="text-sm text-slate-600">GitHub Pages build</span>
+          <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-green-700 bg-green-50 border border-green-200 rounded-full px-2.5 py-0.5"><span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>PASS</span>
+        </div>
+        <div class="flex items-center justify-between px-5 py-3">
+          <span class="text-sm text-slate-600">All tabs present</span>
+          <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-green-700 bg-green-50 border border-green-200 rounded-full px-2.5 py-0.5"><span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>PASS</span>
+        </div>
+        <div class="flex items-center justify-between px-5 py-3">
+          <span class="text-sm text-slate-600">No unreplaced placeholders</span>
+          <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-green-700 bg-green-50 border border-green-200 rounded-full px-2.5 py-0.5"><span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>PASS</span>
+        </div>
+        <div class="flex items-center justify-between px-5 py-3">
+          <span class="text-sm text-slate-600">Page size &gt; 10 KB</span>
+          <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-green-700 bg-green-50 border border-green-200 rounded-full px-2.5 py-0.5"><span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>PASS <span class="font-normal text-slate-500 ml-1">(32,853 bytes)</span></span>
+        </div>
+        <div class="flex items-center justify-between px-5 py-3">
+          <span class="text-sm text-slate-600">Date current</span>
+          <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-green-700 bg-green-50 border border-green-200 rounded-full px-2.5 py-0.5"><span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>PASS <span class="font-normal text-slate-500 ml-1">(2026-06-20 = yesterday)</span></span>
+        </div>
+        <div class="flex items-center justify-between px-5 py-3">
+          <span class="text-sm text-slate-600">Apply link check</span>
+          <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 bg-slate-100 border border-slate-200 rounded-full px-2.5 py-0.5">N/A <span class="font-normal ml-1">(no included jobs)</span></span>
+        </div>
+      </div>
+      <div class="mx-5 mb-4 mt-2 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 text-xs text-amber-800">
+        <span class="font-semibold">&#9888; Job agent note:</span> Yesterday's (Jun 20) search run was blocked &mdash; WebSearch returned no results and WebFetch returned HTTP 403 for all 21 job site queries. The page reflects this with a warning banner. The daily agent will retry today at 8 AM PT.
+      </div>
     </div>
-
-    <!-- Footer -->
-    <p class="text-xs text-center text-gray-400">
-      <a href="https://bluekluu.github.io/job-alerts/" class="hover:underline">Live app</a> ·
-      <a href="https://github.com/bluekluu/job-alerts" class="hover:underline">GitHub repo</a> ·
-      <a href="https://github.com/bluekluu/job-alerts/tree/main/.guardian" class="hover:underline">.guardian/ files</a>
-    </p>
+    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      <div class="px-5 py-3 border-b border-slate-100 bg-slate-50">
+        <h2 class="text-sm font-semibold text-slate-700 uppercase tracking-wider">Repo Freshness</h2>
+      </div>
+      <div class="px-5 py-4 space-y-2">
+        <div class="flex items-start gap-2">
+          <span class="text-xs font-medium text-slate-500 w-32 shrink-0 pt-0.5">Last commit</span>
+          <span class="text-xs text-slate-700 font-mono">2026-06-20T23:45:30Z</span>
+        </div>
+        <div class="flex items-start gap-2">
+          <span class="text-xs font-medium text-slate-500 w-32 shrink-0 pt-0.5">Message</span>
+          <span class="text-xs text-slate-700">Job alert: 2026-06-20</span>
+        </div>
+        <div class="flex items-start gap-2">
+          <span class="text-xs font-medium text-slate-500 w-32 shrink-0 pt-0.5">SHA</span>
+          <a href="https://github.com/bluekluu/job-alerts/commit/5527a054432a11a8c187a3ef35415653a5c403b2" class="text-xs text-blue-600 hover:underline font-mono">5527a05</a>
+        </div>
+        <div class="flex items-start gap-2">
+          <span class="text-xs font-medium text-slate-500 w-32 shrink-0 pt-0.5">Within 25h?</span>
+          <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-green-700 bg-green-50 border border-green-200 rounded-full px-2.5 py-0.5"><span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>Yes (~1.5h ago)</span>
+        </div>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      <div class="px-5 py-3 border-b border-slate-100 bg-slate-50">
+        <h2 class="text-sm font-semibold text-slate-700 uppercase tracking-wider">Regression Delta</h2>
+      </div>
+      <div class="px-5 py-4 space-y-4">
+        <div>
+          <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">New Issues</h3>
+          <p class="text-xs text-slate-400 italic">None &mdash; all checks match previous run.</p>
+        </div>
+        <div>
+          <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Recurring (Open)</h3>
+          <ul class="space-y-1">
+            <li class="text-xs text-slate-600"><a href="https://github.com/bluekluu/job-alerts/issues/9" class="text-blue-600 hover:underline font-semibold">#9</a> Daily agent pushing duplicate commits &rarr; GitHub Pages build failures</li>
+            <li class="text-xs text-slate-600"><a href="https://github.com/bluekluu/job-alerts/issues/10" class="text-blue-600 hover:underline font-semibold">#10</a> Guardian multi-commit runs causing consecutive Pages build failures</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Resolved</h3>
+          <p class="text-xs text-slate-400 italic">None this run.</p>
+        </div>
+      </div>
+    </div>
+    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      <div class="px-5 py-3 border-b border-slate-100 bg-slate-50">
+        <h2 class="text-sm font-semibold text-slate-700 uppercase tracking-wider">Summary</h2>
+      </div>
+      <div class="px-5 py-4">
+        <p class="text-sm text-slate-700 leading-relaxed">All 5 structural health checks pass. The page is live, all tabs are present, and the most recent job-alert commit landed ~1.5 hours ago. No Apply links to check because yesterday's daily agent run was fully blocked (WebSearch unavailable + WebFetch 403 for all job boards); the agent noted this in the page and will retry today at 8 AM PT. Open issues <a href="https://github.com/bluekluu/job-alerts/issues/9" class="text-blue-600 hover:underline">#9</a> and <a href="https://github.com/bluekluu/job-alerts/issues/10" class="text-blue-600 hover:underline">#10</a> regarding duplicate commits and Pages build failures remain unresolved and require manual attention.</p>
+      </div>
+    </div>
+    <div class="border-t border-slate-200 pt-4 pb-8 text-xs text-slate-400 flex flex-wrap gap-4 justify-center">
+      <a href="https://bluekluu.github.io/job-alerts/" class="hover:text-slate-600 hover:underline">Live App</a>
+      <a href="https://github.com/bluekluu/job-alerts" class="hover:text-slate-600 hover:underline">GitHub Repo</a>
+      <a href="https://github.com/bluekluu/job-alerts/tree/main/.guardian" class="hover:text-slate-600 hover:underline">.guardian/ files</a>
+      <a href="https://github.com/bluekluu/job-alerts/blob/main/.guardian/last-report.json" class="hover:text-slate-600 hover:underline">last-report.json</a>
+      <span>Generated 2026-06-21T01:18:00Z</span>
+    </div>
   </div>
 </body>
 </html>

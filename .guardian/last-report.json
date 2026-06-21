@@ -1,50 +1,49 @@
 {
-  "run_at": "2026-06-20T18:23:32Z",
+  "run_at": "2026-06-21T01:18:00Z",
   "overall_status": "ok",
   "health_check": {
     "status_code": 200,
-    "page_size_bytes": 59652,
+    "page_size_bytes": 32853,
     "checks": {
-      "status_200": true,
+      "pages_build_ok": true,
       "tabs_present": true,
       "no_placeholders": true,
       "size_ok": true,
       "date_ok": true
     },
     "check_detail": {
-      "status_200": "Pages build status=built at 2026-06-20T18:11:57Z (latest build succeeded). Direct HTTP fetch blocked by environment egress policy; status inferred from GitHub Pages API.",
-      "tabs_present": "All 3 tabs present: tab-content-fulltime, tab-content-fractional, tab-content-all",
-      "no_placeholders": "No unreplaced tokens found (TODAY_DATE, GENERATION_TIME, FULLTIME_COUNT, SUMMARY_NOTE, APPLY_URL)",
-      "size_ok": "index.html is 59,652 bytes (> 10,000 threshold)",
-      "date_ok": "Page contains 2026-06-20 (today)"
+      "pages_build_ok": "Last build status=built at 2026-06-20T23:46:00Z. Commit 5527a05.",
+      "tabs_present": "All 3 tabs present: tab-content-fulltime, tab-content-fractional, tab-content-sources",
+      "no_placeholders": "No unreplaced tokens found.",
+      "size_ok": "index.html is 32,853 bytes (> 10,000 threshold)",
+      "date_ok": "Page contains 2026-06-20 (yesterday). Within acceptable range.",
+      "job_agent_note": "Full-time tab shows WARNING: Jun 20 search blocked (WebSearch unavailable + all job sites 403). 0 jobs found; agent will retry today."
     }
   },
   "link_check": {
-    "apply_links_checked": 4,
+    "apply_links_checked": 0,
     "apply_links_broken": 0,
     "broken_pct": 0,
-    "link_check_status": "inconclusive",
+    "link_check_status": "no_links",
     "broken_urls": [],
-    "note": "All 4 Apply URLs returned HTTP 403 from the Anthropic egress proxy (external domains not in allowlist). These are environment-level blocks, not actual broken links. Link health cannot be verified from this environment."
+    "note": "No Apply links in included section. Yesterday's job agent was blocked by network egress restrictions and found 0 jobs."
   },
   "repo_freshness": {
-    "last_commit_at": "2026-06-20T18:11:27Z",
-    "last_commit_message": "chore(guardian): monitoring report 2026-06-20T18:11Z",
-    "last_commit_sha": "1d46a6ba09715a7a636ea4564d29f40c1e5ff739",
+    "last_commit_at": "2026-06-20T23:45:30Z",
+    "last_commit_message": "Job alert: 2026-06-20",
+    "last_commit_sha": "5527a054432a11a8c187a3ef35415653a5c403b2",
     "committed_within_25h": true
   },
   "regression": {
     "new_issues": [],
     "recurring_issues": [
-      "Issues #9 and #10 remain open: daily agent duplicate commits and Guardian multi-commit pattern causing Pages build failures. Requires manual intervention."
+      "Issue #9: Daily agent pushing duplicate commits causing GitHub Pages build failures",
+      "Issue #10: Guardian multi-commit runs causing consecutive Pages build failures"
     ],
-    "resolved_issues": [
-      "GitHub Pages build errored (previous run): Latest build at 2026-06-20T18:11:57Z succeeded (status=built). Site is now properly deployed."
-    ],
+    "resolved_issues": [],
     "worsening": []
   },
   "fixes_applied": [],
   "issues_filed": [],
-  "note": "This run batches last-report.json and guardian-report.html into a single commit to avoid triggering multiple GitHub Pages builds (per issue #10 recommendation).",
-  "summary": "All health checks pass. The GitHub Pages build errored in the previous run has recovered — the latest build completed successfully at 18:11:57Z UTC. Apply link checking is inconclusive due to the environment's egress policy blocking external domains (all external job board URLs return 403 from the proxy, not from the actual sites). No new issues detected; open issues #9 and #10 require manual resolution."
+  "summary": "All 5 structural health checks pass. Page is live, all tabs present, latest commit ~1.5h ago. No Apply links to check because the daily agent was fully blocked on Jun 20 (WebSearch unavailable + WebFetch 403 for all job boards); agent will retry today at 8 AM PT. Open issues #9 and #10 regarding duplicate commits and Pages build failures remain unresolved."
 }
