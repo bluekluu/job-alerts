@@ -321,6 +321,7 @@
     </main>
   </div>
 
+
   <!-- ALL EVALUATED TAB -->
   <div id="tab-content-sources" class="tab-content">
     <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6">
@@ -373,12 +374,21 @@
         </table>
       </div>
 
-      <!-- Discarded — Closed or Unverifiable (9) -->
+      <!-- Discarded — Fails Hard Filter (0) -->
+      <div class="flex items-center gap-2.5 pb-1.5 mb-2">
+        <span class="w-2 h-2 rounded-full bg-amber-400 shrink-0"></span>
+        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Discarded — Fails hard filter</span>
+        <div class="flex-1 h-px bg-slate-200"></div>
+        <span class="text-xs text-slate-400 shrink-0">0 postings</span>
+      </div>
+      <p class="text-xs text-slate-400 italic pl-1 mb-6">No active postings excluded on location, level, or comp today. (Instawork Director of T&amp;S would have been here but its Greenhouse posting closed — moved to Discarded below.)</p>
+
+      <!-- Discarded — Closed or Unverifiable (10) -->
       <div class="flex items-center gap-2.5 pb-1.5 mb-2">
         <span class="w-2 h-2 rounded-full bg-red-400 shrink-0"></span>
         <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Discarded — Closed or unverifiable</span>
         <div class="flex-1 h-px bg-slate-200"></div>
-        <span class="text-xs text-slate-400 shrink-0">9 postings</span>
+        <span class="text-xs text-slate-400 shrink-0">10 postings</span>
       </div>
       <div class="bg-white rounded-xl border border-slate-200 overflow-hidden mb-6">
         <table class="w-full text-xs">
@@ -409,6 +419,36 @@
               </td>
               <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">~88%</td>
               <td class="px-3 py-2.5 text-slate-500">Ashby JS shell — WebFetch returned only "Jobs" (~4 chars visible text) — cannot verify active</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=character.ai&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <a href="https://jobs.ashbyhq.com/character/04549c78-62f1-4fa7-8cda-f0fc3787cb7a" target="_blank" class="font-medium text-slate-500 hover:text-sky-600 hover:underline">Character.AI · Head of Trust &amp; Safety</a>
+                </div>
+              </td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">~85%</td>
+              <td class="px-3 py-2.5 text-slate-500">Ashby JS shell — "You need to enable JavaScript to run this app." — cannot verify active</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=kickstarter.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <a href="https://boards.greenhouse.io/kickstarter/jobs/4233126007" target="_blank" class="font-medium text-slate-500 hover:text-sky-600 hover:underline">Kickstarter · Senior Director, Trust &amp; Safety</a>
+                </div>
+              </td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">~80%</td>
+              <td class="px-3 py-2.5 text-slate-500">Greenhouse redirects to ?error=true — posting closed</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="px-3 py-2.5">
+                <div class="flex items-center gap-2">
+                  <img src="https://www.google.com/s2/favicons?domain=vimeo.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
+                  <a href="https://boards.greenhouse.io/vimeo/jobs/5835287" target="_blank" class="font-medium text-slate-500 hover:text-sky-600 hover:underline">Vimeo · Director, Trust &amp; Safety</a>
+                </div>
+              </td>
+              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">~78%</td>
+              <td class="px-3 py-2.5 text-slate-500">HTTP 404 + redirects to ?error=true — posting closed</td>
             </tr>
             <tr class="hover:bg-slate-50">
               <td class="px-3 py-2.5">
@@ -448,59 +488,8 @@
                 </div>
               </td>
               <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">~70%</td>
-              <td class="px-3 py-2.5 text-slate-500">Greenhouse redirects to generic Everlaw job list — specific posting closed; also Oakland/NY/DC only (location fail)</td>
+              <td class="px-3 py-2.5 text-slate-500">Greenhouse redirects to generic Everlaw job list — posting closed; also Oakland/NY/DC only (location fail)</td>
             </tr>
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2.5">
-                <div class="flex items-center gap-2">
-                  <img src="https://www.google.com/s2/favicons?domain=kickstarter.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
-                  <a href="https://boards.greenhouse.io/kickstarter/jobs/4233126007" target="_blank" class="font-medium text-slate-500 hover:text-sky-600 hover:underline">Kickstarter · Senior Director, Trust &amp; Safety</a>
-                </div>
-              </td>
-              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">~80%</td>
-              <td class="px-3 py-2.5 text-slate-500">Greenhouse returns HTTP 200 but redirects to ?error=true — posting closed</td>
-            </tr>
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2.5">
-                <div class="flex items-center gap-2">
-                  <img src="https://www.google.com/s2/favicons?domain=vimeo.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
-                  <a href="https://boards.greenhouse.io/vimeo/jobs/5835287" target="_blank" class="font-medium text-slate-500 hover:text-sky-600 hover:underline">Vimeo · Director, Trust &amp; Safety</a>
-                </div>
-              </td>
-              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">~78%</td>
-              <td class="px-3 py-2.5 text-slate-500">HTTP 404 + redirects to ?error=true — posting closed</td>
-            </tr>
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2.5">
-                <div class="flex items-center gap-2">
-                  <img src="https://www.google.com/s2/favicons?domain=character.ai&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
-                  <a href="https://jobs.ashbyhq.com/character/04549c78-62f1-4fa7-8cda-f0fc3787cb7a" target="_blank" class="font-medium text-slate-500 hover:text-sky-600 hover:underline">Character.AI · Head of Trust &amp; Safety</a>
-                </div>
-              </td>
-              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">~85%</td>
-              <td class="px-3 py-2.5 text-slate-500">Ashby JS shell — "You need to enable JavaScript to run this app." — cannot verify active</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Discarded — Fails Hard Filter (1) -->
-      <div class="flex items-center gap-2.5 pb-1.5 mb-2">
-        <span class="w-2 h-2 rounded-full bg-amber-400 shrink-0"></span>
-        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Discarded — Fails hard filter</span>
-        <div class="flex-1 h-px bg-slate-200"></div>
-        <span class="text-xs text-slate-400 shrink-0">1 posting</span>
-      </div>
-      <div class="bg-white rounded-xl border border-slate-200 overflow-hidden mb-6">
-        <table class="w-full text-xs">
-          <thead class="bg-slate-50 border-b border-slate-200">
-            <tr>
-              <th class="text-left px-3 py-2 font-semibold text-slate-500">Company · Role</th>
-              <th class="text-left px-3 py-2 font-semibold text-slate-500 hidden sm:table-cell">Est. score if passed filter</th>
-              <th class="text-left px-3 py-2 font-semibold text-slate-500">Filter failed</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-100">
             <tr class="hover:bg-slate-50">
               <td class="px-3 py-2.5">
                 <div class="flex items-center gap-2">
@@ -509,7 +498,7 @@
                 </div>
               </td>
               <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">~75%</td>
-              <td class="px-3 py-2.5 text-slate-500"><span class="px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded">Location</span> San Francisco, CA · in-office</td>
+              <td class="px-3 py-2.5 text-slate-500">Greenhouse redirects to ?error=true — posting closed · Also: San Francisco CA in-office (location fail)</td>
             </tr>
           </tbody>
         </table>
