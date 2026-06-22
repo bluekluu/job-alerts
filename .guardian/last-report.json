@@ -1,5 +1,5 @@
 {
-  "run_at": "2026-06-22T00:05:35Z",
+  "run_at": "2026-06-22T06:05:05Z",
   "overall_status": "ok",
   "health_check": {
     "status_code": 200,
@@ -12,10 +12,10 @@
       "date_ok": true
     },
     "check_detail": {
-      "pages_build_ok": "Last build status=built at 2026-06-21T18:06:58Z. Commit 60db3f49.",
-      "tabs_present": "All 3 tabs present: tab-content-fulltime, tab-content-fractional, tab-content-sources.",
-      "no_placeholders": "No unreplaced tokens found.",
-      "size_ok": "index.html is 33,285 bytes (> 10,000 threshold).",
+      "pages_build_ok": "Last Pages build status=built, completed 2026-06-22T00:06:08Z. Commit 08d53078.",
+      "tabs_present": "All 3 required tabs present: tab-content-fulltime, tab-content-fractional, tab-content-sources.",
+      "no_placeholders": "No unreplaced tokens found (TODAY_DATE, GENERATION_TIME, etc.).",
+      "size_ok": "index.html is 33,285 bytes (> 10,000 byte threshold).",
       "date_ok": "Page contains '2026-06-21' (yesterday). Today is 2026-06-22. PASS."
     }
   },
@@ -25,12 +25,12 @@
     "broken_pct": 0,
     "link_check_status": "no_links",
     "broken_urls": [],
-    "note": "0 Apply URLs found in included tabs. Jun 21 agent discarded all 7 candidates due to ATS blocking (Greenhouse, Workday, Amazon, Microsoft, Gartner). Jun 22 agent likely pending."
+    "note": "0 Apply URLs found in included tabs (fulltime/fractional). Jun 21 agent discarded all 7 candidates due to ATS fetch blocking (Greenhouse, Workday, Amazon, Microsoft, Gartner). Jun 22 agent not yet run (current time 06:05 UTC; agent fires at 08:00 PT = 15:00 UTC)."
   },
   "repo_freshness": {
-    "last_commit_at": "2026-06-21T18:06:28Z",
-    "last_commit_message": "chore(guardian): HTML report 2026-06-21T18:05Z",
-    "last_commit_sha": "60db3f49e751c256a102602ddf011ff93987661b",
+    "last_commit_at": "2026-06-22T00:05:37Z",
+    "last_commit_message": "chore(guardian): monitoring report 2026-06-22T00:05Z",
+    "last_commit_sha": "08d53078281fb9bbc3d21dd07b9a246ed155668a",
     "committed_within_25h": true
   },
   "regression": {
@@ -38,7 +38,7 @@
     "recurring_issues": [],
     "resolved_issues": [],
     "worsening": [],
-    "notes": "All checks match previous run. Page from Jun 21 (yesterday) is within freshness window. Jun 22 agent not yet committed."
+    "notes": "All 5 health checks identical to previous run. Page date (Jun 21) still within freshness window. Jun 22 job agent not yet run (expected at 06:05 UTC). Open issues #9 and #10 remain from prior runs (pre-existing, not re-filed)."
   },
   "fixes_applied": [],
   "issues_filed": [],
@@ -50,9 +50,9 @@
     },
     {
       "number": 10,
-      "title": "[Guardian] DEGRADED: Guardian's multi-commit runs causing Pages failures",
+      "title": "[Guardian] DEGRADED: Guardian's own multi-commit runs causing consecutive GitHub Pages build failures",
       "url": "https://github.com/bluekluu/job-alerts/issues/10"
     }
   ],
-  "summary": "All 5 health checks pass: page is 33KB, dated Jun 21 (yesterday), all tabs present, no placeholders, Pages built successfully. 0 Apply links in included section (all ATS sites blocked during Jun 21 agent run). No structural regressions. Issues #9 and #10 remain open. This report committed atomically (single commit) to avoid triggering issue #10."
+  "summary": "All 5 health checks pass for the 06:05 UTC run on Jun 22: page is 33 KB, dated Jun 21 (yesterday, within window), all tabs present, no placeholders, Pages built successfully. 0 Apply links in included section (ATS blocking during Jun 21 agent run; Jun 22 agent fires at 15:00 UTC). No regressions. Issues #9 and #10 remain open from prior runs."
 }
