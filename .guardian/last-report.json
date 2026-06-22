@@ -1,5 +1,5 @@
 {
-  "run_at": "2026-06-22T06:05:05Z",
+  "run_at": "2026-06-22T12:04:40Z",
   "overall_status": "ok",
   "health_check": {
     "status_code": 200,
@@ -12,7 +12,7 @@
       "date_ok": true
     },
     "check_detail": {
-      "pages_build_ok": "Last Pages build status=built, completed 2026-06-22T00:06:08Z. Commit 08d53078.",
+      "pages_build_ok": "Last Pages build status=built, completed 2026-06-22T06:06:54Z. Commit bfc57775.",
       "tabs_present": "All 3 required tabs present: tab-content-fulltime, tab-content-fractional, tab-content-sources.",
       "no_placeholders": "No unreplaced tokens found (TODAY_DATE, GENERATION_TIME, etc.).",
       "size_ok": "index.html is 33,285 bytes (> 10,000 byte threshold).",
@@ -25,12 +25,12 @@
     "broken_pct": 0,
     "link_check_status": "no_links",
     "broken_urls": [],
-    "note": "0 Apply URLs found in included tabs (fulltime/fractional). Jun 21 agent discarded all 7 candidates due to ATS fetch blocking (Greenhouse, Workday, Amazon, Microsoft, Gartner). Jun 22 agent not yet run (current time 06:05 UTC; agent fires at 08:00 PT = 15:00 UTC)."
+    "note": "0 Apply URLs found in included tabs (fulltime/fractional). Jun 21 agent discarded all 7 candidates due to ATS fetch blocking (Greenhouse, Workday, Amazon, Microsoft, Gartner). Jun 22 agent fires at ~15:00 UTC."
   },
   "repo_freshness": {
-    "last_commit_at": "2026-06-22T00:05:37Z",
-    "last_commit_message": "chore(guardian): monitoring report 2026-06-22T00:05Z",
-    "last_commit_sha": "08d53078281fb9bbc3d21dd07b9a246ed155668a",
+    "last_commit_at": "2026-06-22T06:06:20Z",
+    "last_commit_message": "chore(guardian): monitoring report 2026-06-22T06:05Z",
+    "last_commit_sha": "bfc577752b5a1d74cb052e144a2e3fdd65eb4bb9",
     "committed_within_25h": true
   },
   "regression": {
@@ -38,21 +38,9 @@
     "recurring_issues": [],
     "resolved_issues": [],
     "worsening": [],
-    "notes": "All 5 health checks identical to previous run. Page date (Jun 21) still within freshness window. Jun 22 job agent not yet run (expected at 06:05 UTC). Open issues #9 and #10 remain from prior runs (pre-existing, not re-filed)."
+    "notes": "All 5 health checks identical to previous run. Page date (Jun 21) still within freshness window. Jun 22 job agent not yet run (expected at ~15:00 UTC)."
   },
   "fixes_applied": [],
   "issues_filed": [],
-  "open_issues": [
-    {
-      "number": 9,
-      "title": "[Guardian] WARNING: Daily agent pushing duplicate commits",
-      "url": "https://github.com/bluekluu/job-alerts/issues/9"
-    },
-    {
-      "number": 10,
-      "title": "[Guardian] DEGRADED: Guardian's own multi-commit runs causing consecutive GitHub Pages build failures",
-      "url": "https://github.com/bluekluu/job-alerts/issues/10"
-    }
-  ],
-  "summary": "All 5 health checks pass for the 06:05 UTC run on Jun 22: page is 33 KB, dated Jun 21 (yesterday, within window), all tabs present, no placeholders, Pages built successfully. 0 Apply links in included section (ATS blocking during Jun 21 agent run; Jun 22 agent fires at 15:00 UTC). No regressions. Issues #9 and #10 remain open from prior runs."
+  "summary": "All 5 health checks pass at 12:04 UTC on Jun 22: page is 33 KB, dated Jun 21 (yesterday, within window), all tabs present, no placeholders, Pages built successfully. 0 included jobs today (all candidates were blocked by ATS fetch restrictions during the Jun 21 run; Jun 22 daily agent fires at ~15:00 UTC). No regressions from the previous run."
 }
