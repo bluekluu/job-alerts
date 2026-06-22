@@ -1,9 +1,9 @@
 {
-  "run_at": "2026-06-22T12:04:40Z",
+  "run_at": "2026-06-22T18:03:57Z",
   "overall_status": "ok",
   "health_check": {
     "status_code": 200,
-    "page_size_bytes": 33285,
+    "page_size_bytes": 33229,
     "checks": {
       "pages_build_ok": true,
       "tabs_present": true,
@@ -12,11 +12,11 @@
       "date_ok": true
     },
     "check_detail": {
-      "pages_build_ok": "Last Pages build status=built, completed 2026-06-22T06:06:54Z. Commit bfc57775.",
+      "pages_build_ok": "Last Pages build status=built, completed 2026-06-22T15:24:15Z. Commit 5c984272.",
       "tabs_present": "All 3 required tabs present: tab-content-fulltime, tab-content-fractional, tab-content-sources.",
       "no_placeholders": "No unreplaced tokens found (TODAY_DATE, GENERATION_TIME, etc.).",
-      "size_ok": "index.html is 33,285 bytes (> 10,000 byte threshold).",
-      "date_ok": "Page contains '2026-06-21' (yesterday). Today is 2026-06-22. PASS."
+      "size_ok": "index.html is 33,229 bytes (> 10,000 byte threshold).",
+      "date_ok": "Page contains '2026-06-22' (today). PASS."
     }
   },
   "link_check": {
@@ -25,22 +25,24 @@
     "broken_pct": 0,
     "link_check_status": "no_links",
     "broken_urls": [],
-    "note": "0 Apply URLs found in included tabs (fulltime/fractional). Jun 21 agent discarded all 7 candidates due to ATS fetch blocking (Greenhouse, Workday, Amazon, Microsoft, Gartner). Jun 22 agent fires at ~15:00 UTC."
+    "note": "0 Apply URLs found in included tabs (fulltime/fractional). Jun 22 job agent ran at 15:22 UTC but WebFetch was completely unavailable (HTTP 403 on all URLs including public sites). Per agent hard rules, no card can be published without a confirmed active link. 9 candidates surfaced are in the All Evaluated tab."
   },
   "repo_freshness": {
-    "last_commit_at": "2026-06-22T06:06:20Z",
-    "last_commit_message": "chore(guardian): monitoring report 2026-06-22T06:05Z",
-    "last_commit_sha": "bfc577752b5a1d74cb052e144a2e3fdd65eb4bb9",
+    "last_commit_at": "2026-06-22T15:22:34Z",
+    "last_commit_message": "Job alert: 2026-06-22",
+    "last_commit_sha": "5c984272ded91394ee9e8c5296950ccaa2697237",
     "committed_within_25h": true
   },
   "regression": {
     "new_issues": [],
-    "recurring_issues": [],
+    "recurring_issues": [
+      "Duplicate commits from daily agent (issue #9 active): 3 identical 'Job alert: 2026-06-22' commits at 15:22 UTC. Pages build still succeeded."
+    ],
     "resolved_issues": [],
     "worsening": [],
-    "notes": "All 5 health checks identical to previous run. Page date (Jun 21) still within freshness window. Jun 22 job agent not yet run (expected at ~15:00 UTC)."
+    "notes": "All 5 health checks pass. Page date updated to today (Jun 22). WebFetch completely unavailable in daily agent run is new vs. previous run's ATS-only blocking \u2014 similar impact (0 published jobs). Duplicate commit bug (#9) persists."
   },
   "fixes_applied": [],
   "issues_filed": [],
-  "summary": "All 5 health checks pass at 12:04 UTC on Jun 22: page is 33 KB, dated Jun 21 (yesterday, within window), all tabs present, no placeholders, Pages built successfully. 0 included jobs today (all candidates were blocked by ATS fetch restrictions during the Jun 21 run; Jun 22 daily agent fires at ~15:00 UTC). No regressions from the previous run."
+  "summary": "All 5 health checks pass at 18:04 UTC on Jun 22: page is 33 KB, dated today, all tabs present, no placeholders, Pages built successfully. 0 jobs included again today \u2014 the daily agent (15:22 UTC) was blocked by a complete WebFetch outage (HTTP 403 on every URL), preventing all link verification. The duplicate-commit bug (#9) fired again with 3 identical commits; Pages build survived this time."
 }
