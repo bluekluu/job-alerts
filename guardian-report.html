@@ -1,164 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Guardian Report — job-alerts — 2026-06-21</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Guardian Report — job-alerts</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-100 min-h-screen font-sans">
+<body class="bg-slate-50 min-h-screen font-sans">
+  <div class="max-w-3xl mx-auto px-4 py-8">
 
-  <!-- Header -->
-  <header class="bg-slate-900 text-white px-6 py-6">
-    <div class="max-w-4xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+    <!-- Header -->
+    <div class="flex items-start justify-between mb-6">
       <div>
-        <p class="text-slate-400 text-xs uppercase tracking-widest mb-0.5">Production Guardian</p>
-        <h1 class="text-2xl font-bold">
-          <a href="https://github.com/bluekluu/job-alerts" class="hover:text-sky-400">bluekluu/job-alerts</a>
-        </h1>
-        <p class="text-slate-400 text-xs mt-0.5">Run at 2026-06-21T18:05Z</p>
+        <h1 class="text-2xl font-bold text-slate-800">Production Guardian</h1>
+        <a href="https://github.com/bluekluu/job-alerts" class="text-xs text-sky-600 hover:underline">bluekluu/job-alerts</a>
       </div>
-      <div>
-        <span class="inline-block bg-green-500 text-white text-sm font-bold px-4 py-1.5 rounded-full">OK</span>
+      <div class="text-right">
+        <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-800">OK</span>
+        <p class="text-xs text-slate-400 mt-1">2026-06-22T00:05:35Z</p>
       </div>
     </div>
-  </header>
 
-  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-6 space-y-6">
-
-    <!-- Health Checks -->
-    <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-      <div class="bg-slate-50 border-b border-slate-200 px-5 py-3">
-        <h2 class="font-semibold text-slate-700">Health Checks</h2>
+    <!-- Health Checks card -->
+    <div class="bg-white rounded-xl border border-slate-200 shadow-sm mb-4">
+      <div class="px-5 py-3 border-b border-slate-100">
+        <h2 class="text-sm font-semibold text-slate-700">Health Checks</h2>
       </div>
-      <table class="w-full text-sm">
-        <tbody class="divide-y divide-slate-100">
-          <tr class="hover:bg-slate-50">
-            <td class="px-5 py-3 text-slate-600">GitHub Pages build OK</td>
-            <td class="px-5 py-3"><span class="bg-green-100 text-green-700 text-xs font-semibold px-2 py-0.5 rounded">PASS</span></td>
-            <td class="px-5 py-3 text-xs text-slate-400">status=built at 15:16Z · commit 4ea312e</td>
-          </tr>
-          <tr class="hover:bg-slate-50">
-            <td class="px-5 py-3 text-slate-600">All tabs present</td>
-            <td class="px-5 py-3"><span class="bg-green-100 text-green-700 text-xs font-semibold px-2 py-0.5 rounded">PASS</span></td>
-            <td class="px-5 py-3 text-xs text-slate-400">fulltime, fractional, sources — all present</td>
-          </tr>
-          <tr class="hover:bg-slate-50">
-            <td class="px-5 py-3 text-slate-600">No unreplaced placeholders</td>
-            <td class="px-5 py-3"><span class="bg-green-100 text-green-700 text-xs font-semibold px-2 py-0.5 rounded">PASS</span></td>
-            <td class="px-5 py-3 text-xs text-slate-400">TODAY_DATE, GENERATION_TIME, etc. all replaced</td>
-          </tr>
-          <tr class="hover:bg-slate-50">
-            <td class="px-5 py-3 text-slate-600">Page size &gt; 10 KB</td>
-            <td class="px-5 py-3"><span class="bg-green-100 text-green-700 text-xs font-semibold px-2 py-0.5 rounded">PASS</span></td>
-            <td class="px-5 py-3 text-xs text-slate-400">33,284 bytes</td>
-          </tr>
-          <tr class="hover:bg-slate-50">
-            <td class="px-5 py-3 text-slate-600">Date is current</td>
-            <td class="px-5 py-3"><span class="bg-green-100 text-green-700 text-xs font-semibold px-2 py-0.5 rounded">PASS</span></td>
-            <td class="px-5 py-3 text-xs text-slate-400">Page shows "Jun 21 2026" — today</td>
-          </tr>
-          <tr class="hover:bg-slate-50">
-            <td class="px-5 py-3 text-slate-600">Apply link check</td>
-            <td class="px-5 py-3"><span class="bg-slate-100 text-slate-500 text-xs font-semibold px-2 py-0.5 rounded">N/A</span></td>
-            <td class="px-5 py-3 text-xs text-slate-400">No included jobs today — 0 Apply links in fulltime/fractional tabs</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-
-    <!-- ATS Blocking Notice -->
-    <section class="bg-amber-50 border border-amber-200 rounded-xl px-5 py-4">
-      <div class="flex gap-3 items-start">
-        <span class="text-amber-500 text-xl shrink-0">⚠</span>
-        <div>
-          <p class="font-semibold text-amber-800 text-sm">0 jobs included today — 7 strong matches blocked by ATS</p>
-          <p class="text-xs text-amber-700 mt-1">The job agent ran at 15:15Z and found 7 high-potential roles, but all were discarded because automated fetches to Greenhouse, Workday, Amazon Jobs, Microsoft Careers, and Gartner returned 403 errors — the remote execution environment cannot reach these ATS systems. Kevin should manually review these roles via the <a href="https://bluekluu.github.io/job-alerts/" class="underline font-medium">Sources tab</a>.</p>
-          <div class="mt-3 space-y-1.5">
-            <div class="flex items-start gap-2 text-xs">
-              <span class="bg-red-100 text-red-700 font-bold px-1.5 py-0.5 rounded shrink-0">~83%</span>
-              <a href="https://job-boards.greenhouse.io/discord/jobs/8136117002" target="_blank" class="text-sky-700 hover:underline font-medium">Discord · Senior Director, Threat Operations</a>
-              <span class="text-amber-600">· Remote US · Greenhouse 403</span>
-            </div>
-            <div class="flex items-start gap-2 text-xs">
-              <span class="bg-red-100 text-red-700 font-bold px-1.5 py-0.5 rounded shrink-0">~78%</span>
-              <a href="https://job-boards.greenhouse.io/reddit/jobs/7926627" target="_blank" class="text-sky-700 hover:underline font-medium">Reddit · Director of Safety ML</a>
-              <span class="text-amber-600">· Remote US · $276K–$387K · Greenhouse 403</span>
-            </div>
-            <div class="flex items-start gap-2 text-xs">
-              <span class="bg-slate-100 text-slate-500 font-bold px-1.5 py-0.5 rounded shrink-0">est.</span>
-              <a href="https://www.amazon.jobs/en/jobs/3189771/ai-principal-product-manager-technical-alexa-responsible-ai" target="_blank" class="text-sky-700 hover:underline font-medium">Amazon · AI Principal PM-T, Alexa Responsible AI</a>
-              <span class="text-amber-600">· Amazon Jobs 403</span>
-            </div>
-            <div class="flex items-start gap-2 text-xs">
-              <span class="bg-slate-100 text-slate-500 font-bold px-1.5 py-0.5 rounded shrink-0">est.</span>
-              <a href="https://careers.salesforce.com/en/jobs/jr322871/product-management-directorsr-director-responsible-ai-rai/" target="_blank" class="text-sky-700 hover:underline font-medium">Salesforce · Director/Sr. Director, Responsible AI (RAI)</a>
-              <span class="text-amber-600">· Workday 403</span>
-            </div>
-            <div class="flex items-start gap-2 text-xs">
-              <span class="bg-slate-100 text-slate-500 font-bold px-1.5 py-0.5 rounded shrink-0">est.</span>
-              <a href="https://jobs.careers.microsoft.com/us/en/job/1170179/director-of-privacy-governance-and-assurance" target="_blank" class="text-sky-700 hover:underline font-medium">Microsoft · Director of Privacy Governance and Assurance</a>
-              <span class="text-amber-600">· Microsoft Careers 403</span>
-            </div>
-            <div class="flex items-start gap-2 text-xs">
-              <span class="bg-slate-100 text-slate-500 font-bold px-1.5 py-0.5 rounded shrink-0">est.</span>
-              <a href="https://jobs.gartner.com/jobs/job/110898-sr-director-analyst-cio-ai-leader-group-cybersecurity-emerging-technologies-enterprise-risk-remote-us/" target="_blank" class="text-sky-700 hover:underline font-medium">Gartner · Sr. Director Analyst, Cybersecurity &amp; Emerging Tech</a>
-              <span class="text-amber-600">· Remote US · Gartner Jobs 403</span>
-            </div>
-            <div class="flex items-start gap-2 text-xs">
-              <span class="bg-slate-100 text-slate-500 font-bold px-1.5 py-0.5 rounded shrink-0">est.</span>
-              <a href="https://boards.greenhouse.io/upwork/jobs/5449130003" target="_blank" class="text-sky-700 hover:underline font-medium">Upwork · VP, Trust &amp; Safety</a>
-              <span class="text-amber-600">· Greenhouse 403</span>
-            </div>
-          </div>
+      <div class="divide-y divide-slate-100">
+        <div class="px-5 py-3 flex items-center justify-between">
+          <span class="text-sm text-slate-600">Pages build OK</span>
+          <span class="text-xs font-semibold text-green-700 bg-green-50 px-2 py-0.5 rounded-full">PASS</span>
+        </div>
+        <div class="px-5 py-3 flex items-center justify-between">
+          <span class="text-sm text-slate-600">All tabs present</span>
+          <span class="text-xs font-semibold text-green-700 bg-green-50 px-2 py-0.5 rounded-full">PASS</span>
+        </div>
+        <div class="px-5 py-3 flex items-center justify-between">
+          <span class="text-sm text-slate-600">No unreplaced placeholders</span>
+          <span class="text-xs font-semibold text-green-700 bg-green-50 px-2 py-0.5 rounded-full">PASS</span>
+        </div>
+        <div class="px-5 py-3 flex items-center justify-between">
+          <span class="text-sm text-slate-600">Page size &gt; 10KB</span>
+          <span class="text-sm text-slate-400 mr-2">33,285 bytes</span>
+          <span class="text-xs font-semibold text-green-700 bg-green-50 px-2 py-0.5 rounded-full">PASS</span>
+        </div>
+        <div class="px-5 py-3 flex items-center justify-between">
+          <span class="text-sm text-slate-600">Date current</span>
+          <span class="text-sm text-slate-400 mr-2">Jun 21 (yesterday)</span>
+          <span class="text-xs font-semibold text-green-700 bg-green-50 px-2 py-0.5 rounded-full">PASS</span>
+        </div>
+        <div class="px-5 py-3 flex items-center justify-between">
+          <span class="text-sm text-slate-600">Apply link check</span>
+          <span class="text-sm text-slate-400 mr-2">(no included jobs)</span>
+          <span class="text-xs font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">N/A</span>
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- Repo Freshness -->
-    <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-      <div class="bg-slate-50 border-b border-slate-200 px-5 py-3">
-        <h2 class="font-semibold text-slate-700">Repo Freshness</h2>
+    <!-- Repo Freshness card -->
+    <div class="bg-white rounded-xl border border-slate-200 shadow-sm mb-4">
+      <div class="px-5 py-3 border-b border-slate-100">
+        <h2 class="text-sm font-semibold text-slate-700">Repo Freshness</h2>
       </div>
-      <div class="px-5 py-4 text-sm text-slate-700 space-y-2">
-        <div class="flex items-center gap-2">
-          <span class="bg-green-100 text-green-700 text-xs font-semibold px-2 py-0.5 rounded">FRESH</span>
-          <span>Committed within 25 hours</span>
+      <div class="px-5 py-4 space-y-1">
+        <p class="text-sm text-slate-700 font-medium">chore(guardian): HTML report 2026-06-21T18:05Z</p>
+        <p class="text-xs text-slate-400">2026-06-21T18:06:28Z · <a href="https://github.com/bluekluu/job-alerts/commit/60db3f49e751c256a102602ddf011ff93987661b" class="text-sky-500 hover:underline">60db3f4</a></p>
+        <span class="inline-block mt-1 text-xs font-semibold text-green-700 bg-green-50 px-2 py-0.5 rounded-full">Within 25h</span>
+      </div>
+    </div>
+
+    <!-- Regression Delta card -->
+    <div class="bg-white rounded-xl border border-slate-200 shadow-sm mb-4">
+      <div class="px-5 py-3 border-b border-slate-100">
+        <h2 class="text-sm font-semibold text-slate-700">Regression Delta</h2>
+      </div>
+      <div class="px-5 py-4">
+        <p class="text-sm text-slate-400 italic">No changes from previous run — all checks identical.</p>
+        <p class="text-xs text-slate-400 mt-2">Page from Jun 21 (yesterday) within freshness window. Jun 22 agent not yet committed.</p>
+      </div>
+    </div>
+
+    <!-- Open Issues (pre-existing) -->
+    <div class="bg-white rounded-xl border border-slate-200 shadow-sm mb-4">
+      <div class="px-5 py-3 border-b border-slate-100">
+        <h2 class="text-sm font-semibold text-slate-700">Open Issues (pre-existing)</h2>
+      </div>
+      <div class="divide-y divide-slate-100">
+        <div class="px-5 py-3">
+          <a href="https://github.com/bluekluu/job-alerts/issues/9" class="text-sm text-sky-600 hover:underline">#9 — Daily agent pushing duplicate commits (GitHub Pages failures)</a>
         </div>
-        <p class="text-xs text-slate-500">Latest: <code class="bg-slate-100 px-1 rounded">Job alert: 2026-06-21</code> at 15:15Z · <a href="https://github.com/bluekluu/job-alerts/commit/4ea312ede436d018cd632a53d82bc342c564ddd7" class="text-sky-600 hover:underline">4ea312e</a></p>
+        <div class="px-5 py-3">
+          <a href="https://github.com/bluekluu/job-alerts/issues/10" class="text-sm text-sky-600 hover:underline">#10 — Guardian multi-commit runs causing Pages build failures</a>
+        </div>
       </div>
-    </section>
+    </div>
 
-    <!-- Regression Delta -->
-    <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-      <div class="bg-slate-50 border-b border-slate-200 px-5 py-3">
-        <h2 class="font-semibold text-slate-700">Regression Delta</h2>
+    <!-- Summary card -->
+    <div class="bg-white rounded-xl border border-slate-200 shadow-sm mb-4">
+      <div class="px-5 py-3 border-b border-slate-100">
+        <h2 class="text-sm font-semibold text-slate-700">Summary</h2>
       </div>
-      <div class="px-5 py-4 text-sm text-slate-600">
-        <p class="text-slate-400 italic">No structural regressions from previous run (06:03Z). Link check changed from <code class="bg-slate-100 px-1 rounded">ok (2 links)</code> to <code class="bg-slate-100 px-1 rounded">no_links (0 jobs)</code> — this reflects the new job-agent publish, not a structural failure. Open issues: <a href="https://github.com/bluekluu/job-alerts/issues/10" class="text-sky-600 hover:underline">#10 (Guardian multi-commit)</a>, <a href="https://github.com/bluekluu/job-alerts/issues/9" class="text-sky-600 hover:underline">#9 (duplicate commits)</a>.</p>
+      <div class="px-5 py-4">
+        <p class="text-sm text-slate-600">All 5 health checks pass: page is 33KB, dated Jun 21 (yesterday), all tabs present, no placeholders, Pages built successfully. 0 Apply links in included section (all ATS sites blocked during Jun 21 agent run — Discord ~83%, Reddit ~78%, Upwork VP ~90% all unverifiable). No structural regressions from previous run. This report committed as a single atomic commit to avoid triggering issue #10.</p>
       </div>
-    </section>
+    </div>
 
-    <!-- Summary -->
-    <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-      <div class="bg-slate-50 border-b border-slate-200 px-5 py-3">
-        <h2 class="font-semibold text-slate-700">Summary</h2>
-      </div>
-      <div class="px-5 py-4 text-sm text-slate-700">
-        <p>All 5 structural health checks pass: the page is 33 KB, dated Jun 21 2026, all tabs present, no unreplaced placeholders, and GitHub Pages last built successfully. The job agent ran at 15:15Z and found 7 strong candidate roles, but all were blocked by ATS systems (Greenhouse, Workday, Amazon Jobs, Microsoft Careers, Gartner returning 403) and moved to Discarded. No fixes or GitHub issues were filed. Kevin should manually review the Sources tab — especially Discord (~83% match, remote US) and Reddit (~78%, $276K–$387K).</p>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Footer -->
-  <footer class="max-w-4xl mx-auto px-6 pb-8 text-xs text-slate-400 flex flex-wrap gap-4">
-    <a href="https://bluekluu.github.io/job-alerts/" class="hover:text-sky-500">Live app</a>
-    <a href="https://github.com/bluekluu/job-alerts" class="hover:text-sky-500">GitHub repo</a>
-    <a href="https://github.com/bluekluu/job-alerts/blob/main/.guardian/last-report.json" class="hover:text-sky-500">last-report.json</a>
-    <a href="https://github.com/bluekluu/job-alerts/blob/main/.guardian/AppProfile.json" class="hover:text-sky-500">AppProfile.json</a>
-    <span class="ml-auto">Guardian · 2026-06-21T18:05Z</span>
-  </footer>
-
+    <!-- Footer -->
+    <div class="text-xs text-slate-400 text-center mt-4 space-x-3">
+      <a href="https://bluekluu.github.io/job-alerts/" class="hover:text-sky-500">Live App</a>
+      <span>·</span>
+      <a href="https://github.com/bluekluu/job-alerts" class="hover:text-sky-500">GitHub Repo</a>
+      <span>·</span>
+      <a href="https://github.com/bluekluu/job-alerts/tree/main/.guardian" class="hover:text-sky-500">.guardian/ files</a>
+      <span>·</span>
+      <a href="https://github.com/bluekluu/job-alerts/blob/main/.guardian/last-report.json" class="hover:text-sky-500">last-report.json</a>
+    </div>
+  </div>
 </body>
 </html>

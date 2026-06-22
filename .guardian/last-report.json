@@ -1,9 +1,9 @@
 {
-  "run_at": "2026-06-21T18:05:00Z",
+  "run_at": "2026-06-22T00:05:35Z",
   "overall_status": "ok",
   "health_check": {
     "status_code": 200,
-    "page_size_bytes": 33284,
+    "page_size_bytes": 33285,
     "checks": {
       "pages_build_ok": true,
       "tabs_present": true,
@@ -12,11 +12,11 @@
       "date_ok": true
     },
     "check_detail": {
-      "pages_build_ok": "Last build status=built at 2026-06-21T15:16:22Z. Commit 4ea312e.",
+      "pages_build_ok": "Last build status=built at 2026-06-21T18:06:58Z. Commit 60db3f49.",
       "tabs_present": "All 3 tabs present: tab-content-fulltime, tab-content-fractional, tab-content-sources.",
       "no_placeholders": "No unreplaced tokens found.",
-      "size_ok": "index.html is 33,284 bytes (> 10,000 threshold).",
-      "date_ok": "Page contains 'Jun 21 2026' and '2026-06-21'. Date is current."
+      "size_ok": "index.html is 33,285 bytes (> 10,000 threshold).",
+      "date_ok": "Page contains '2026-06-21' (yesterday). Today is 2026-06-22. PASS."
     }
   },
   "link_check": {
@@ -25,12 +25,12 @@
     "broken_pct": 0,
     "link_check_status": "no_links",
     "broken_urls": [],
-    "note": "0 Apply URLs found in included tabs. Job agent ran at 15:15Z and all 7 candidate roles were moved to Discarded \u2014 Closed or Unverifiable due to ATS systems (Greenhouse, Workday, Amazon Jobs, Microsoft Careers, Gartner) blocking automated fetches. Previous run (06:03Z) had 2 included jobs. Discarded roles with strong estimated scores: Discord ~83%, Reddit ~78%, Upwork VP T&S."
+    "note": "0 Apply URLs found in included tabs. Jun 21 agent discarded all 7 candidates due to ATS blocking (Greenhouse, Workday, Amazon, Microsoft, Gartner). Jun 22 agent likely pending."
   },
   "repo_freshness": {
-    "last_commit_at": "2026-06-21T15:15:50Z",
-    "last_commit_message": "Job alert: 2026-06-21",
-    "last_commit_sha": "4ea312ede436d018cd632a53d82bc342c564ddd7",
+    "last_commit_at": "2026-06-21T18:06:28Z",
+    "last_commit_message": "chore(guardian): HTML report 2026-06-21T18:05Z",
+    "last_commit_sha": "60db3f49e751c256a102602ddf011ff93987661b",
     "committed_within_25h": true
   },
   "regression": {
@@ -38,61 +38,21 @@
     "recurring_issues": [],
     "resolved_issues": [],
     "worsening": [],
-    "notes": "link_check changed from 'ok' (2 links) to 'no_links' (0 included jobs) \u2014 job agent at 15:15Z produced a page with 0 verified roles. All 7 strong matches discarded due to ATS blocking. Not a structural regression; page is healthy but empty."
+    "notes": "All checks match previous run. Page from Jun 21 (yesterday) is within freshness window. Jun 22 agent not yet committed."
   },
   "fixes_applied": [],
   "issues_filed": [],
-  "discarded_roles": [
+  "open_issues": [
     {
-      "company": "Discord",
-      "role": "Senior Director, Threat Operations",
-      "est_score": "~83%",
-      "url": "https://job-boards.greenhouse.io/discord/jobs/8136117002",
-      "reason": "Greenhouse blocked (403)"
+      "number": 9,
+      "title": "[Guardian] WARNING: Daily agent pushing duplicate commits",
+      "url": "https://github.com/bluekluu/job-alerts/issues/9"
     },
     {
-      "company": "Reddit",
-      "role": "Director of Safety ML",
-      "est_score": "~78%",
-      "comp": "$276K\u2013$387K",
-      "url": "https://job-boards.greenhouse.io/reddit/jobs/7926627",
-      "reason": "Greenhouse blocked (403)"
-    },
-    {
-      "company": "Amazon",
-      "role": "AI Principal PM-T, Alexa Responsible AI",
-      "est_score": "unknown",
-      "url": "https://www.amazon.jobs/en/jobs/3189771/ai-principal-product-manager-technical-alexa-responsible-ai",
-      "reason": "Amazon Jobs blocked"
-    },
-    {
-      "company": "Salesforce",
-      "role": "Product Management Director/Sr. Director, Responsible AI (RAI)",
-      "est_score": "unknown",
-      "url": "https://careers.salesforce.com/en/jobs/jr322871/",
-      "reason": "Workday blocked (403)"
-    },
-    {
-      "company": "Microsoft",
-      "role": "Director of Privacy Governance and Assurance",
-      "est_score": "unknown",
-      "url": "https://jobs.careers.microsoft.com/us/en/job/1170179/director-of-privacy-governance-and-assurance",
-      "reason": "Microsoft Careers blocked"
-    },
-    {
-      "company": "Gartner",
-      "role": "Sr. Director Analyst, CIO & AI Leader Group \u2014 Cybersecurity & Emerging Technologies",
-      "est_score": "unknown",
-      "url": "https://jobs.gartner.com/jobs/job/110898-sr-director-analyst-cio-ai-leader-group-cybersecurity-emerging-technologies-enterprise-risk-remote-us/",
-      "reason": "Gartner Jobs blocked (403)"
-    },
-    {
-      "company": "Upwork",
-      "role": "VP, Trust & Safety",
-      "est_score": "unknown",
-      "url": "https://boards.greenhouse.io/upwork/jobs/5449130003",
-      "reason": "Greenhouse blocked (403)"
+      "number": 10,
+      "title": "[Guardian] DEGRADED: Guardian's multi-commit runs causing Pages failures",
+      "url": "https://github.com/bluekluu/job-alerts/issues/10"
     }
   ],
-  "summary": "All 5 structural health checks pass: page is 33KB, dated Jun 21 2026, all tabs present, no placeholders, Pages built successfully. However the job agent's 15:15Z run found 7 strong candidate roles but all were blocked by ATS systems (Greenhouse, Workday, Amazon Jobs, Microsoft Careers, Gartner) and moved to Discarded \u2014 leaving 0 included jobs today. No fixes or GitHub issues filed. Kevin should manually review the 7 discarded roles (especially Discord ~83%, Reddit ~78%) via the Sources tab."
+  "summary": "All 5 health checks pass: page is 33KB, dated Jun 21 (yesterday), all tabs present, no placeholders, Pages built successfully. 0 Apply links in included section (all ATS sites blocked during Jun 21 agent run). No structural regressions. Issues #9 and #10 remain open. This report committed atomically (single commit) to avoid triggering issue #10."
 }
