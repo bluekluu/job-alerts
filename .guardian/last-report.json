@@ -1,5 +1,5 @@
 {
-  "run_at": "2026-06-22T18:03:57Z",
+  "run_at": "2026-06-23T00:05:00Z",
   "overall_status": "ok",
   "health_check": {
     "status_code": 200,
@@ -12,11 +12,11 @@
       "date_ok": true
     },
     "check_detail": {
-      "pages_build_ok": "Last Pages build status=built, completed 2026-06-22T15:24:15Z. Commit 5c984272.",
+      "pages_build_ok": "Last Pages build status=built, completed 2026-06-22T18:05:45Z. Commit 62de9de9.",
       "tabs_present": "All 3 required tabs present: tab-content-fulltime, tab-content-fractional, tab-content-sources.",
       "no_placeholders": "No unreplaced tokens found (TODAY_DATE, GENERATION_TIME, etc.).",
       "size_ok": "index.html is 33,229 bytes (> 10,000 byte threshold).",
-      "date_ok": "Page contains '2026-06-22' (today). PASS."
+      "date_ok": "Page contains '2026-06-22' (yesterday \u2014 daily agent runs at 8 AM PT, not yet fired for Jun 23). PASS."
     }
   },
   "link_check": {
@@ -25,24 +25,25 @@
     "broken_pct": 0,
     "link_check_status": "no_links",
     "broken_urls": [],
-    "note": "0 Apply URLs found in included tabs (fulltime/fractional). Jun 22 job agent ran at 15:22 UTC but WebFetch was completely unavailable (HTTP 403 on all URLs including public sites). Per agent hard rules, no card can be published without a confirmed active link. 9 candidates surfaced are in the All Evaluated tab."
+    "note": "0 Apply URLs found in included tabs (fulltime/fractional). Included tabs are empty \u2014 Jun 22 daily agent was blocked by complete WebFetch outage (HTTP 403 on all URLs). Jun 23 daily agent hasn't run yet (scheduled ~15:00 UTC)."
   },
   "repo_freshness": {
-    "last_commit_at": "2026-06-22T15:22:34Z",
-    "last_commit_message": "Job alert: 2026-06-22",
-    "last_commit_sha": "5c984272ded91394ee9e8c5296950ccaa2697237",
+    "last_commit_at": "2026-06-22T18:05:07Z",
+    "last_commit_message": "chore(guardian): HTML report 2026-06-22T18:04Z",
+    "last_commit_sha": "62de9de96d985e68627257e505cd03eb7e007ef1",
     "committed_within_25h": true
   },
   "regression": {
     "new_issues": [],
     "recurring_issues": [
-      "Duplicate commits from daily agent (issue #9 active): 3 identical 'Job alert: 2026-06-22' commits at 15:22 UTC. Pages build still succeeded."
+      "No jobs published in included tabs: Jun 22 daily agent had complete WebFetch outage. Jun 23 agent not yet run.",
+      "Duplicate-commit bug (#9) persists \u2014 observed again in Jun 22 run (3 identical job-alert commits)."
     ],
     "resolved_issues": [],
     "worsening": [],
-    "notes": "All 5 health checks pass. Page date updated to today (Jun 22). WebFetch completely unavailable in daily agent run is new vs. previous run's ATS-only blocking \u2014 similar impact (0 published jobs). Duplicate commit bug (#9) persists."
+    "notes": "All 5 structural health checks still PASS. No new structural issues vs previous run. Page date is Jun 22 (yesterday) \u2014 expected at 00:05 UTC since daily agent runs at 8 AM PT."
   },
   "fixes_applied": [],
   "issues_filed": [],
-  "summary": "All 5 health checks pass at 18:04 UTC on Jun 22: page is 33 KB, dated today, all tabs present, no placeholders, Pages built successfully. 0 jobs included again today \u2014 the daily agent (15:22 UTC) was blocked by a complete WebFetch outage (HTTP 403 on every URL), preventing all link verification. The duplicate-commit bug (#9) fired again with 3 identical commits; Pages build survived this time."
+  "summary": "All 5 health checks pass at 00:05 UTC Jun 23: page is 33 KB, dated Jun 22 (expected \u2014 daily agent fires at ~15:00 UTC), all tabs present, no placeholders, Pages built successfully. The included tabs remain empty from yesterday's WebFetch outage; the Jun 23 daily agent hasn't run yet. Duplicate-commit bug (#9) remains open."
 }
