@@ -221,6 +221,13 @@ def fetch_json(url: str, timeout: int = 25) -> object:
         return json.loads(response.read().decode("utf-8"))
 
 
+def fetch_text(url: str, timeout: int = 20) -> str:
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 JobsAlert/1.0"})
+    context = ssl._create_unverified_context()
+    with urllib.request.urlopen(req, timeout=timeout, context=context) as response:
+        return response.read().decode("utf-8", "ignore")
+
+
 def strip_html(value: str) -> str:
     value = re.sub(r"<[^>]+>", " ", value or "")
     return re.sub(r"\s+", " ", html.unescape(value)).strip()
@@ -469,6 +476,21 @@ def normalize_location(location: str) -> str:
     return raw
 
 
+def display_location(location: str) -> str:
+    parts = []
+    for part in location.split(";"):
+        cleaned = part.strip()
+        if cleaned == "Remote, US":
+            display = "Remote"
+        elif cleaned.endswith(", US"):
+            display = cleaned[:-4]
+        else:
+            display = cleaned
+        if display and display not in parts:
+            parts.append(display)
+    return "; ".join(parts) or "Not listed"
+
+
 def normalize_state(value: str) -> str:
     cleaned = value.strip().strip(",")
     upper = cleaned.upper()
@@ -501,14 +523,45 @@ def location_pass(location: str, description: str) -> tuple[bool, str]:
 
 
 def compensation(candidate: Candidate) -> str:
-    text = candidate.description
-    match = re.search(r"\$[0-9]{2,3}(?:,[0-9]{3})?K?\s*[–-]\s*\$?[0-9]{2,3}(?:,[0-9]{3})?K?", text, re.I)
-    if match:
-        return match.group(0)
-    match = re.search(r"\$[0-9]{3},000\s*[–-]\s*\$?[0-9]{3},000", text, re.I)
-    if match:
-        return match.group(0)
+    return extract_compensation(candidate.description)
+
+
+def extract_compensation(text: str) -> str:
+    plain = strip_html(text)
+    patterns = [
+        r"\$\s?[0-9][0-9,]*(?:\.[0-9]+)?\s*[Kk]\s*(?:[–—-]|to)\s*\$?\s?[0-9][0-9,]*(?:\.[0-9]+)?\s*[Kk]",
+        r"\$\s?[0-9][0-9,]*(?:\.[0-9]+)?\s*(?:[–—-]|to)\s*\$?\s?[0-9][0-9,]*(?:\.[0-9]+)?",
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, plain, re.I)
+        if match:
+            return normalize_compensation(match.group(0))
     return "Not listed"
+
+
+def normalize_compensation(value: str) -> str:
+    value = html.unescape(value)
+    value = re.sub(r"\s+", " ", value).strip()
+    value = re.sub(r"\s*(?:–|—|to|-)\s*", " - ", value, count=1, flags=re.I)
+    value = value.replace("$ ", "$")
+    return value
+
+
+def enrich_compensation(items: list[Evaluated]) -> None:
+    for item in items:
+        candidate = item.candidate
+        if candidate.comp != "Not listed" or not candidate.url:
+            continue
+        try:
+            page_text = fetch_text(candidate.url)
+        except Exception:
+            continue
+        comp = extract_compensation(page_text)
+        if comp == "Not listed":
+            continue
+        candidate.comp = comp
+        if item.included and "Compensation not listed" in item.gaps:
+            item.gaps = "Review scope, reporting line, and remote expectations before applying."
 
 
 def evaluate(candidate: Candidate) -> Evaluated:
@@ -621,6 +674,7 @@ def status_color(item: Evaluated) -> str:
 def render_card(item: Evaluated) -> str:
     c = item.candidate
     company = canonical_company(c.company)
+    location = display_location(c.location)
     tags = "".join(
         f'<span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">{esc(tag)}</span>'
         for tag in item.tags[:6]
@@ -628,7 +682,7 @@ def render_card(item: Evaluated) -> str:
     why = [
         f"{esc(company)} role contains {esc(', '.join(item.tags[:3]) or 'relevant trust/safety signals')}.",
         f"Seniority/function score maps to Kevin's T&S, privacy, GenAI trust, and TPM leadership background.",
-        f"Location passes current filter: {esc(c.location)}.",
+        f"Location passes current filter: {esc(location)}.",
     ]
     why_html = "".join(f"<li>{line}</li>" for line in why)
     return f"""
@@ -640,7 +694,7 @@ def render_card(item: Evaluated) -> str:
               <span class="px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700">Verified via {esc(c.source)}</span>
             </div>
             <h2 class="text-lg font-bold text-slate-900">{esc(c.title)}</h2>
-            <p class="text-sm text-slate-600 mt-1">{company_name_html(company, muted=True)} <span class="mx-1 text-slate-300">·</span> {esc(c.location)}</p>
+            <p class="text-sm text-slate-600 mt-1">{company_name_html(company, muted=True)} <span class="mx-1 text-slate-300">·</span> {esc(location)}</p>
           </div>
           <a href="{esc(c.url)}" target="_blank" class="shrink-0 text-center bg-slate-900 text-white text-xs font-semibold px-3 py-2 rounded hover:bg-slate-700">Apply</a>
         </div>
@@ -663,13 +717,14 @@ def render_rows(items: list[Evaluated]) -> str:
     rows = []
     for item in items:
         c = item.candidate
+        location = display_location(c.location)
         rows.append(
             f"""
-            <tr class="hover:bg-slate-50" data-score="{item.score}" data-company="{esc(canonical_company(c.company).lower())}" data-role="{esc(c.title.lower())}" data-location="{esc(c.location.lower())}" data-comp="{esc(c.comp.lower())}" data-status="{esc((item.band if item.included else item.reason).lower())}">
+            <tr class="hover:bg-slate-50" data-score="{item.score}" data-company="{esc(canonical_company(c.company).lower())}" data-role="{esc(c.title.lower())}" data-location="{esc(location.lower())}" data-comp="{esc(c.comp.lower())}" data-status="{esc((item.band if item.included else item.reason).lower())}">
               <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold {score_color(item.score)}">{item.score}%</span></td>
               <td class="px-3 py-2">{company_name_html(c.company)}</td>
               <td class="px-3 py-2"><a href="{esc(c.url)}" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">{esc(c.title)}</a></td>
-              <td class="px-3 py-2 hidden sm:table-cell">{esc(c.location)}</td>
+              <td class="px-3 py-2 hidden sm:table-cell">{esc(location)}</td>
               <td class="px-3 py-2 hidden md:table-cell">{esc(c.comp)}</td>
               <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold {status_color(item)}">{esc(item.band if item.included else item.reason)}</span></td>
             </tr>"""
@@ -718,6 +773,7 @@ def render_html(evaluated: list[Evaluated], errors: list[str]) -> str:
     today = now.date()
     included = sorted([item for item in evaluated if item.included], key=lambda i: i.score, reverse=True)[:12]
     discarded = sorted([item for item in evaluated if not item.included and item.score >= 35], key=lambda i: i.score, reverse=True)[:30]
+    enrich_compensation(included + discarded)
     fulltime = [item for item in included if item.candidate.engagement == "full-time"]
     fractional = [item for item in included if item.candidate.engagement != "full-time"]
     strong = [item for item in fulltime if item.score >= 90]
