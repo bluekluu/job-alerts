@@ -426,7 +426,7 @@ def logo_url(company: str) -> str:
     domain = COMPANY_DOMAINS.get(canonical_company(company))
     if not domain:
         return ""
-    return f"https://logo.clearbit.com/{domain}"
+    return f"https://www.google.com/s2/favicons?domain={domain}&sz=64"
 
 
 def company_logo_html(company: str, *, size: str = "h-6 w-6") -> str:
@@ -437,8 +437,9 @@ def company_logo_html(company: str, *, size: str = "h-6 w-6") -> str:
     if not url:
         return fallback
     return (
-        f'<span class="{size} rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden">'
-        f'<img src="{esc(url)}" alt="{esc(canonical)} logo" class="h-full w-full object-contain" loading="lazy" '
+        f'<span class="{size} relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600">'
+        f'<span aria-hidden="true">{esc(initials)}</span>'
+        f'<img src="{esc(url)}" alt="{esc(canonical)} logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" '
         f'onerror="this.style.display=&quot;none&quot;">'
         "</span>"
     )
@@ -460,6 +461,16 @@ def score_color(score: int) -> str:
     if score >= 80:
         return "text-sky-700 bg-sky-100"
     if score >= 70:
+        return "text-amber-700 bg-amber-100"
+    return "text-slate-700 bg-slate-100"
+
+
+def status_color(item: Evaluated) -> str:
+    if item.included:
+        return score_color(item.score)
+    if item.reason in {"Location hard filter", "No Seattle/Redmond/Bellevue/Remote US signal", "Pure engineering role"}:
+        return "text-red-700 bg-red-100"
+    if item.reason in {"Weak primary title-domain signal", "Below seniority threshold", "Below 60% threshold"}:
         return "text-amber-700 bg-amber-100"
     return "text-slate-700 bg-slate-100"
 
@@ -492,12 +503,12 @@ def render_card(item: Evaluated) -> str:
         </div>
         <div class="flex flex-wrap gap-1.5 mt-3 text-xs">{tags}</div>
         <div class="grid sm:grid-cols-2 gap-3 mt-3 text-xs text-slate-600">
-          <div class="bg-slate-50 rounded p-3">
-            <p class="font-semibold text-slate-500 uppercase mb-1">Why it matches</p>
+          <div class="bg-green-50 border border-green-100 rounded p-3">
+            <p class="font-semibold text-green-700 uppercase mb-1">Why it matches</p>
             <ul class="list-disc pl-4 space-y-1">{why_html}</ul>
           </div>
-          <div class="bg-slate-50 rounded p-3">
-            <p class="font-semibold text-slate-500 uppercase mb-1">Gaps</p>
+          <div class="bg-red-50 border border-red-100 rounded p-3">
+            <p class="font-semibold text-red-700 uppercase mb-1">Gaps</p>
             <p>{esc(item.gaps)}</p>
             <p class="mt-2">Comp: {esc(c.comp)} · Posted: {esc(c.posted or 'Active')}</p>
           </div>
@@ -511,13 +522,13 @@ def render_rows(items: list[Evaluated]) -> str:
         c = item.candidate
         rows.append(
             f"""
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">{item.score}%</td>
+            <tr class="hover:bg-slate-50" data-score="{item.score}" data-company="{esc(canonical_company(c.company).lower())}" data-role="{esc(c.title.lower())}" data-location="{esc(c.location.lower())}" data-comp="{esc(c.comp.lower())}" data-status="{esc((item.band if item.included else item.reason).lower())}">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold {score_color(item.score)}">{item.score}%</span></td>
               <td class="px-3 py-2">{company_name_html(c.company)}</td>
               <td class="px-3 py-2"><a href="{esc(c.url)}" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">{esc(c.title)}</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">{esc(c.location)}</td>
               <td class="px-3 py-2 hidden md:table-cell">{esc(c.comp)}</td>
-              <td class="px-3 py-2">{esc(item.band if item.included else item.reason)}</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold {status_color(item)}">{esc(item.band if item.included else item.reason)}</span></td>
             </tr>"""
         )
     return "\n".join(rows) or '<tr><td class="px-3 py-3 text-slate-400" colspan="6">No rows.</td></tr>'
@@ -583,6 +594,13 @@ def render_html(evaluated: list[Evaluated], errors: list[str]) -> str:
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kevin's Daily Job Alert</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html {{ overflow-y: scroll; scrollbar-gutter: stable; }}
+    .sort-header {{ cursor: pointer; user-select: none; }}
+    .sort-header::after {{ content: "↕"; margin-left: 0.35rem; color: #94a3b8; font-size: 0.7rem; }}
+    .sort-header[data-sort-dir="asc"]::after {{ content: "↑"; color: #0f172a; }}
+    .sort-header[data-sort-dir="desc"]::after {{ content: "↓"; color: #0f172a; }}
+  </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
   <header class="bg-slate-900 text-white">
@@ -605,13 +623,15 @@ def render_html(evaluated: list[Evaluated], errors: list[str]) -> str:
         <div><p class="text-2xl font-bold text-sky-400">{len(evaluated)}</p><p class="text-xs text-slate-400">Postings evaluated</p></div>
       </div>
     </div>
+  </header>
+  <nav class="sticky top-0 z-30 bg-slate-900 shadow-lg">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 flex flex-wrap">
       <button onclick="switchTab('fulltime')" id="tab-fulltime" class="tab-btn px-4 py-3 text-sm font-semibold text-white border-b-2 border-white">Full-Time Roles <span>{len(fulltime)}</span></button>
       <button onclick="switchTab('fractional')" id="tab-fractional" class="tab-btn px-4 py-3 text-sm font-semibold text-slate-400 border-b-2 border-transparent">Fractional &amp; Advisory <span>{len(fractional)}</span></button>
       <button onclick="switchTab('all')" id="tab-all" class="tab-btn px-4 py-3 text-sm font-semibold text-slate-400 border-b-2 border-transparent">All Evaluated <span>{len(discarded)}</span></button>
       <button onclick="switchTab('criteria')" id="tab-criteria" class="tab-btn px-4 py-3 text-sm font-semibold text-slate-400 border-b-2 border-transparent">Criteria</button>
     </div>
-  </header>
+  </nav>
 
   <div id="tab-content-fulltime" class="tab-content active">
     <main class="max-w-5xl mx-auto px-4 sm:px-6 py-5">
@@ -630,9 +650,9 @@ def render_html(evaluated: list[Evaluated], errors: list[str]) -> str:
     <main class="max-w-5xl mx-auto px-4 sm:px-6 py-5">
       <p class="text-sm text-slate-500 mb-3">Near matches and filtered roles from today's structured source crawl. Roles already shown in Full-Time or Fractional are omitted here.</p>
       <div class="bg-white border border-slate-200 rounded-lg overflow-hidden">
-        <table class="w-full text-xs">
-          <thead class="bg-slate-50"><tr><th class="text-left px-3 py-2">Score</th><th class="text-left px-3 py-2">Company</th><th class="text-left px-3 py-2">Role</th><th class="text-left px-3 py-2 hidden sm:table-cell">Location</th><th class="text-left px-3 py-2 hidden md:table-cell">Comp</th><th class="text-left px-3 py-2">Status</th></tr></thead>
-          <tbody class="divide-y divide-slate-100">{all_rows}</tbody>
+        <table id="evaluated-table" class="w-full text-xs">
+          <thead class="bg-slate-50"><tr><th class="sort-header text-left px-3 py-2" data-sort-key="score" data-sort-type="number">Score</th><th class="sort-header text-left px-3 py-2" data-sort-key="company">Company</th><th class="sort-header text-left px-3 py-2" data-sort-key="role">Role</th><th class="sort-header text-left px-3 py-2 hidden sm:table-cell" data-sort-key="location">Location</th><th class="sort-header text-left px-3 py-2 hidden md:table-cell" data-sort-key="comp">Comp</th><th class="sort-header text-left px-3 py-2" data-sort-key="status">Status</th></tr></thead>
+          <tbody id="evaluated-tbody" class="divide-y divide-slate-100">{all_rows}</tbody>
         </table>
       </div>
       <div class="mt-4 text-xs text-slate-500"><p class="font-semibold">Source fetch notes</p><ul class="list-disc pl-4">{source_errors}</ul></div>
@@ -668,6 +688,31 @@ def render_html(evaluated: list[Evaluated], errors: list[str]) -> str:
       active.classList.add('text-white', 'border-white');
       active.classList.remove('text-slate-400', 'border-transparent');
     }}
+
+    function sortEvaluatedTable(header) {{
+      const key = header.dataset.sortKey;
+      const type = header.dataset.sortType || 'text';
+      const tbody = document.getElementById('evaluated-tbody');
+      if (!tbody) return;
+      const current = header.dataset.sortDir || 'desc';
+      const next = current === 'asc' ? 'desc' : 'asc';
+      document.querySelectorAll('.sort-header').forEach(el => el.removeAttribute('data-sort-dir'));
+      header.dataset.sortDir = next;
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+      rows.sort((a, b) => {{
+        const av = a.dataset[key] || '';
+        const bv = b.dataset[key] || '';
+        if (type === 'number') {{
+          return next === 'asc' ? Number(av) - Number(bv) : Number(bv) - Number(av);
+        }}
+        return next === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
+      }});
+      rows.forEach(row => tbody.appendChild(row));
+    }}
+
+    document.querySelectorAll('.sort-header').forEach(header => {{
+      header.addEventListener('click', () => sortEvaluatedTable(header));
+    }});
   </script>
 </body>
 </html>

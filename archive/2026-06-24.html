@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kevin's Daily Job Alert</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html { overflow-y: scroll; scrollbar-gutter: stable; }
+    .sort-header { cursor: pointer; user-select: none; }
+    .sort-header::after { content: "↕"; margin-left: 0.35rem; color: #94a3b8; font-size: 0.7rem; }
+    .sort-header[data-sort-dir="asc"]::after { content: "↑"; color: #0f172a; }
+    .sort-header[data-sort-dir="desc"]::after { content: "↓"; color: #0f172a; }
+  </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
   <header class="bg-slate-900 text-white">
@@ -17,7 +24,7 @@
         </div>
         <div class="sm:text-right">
           <p class="text-2xl font-semibold">Wednesday, Jun 24 2026</p>
-          <p class="text-xs text-slate-400">Generated 11:19 PM PT · alert-date: 2026-06-24</p>
+          <p class="text-xs text-slate-400">Generated 11:28 PM PT · alert-date: 2026-06-24</p>
         </div>
       </div>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 pt-4 border-t border-slate-700">
@@ -27,13 +34,15 @@
         <div><p class="text-2xl font-bold text-sky-400">3320</p><p class="text-xs text-slate-400">Postings evaluated</p></div>
       </div>
     </div>
+  </header>
+  <nav class="sticky top-0 z-30 bg-slate-900 shadow-lg">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 flex flex-wrap">
       <button onclick="switchTab('fulltime')" id="tab-fulltime" class="tab-btn px-4 py-3 text-sm font-semibold text-white border-b-2 border-white">Full-Time Roles <span>5</span></button>
       <button onclick="switchTab('fractional')" id="tab-fractional" class="tab-btn px-4 py-3 text-sm font-semibold text-slate-400 border-b-2 border-transparent">Fractional &amp; Advisory <span>0</span></button>
       <button onclick="switchTab('all')" id="tab-all" class="tab-btn px-4 py-3 text-sm font-semibold text-slate-400 border-b-2 border-transparent">All Evaluated <span>30</span></button>
       <button onclick="switchTab('criteria')" id="tab-criteria" class="tab-btn px-4 py-3 text-sm font-semibold text-slate-400 border-b-2 border-transparent">Criteria</button>
     </div>
-  </header>
+  </nav>
 
   <div id="tab-content-fulltime" class="tab-content active">
     <main class="max-w-5xl mx-auto px-4 sm:px-6 py-5">
@@ -47,18 +56,18 @@
               <span class="px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700">Verified via Amazon Jobs API</span>
             </div>
             <h2 class="text-lg font-bold text-slate-900">Principal Risk Manager, Privacy, WW SPS Tech PMO</h2>
-            <p class="text-sm text-slate-600 mt-1"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/amazon.com" alt="Amazon logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-600">Amazon</span></span> <span class="mx-1 text-slate-300">·</span> US, WA, Seattle</p>
+            <p class="text-sm text-slate-600 mt-1"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">A</span><img src="https://www.google.com/s2/favicons?domain=amazon.com&amp;sz=64" alt="Amazon logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-600">Amazon</span></span> <span class="mx-1 text-slate-300">·</span> US, WA, Seattle</p>
           </div>
           <a href="https://www.amazon.jobs/en/jobs/10450545/principal-risk-manager-privacy-ww-sps-tech-pmo" target="_blank" class="shrink-0 text-center bg-slate-900 text-white text-xs font-semibold px-3 py-2 rounded hover:bg-slate-700">Apply</a>
         </div>
         <div class="flex flex-wrap gap-1.5 mt-3 text-xs"><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">trust</span><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">privacy</span><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">compliance</span><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">risk</span><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">director</span><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">vp</span></div>
         <div class="grid sm:grid-cols-2 gap-3 mt-3 text-xs text-slate-600">
-          <div class="bg-slate-50 rounded p-3">
-            <p class="font-semibold text-slate-500 uppercase mb-1">Why it matches</p>
+          <div class="bg-green-50 border border-green-100 rounded p-3">
+            <p class="font-semibold text-green-700 uppercase mb-1">Why it matches</p>
             <ul class="list-disc pl-4 space-y-1"><li>Amazon role contains trust, privacy, compliance.</li><li>Seniority/function score maps to Kevin's T&S, privacy, GenAI trust, and TPM leadership background.</li><li>Location passes current filter: US, WA, Seattle.</li></ul>
           </div>
-          <div class="bg-slate-50 rounded p-3">
-            <p class="font-semibold text-slate-500 uppercase mb-1">Gaps</p>
+          <div class="bg-red-50 border border-red-100 rounded p-3">
+            <p class="font-semibold text-red-700 uppercase mb-1">Gaps</p>
             <p>Compensation not listed or below target.</p>
             <p class="mt-2">Comp: Not listed · Posted: June 16, 2026</p>
           </div>
@@ -73,18 +82,18 @@
               <span class="px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700">Verified via Amazon Jobs API</span>
             </div>
             <h2 class="text-lg font-bold text-slate-900">Principal Product Manager, Technical , Leo Trust and Privacy</h2>
-            <p class="text-sm text-slate-600 mt-1"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/amazon.com" alt="Amazon logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-600">Amazon</span></span> <span class="mx-1 text-slate-300">·</span> US, WA, Redmond</p>
+            <p class="text-sm text-slate-600 mt-1"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">A</span><img src="https://www.google.com/s2/favicons?domain=amazon.com&amp;sz=64" alt="Amazon logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-600">Amazon</span></span> <span class="mx-1 text-slate-300">·</span> US, WA, Redmond</p>
           </div>
           <a href="https://www.amazon.jobs/en/jobs/10397131/principal-product-manager-technical-leo-trust-and-privacy" target="_blank" class="shrink-0 text-center bg-slate-900 text-white text-xs font-semibold px-3 py-2 rounded hover:bg-slate-700">Apply</a>
         </div>
         <div class="flex flex-wrap gap-1.5 mt-3 text-xs"><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">trust</span><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">privacy</span><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">compliance</span><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">risk</span><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">principal</span><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">lead</span></div>
         <div class="grid sm:grid-cols-2 gap-3 mt-3 text-xs text-slate-600">
-          <div class="bg-slate-50 rounded p-3">
-            <p class="font-semibold text-slate-500 uppercase mb-1">Why it matches</p>
+          <div class="bg-green-50 border border-green-100 rounded p-3">
+            <p class="font-semibold text-green-700 uppercase mb-1">Why it matches</p>
             <ul class="list-disc pl-4 space-y-1"><li>Amazon role contains trust, privacy, compliance.</li><li>Seniority/function score maps to Kevin's T&S, privacy, GenAI trust, and TPM leadership background.</li><li>Location passes current filter: US, WA, Redmond.</li></ul>
           </div>
-          <div class="bg-slate-50 rounded p-3">
-            <p class="font-semibold text-slate-500 uppercase mb-1">Gaps</p>
+          <div class="bg-red-50 border border-red-100 rounded p-3">
+            <p class="font-semibold text-red-700 uppercase mb-1">Gaps</p>
             <p>Compensation not listed or below target.</p>
             <p class="mt-2">Comp: Not listed · Posted: April 20, 2026</p>
           </div>
@@ -99,18 +108,18 @@
               <span class="px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700">Verified via Amazon Jobs API</span>
             </div>
             <h2 class="text-lg font-bold text-slate-900">Principal PM-T, Trust &amp; Safety , Prime Video</h2>
-            <p class="text-sm text-slate-600 mt-1"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/amazon.com" alt="Amazon logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-600">Amazon</span></span> <span class="mx-1 text-slate-300">·</span> US, WA, Seattle</p>
+            <p class="text-sm text-slate-600 mt-1"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">A</span><img src="https://www.google.com/s2/favicons?domain=amazon.com&amp;sz=64" alt="Amazon logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-600">Amazon</span></span> <span class="mx-1 text-slate-300">·</span> US, WA, Seattle</p>
           </div>
           <a href="https://www.amazon.jobs/en/jobs/10413229/principal-pm-t-trust-safety-prime-video" target="_blank" class="shrink-0 text-center bg-slate-900 text-white text-xs font-semibold px-3 py-2 rounded hover:bg-slate-700">Apply</a>
         </div>
         <div class="flex flex-wrap gap-1.5 mt-3 text-xs"><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">trust</span><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">safety</span><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">risk</span><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">policy</span><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">principal</span><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">lead</span></div>
         <div class="grid sm:grid-cols-2 gap-3 mt-3 text-xs text-slate-600">
-          <div class="bg-slate-50 rounded p-3">
-            <p class="font-semibold text-slate-500 uppercase mb-1">Why it matches</p>
+          <div class="bg-green-50 border border-green-100 rounded p-3">
+            <p class="font-semibold text-green-700 uppercase mb-1">Why it matches</p>
             <ul class="list-disc pl-4 space-y-1"><li>Amazon role contains trust, safety, risk.</li><li>Seniority/function score maps to Kevin's T&S, privacy, GenAI trust, and TPM leadership background.</li><li>Location passes current filter: US, WA, Seattle.</li></ul>
           </div>
-          <div class="bg-slate-50 rounded p-3">
-            <p class="font-semibold text-slate-500 uppercase mb-1">Gaps</p>
+          <div class="bg-red-50 border border-red-100 rounded p-3">
+            <p class="font-semibold text-red-700 uppercase mb-1">Gaps</p>
             <p>Compensation not listed or below target.</p>
             <p class="mt-2">Comp: Not listed · Posted: May  7, 2026</p>
           </div>
@@ -125,18 +134,18 @@
               <span class="px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700">Verified via Amazon Jobs API</span>
             </div>
             <h2 class="text-lg font-bold text-slate-900">AI Principal Product Manager-Technical, Alexa Responsible AI</h2>
-            <p class="text-sm text-slate-600 mt-1"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/amazon.com" alt="Amazon logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-600">Amazon</span></span> <span class="mx-1 text-slate-300">·</span> US, WA, Bellevue</p>
+            <p class="text-sm text-slate-600 mt-1"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">A</span><img src="https://www.google.com/s2/favicons?domain=amazon.com&amp;sz=64" alt="Amazon logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-600">Amazon</span></span> <span class="mx-1 text-slate-300">·</span> US, WA, Bellevue</p>
           </div>
           <a href="https://www.amazon.jobs/en/jobs/3189771/ai-principal-product-manager-technical-alexa-responsible-ai" target="_blank" class="shrink-0 text-center bg-slate-900 text-white text-xs font-semibold px-3 py-2 rounded hover:bg-slate-700">Apply</a>
         </div>
         <div class="flex flex-wrap gap-1.5 mt-3 text-xs"><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">trust</span><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">safety</span><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">responsible ai</span><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">privacy</span><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">head</span><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">principal</span></div>
         <div class="grid sm:grid-cols-2 gap-3 mt-3 text-xs text-slate-600">
-          <div class="bg-slate-50 rounded p-3">
-            <p class="font-semibold text-slate-500 uppercase mb-1">Why it matches</p>
+          <div class="bg-green-50 border border-green-100 rounded p-3">
+            <p class="font-semibold text-green-700 uppercase mb-1">Why it matches</p>
             <ul class="list-disc pl-4 space-y-1"><li>Amazon role contains trust, safety, responsible ai.</li><li>Seniority/function score maps to Kevin's T&S, privacy, GenAI trust, and TPM leadership background.</li><li>Location passes current filter: US, WA, Bellevue.</li></ul>
           </div>
-          <div class="bg-slate-50 rounded p-3">
-            <p class="font-semibold text-slate-500 uppercase mb-1">Gaps</p>
+          <div class="bg-red-50 border border-red-100 rounded p-3">
+            <p class="font-semibold text-red-700 uppercase mb-1">Gaps</p>
             <p>Compensation not listed or below target.</p>
             <p class="mt-2">Comp: Not listed · Posted: February 25, 2026</p>
           </div>
@@ -151,18 +160,18 @@
               <span class="px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700">Verified via Greenhouse API</span>
             </div>
             <h2 class="text-lg font-bold text-slate-900">Director of Safety ML</h2>
-            <p class="text-sm text-slate-600 mt-1"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/redditinc.com" alt="Reddit logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-600">Reddit</span></span> <span class="mx-1 text-slate-300">·</span> Remote - United States</p>
+            <p class="text-sm text-slate-600 mt-1"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">R</span><img src="https://www.google.com/s2/favicons?domain=redditinc.com&amp;sz=64" alt="Reddit logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-600">Reddit</span></span> <span class="mx-1 text-slate-300">·</span> Remote - United States</p>
           </div>
           <a href="https://job-boards.greenhouse.io/reddit/jobs/7926627" target="_blank" class="shrink-0 text-center bg-slate-900 text-white text-xs font-semibold px-3 py-2 rounded hover:bg-slate-700">Apply</a>
         </div>
         <div class="flex flex-wrap gap-1.5 mt-3 text-xs"><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">trust</span><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">safety</span><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">responsible ai</span><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">privacy</span><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">director</span><span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">lead</span></div>
         <div class="grid sm:grid-cols-2 gap-3 mt-3 text-xs text-slate-600">
-          <div class="bg-slate-50 rounded p-3">
-            <p class="font-semibold text-slate-500 uppercase mb-1">Why it matches</p>
+          <div class="bg-green-50 border border-green-100 rounded p-3">
+            <p class="font-semibold text-green-700 uppercase mb-1">Why it matches</p>
             <ul class="list-disc pl-4 space-y-1"><li>Reddit role contains trust, safety, responsible ai.</li><li>Seniority/function score maps to Kevin's T&S, privacy, GenAI trust, and TPM leadership background.</li><li>Location passes current filter: Remote - United States.</li></ul>
           </div>
-          <div class="bg-slate-50 rounded p-3">
-            <p class="font-semibold text-slate-500 uppercase mb-1">Gaps</p>
+          <div class="bg-red-50 border border-red-100 rounded p-3">
+            <p class="font-semibold text-red-700 uppercase mb-1">Gaps</p>
             <p>Compensation not listed or below target.</p>
             <p class="mt-2">Comp: Not listed · Posted: 2026-05-15</p>
           </div>
@@ -181,277 +190,277 @@
     <main class="max-w-5xl mx-auto px-4 sm:px-6 py-5">
       <p class="text-sm text-slate-500 mb-3">Near matches and filtered roles from today's structured source crawl. Roles already shown in Full-Time or Fractional are omitted here.</p>
       <div class="bg-white border border-slate-200 rounded-lg overflow-hidden">
-        <table class="w-full text-xs">
-          <thead class="bg-slate-50"><tr><th class="text-left px-3 py-2">Score</th><th class="text-left px-3 py-2">Company</th><th class="text-left px-3 py-2">Role</th><th class="text-left px-3 py-2 hidden sm:table-cell">Location</th><th class="text-left px-3 py-2 hidden md:table-cell">Comp</th><th class="text-left px-3 py-2">Status</th></tr></thead>
-          <tbody class="divide-y divide-slate-100">
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">88%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/openai.com" alt="OpenAI logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">OpenAI</span></span></td>
+        <table id="evaluated-table" class="w-full text-xs">
+          <thead class="bg-slate-50"><tr><th class="sort-header text-left px-3 py-2" data-sort-key="score" data-sort-type="number">Score</th><th class="sort-header text-left px-3 py-2" data-sort-key="company">Company</th><th class="sort-header text-left px-3 py-2" data-sort-key="role">Role</th><th class="sort-header text-left px-3 py-2 hidden sm:table-cell" data-sort-key="location">Location</th><th class="sort-header text-left px-3 py-2 hidden md:table-cell" data-sort-key="comp">Comp</th><th class="sort-header text-left px-3 py-2" data-sort-key="status">Status</th></tr></thead>
+          <tbody id="evaluated-tbody" class="divide-y divide-slate-100">
+            <tr class="hover:bg-slate-50" data-score="88" data-company="openai" data-role="head of insurance and risk management" data-location="san francisco, new york city, seattle" data-comp="not listed" data-status="weak primary title-domain signal">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-sky-700 bg-sky-100">88%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">O</span><img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="OpenAI logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">OpenAI</span></span></td>
               <td class="px-3 py-2"><a href="https://jobs.ashbyhq.com/openai/1bc3cc54-6013-4f0a-882f-a9b6c0e3f6e2" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Head of Insurance and Risk Management</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">San Francisco, New York City, Seattle</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Weak primary title-domain signal</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-amber-700 bg-amber-100">Weak primary title-domain signal</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">85%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/anthropic.com" alt="Anthropic logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Anthropic</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="85" data-company="anthropic" data-role="staff+ software engineer, privacy" data-location="san francisco, ca | new york city, ny | seattle, wa" data-comp="not listed" data-status="pure engineering role">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-sky-700 bg-sky-100">85%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">A</span><img src="https://www.google.com/s2/favicons?domain=anthropic.com&amp;sz=64" alt="Anthropic logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Anthropic</span></span></td>
               <td class="px-3 py-2"><a href="https://job-boards.greenhouse.io/anthropic/jobs/5159146008" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Staff+ Software Engineer, Privacy</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">San Francisco, CA | New York City, NY | Seattle, WA</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Pure engineering role</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-red-700 bg-red-100">Pure engineering role</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">84%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/anthropic.com" alt="Anthropic logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Anthropic</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="84" data-company="anthropic" data-role="staff+ security engineer, risk engineering" data-location="san francisco, ca | new york city, ny | seattle, wa" data-comp="not listed" data-status="pure engineering role">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-sky-700 bg-sky-100">84%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">A</span><img src="https://www.google.com/s2/favicons?domain=anthropic.com&amp;sz=64" alt="Anthropic logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Anthropic</span></span></td>
               <td class="px-3 py-2"><a href="https://job-boards.greenhouse.io/anthropic/jobs/5250052008" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Staff+ Security Engineer, Risk Engineering</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">San Francisco, CA | New York City, NY | Seattle, WA</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Pure engineering role</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-red-700 bg-red-100">Pure engineering role</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">82%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/openai.com" alt="OpenAI logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">OpenAI</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="82" data-company="openai" data-role="national security lead, state and local government, global affairs" data-location="washington, dc, new york city, seattle, san francisco, remote - us" data-comp="not listed" data-status="weak primary title-domain signal">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-sky-700 bg-sky-100">82%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">O</span><img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="OpenAI logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">OpenAI</span></span></td>
               <td class="px-3 py-2"><a href="https://jobs.ashbyhq.com/openai/47e13ab2-355e-4ece-8425-08b918997482" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">National Security Lead, State and Local Government, Global Affairs</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">Washington, DC, New York City, Seattle, San Francisco, Remote - US</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Weak primary title-domain signal</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-amber-700 bg-amber-100">Weak primary title-domain signal</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">80%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/anthropic.com" alt="Anthropic logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Anthropic</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="80" data-company="anthropic" data-role="compliance governance &amp; oversight lead" data-location="san francisco, ca | new york city, ny | washington, dc" data-comp="not listed" data-status="location hard filter">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-sky-700 bg-sky-100">80%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">A</span><img src="https://www.google.com/s2/favicons?domain=anthropic.com&amp;sz=64" alt="Anthropic logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Anthropic</span></span></td>
               <td class="px-3 py-2"><a href="https://job-boards.greenhouse.io/anthropic/jobs/5207760008" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Compliance Governance &amp; Oversight Lead</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">San Francisco, CA | New York City, NY | Washington, DC</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Location hard filter</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-red-700 bg-red-100">Location hard filter</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">80%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/discord.com" alt="Discord logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Discord</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="80" data-company="discord" data-role="director, product risk and compliance" data-location="washington, dc" data-comp="not listed" data-status="no seattle/redmond/bellevue/remote us signal">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-sky-700 bg-sky-100">80%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">D</span><img src="https://www.google.com/s2/favicons?domain=discord.com&amp;sz=64" alt="Discord logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Discord</span></span></td>
               <td class="px-3 py-2"><a href="https://job-boards.greenhouse.io/discord/jobs/8599759002" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Director, Product Risk and Compliance</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">Washington, DC</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">No Seattle/Redmond/Bellevue/Remote US signal</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-red-700 bg-red-100">No Seattle/Redmond/Bellevue/Remote US signal</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">80%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/discord.com" alt="Discord logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Discord</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="80" data-company="discord" data-role="director, product risk and compliance" data-location="san francisco bay area" data-comp="not listed" data-status="location hard filter">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-sky-700 bg-sky-100">80%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">D</span><img src="https://www.google.com/s2/favicons?domain=discord.com&amp;sz=64" alt="Discord logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Discord</span></span></td>
               <td class="px-3 py-2"><a href="https://job-boards.greenhouse.io/discord/jobs/8470798002" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Director, Product Risk and Compliance</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">San Francisco Bay Area</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Location hard filter</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-red-700 bg-red-100">Location hard filter</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">80%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/discord.com" alt="Discord logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Discord</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="80" data-company="discord" data-role="director, product risk and compliance" data-location="new york city" data-comp="not listed" data-status="location hard filter">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-sky-700 bg-sky-100">80%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">D</span><img src="https://www.google.com/s2/favicons?domain=discord.com&amp;sz=64" alt="Discord logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Discord</span></span></td>
               <td class="px-3 py-2"><a href="https://job-boards.greenhouse.io/discord/jobs/8599766002" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Director, Product Risk and Compliance</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">New York City</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Location hard filter</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-red-700 bg-red-100">Location hard filter</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">80%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/databricks.com" alt="Databricks logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Databricks</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="80" data-company="databricks" data-role="principal engineer - privacy" data-location="seattle, washington" data-comp="not listed" data-status="pure engineering role">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-sky-700 bg-sky-100">80%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">D</span><img src="https://www.google.com/s2/favicons?domain=databricks.com&amp;sz=64" alt="Databricks logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Databricks</span></span></td>
               <td class="px-3 py-2"><a href="https://databricks.com/company/careers/open-positions/job?gh_jid=7274619002" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Principal Engineer - Privacy</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">Seattle, Washington</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Pure engineering role</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-red-700 bg-red-100">Pure engineering role</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">80%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/databricks.com" alt="Databricks logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Databricks</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="80" data-company="databricks" data-role=" staff data scientist - trust and safety" data-location="san francisco, california" data-comp="not listed" data-status="location hard filter">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-sky-700 bg-sky-100">80%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">D</span><img src="https://www.google.com/s2/favicons?domain=databricks.com&amp;sz=64" alt="Databricks logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Databricks</span></span></td>
               <td class="px-3 py-2"><a href="https://databricks.com/company/careers/open-positions/job?gh_jid=8178287002" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline"> Staff Data Scientist - Trust and Safety</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">San Francisco, California</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Location hard filter</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-red-700 bg-red-100">Location hard filter</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">80%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/databricks.com" alt="Databricks logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Databricks</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="80" data-company="databricks" data-role="staff product manager, security" data-location="seattle, washington" data-comp="not listed" data-status="weak primary title-domain signal">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-sky-700 bg-sky-100">80%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">D</span><img src="https://www.google.com/s2/favicons?domain=databricks.com&amp;sz=64" alt="Databricks logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Databricks</span></span></td>
               <td class="px-3 py-2"><a href="https://databricks.com/company/careers/open-positions/job?gh_jid=7110509002" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Staff Product Manager, Security</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">Seattle, Washington</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Weak primary title-domain signal</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-amber-700 bg-amber-100">Weak primary title-domain signal</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">80%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/block.xyz" alt="Block logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Block</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="80" data-company="block" data-role="head of product, trust (risk/identity)" data-location="bay area, ca, united states of america" data-comp="not listed" data-status="location hard filter">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-sky-700 bg-sky-100">80%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">B</span><img src="https://www.google.com/s2/favicons?domain=block.xyz&amp;sz=64" alt="Block logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Block</span></span></td>
               <td class="px-3 py-2"><a href="http://block.xyz/careers/jobs/5128272008?gh_jid=5128272008" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Head of Product, Trust (Risk/Identity)</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">Bay Area, CA, United States of America</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Location hard filter</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-red-700 bg-red-100">Location hard filter</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">80%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/openai.com" alt="OpenAI logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">OpenAI</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="80" data-company="openai" data-role="strategic operations lead, user safety &amp; risk operations" data-location="san francisco" data-comp="not listed" data-status="location hard filter">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-sky-700 bg-sky-100">80%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">O</span><img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="OpenAI logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">OpenAI</span></span></td>
               <td class="px-3 py-2"><a href="https://jobs.ashbyhq.com/openai/1b65e981-2cd2-408d-8351-2e2fb1351033" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Strategic Operations Lead, User Safety &amp; Risk Operations</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">San Francisco</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Location hard filter</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-red-700 bg-red-100">Location hard filter</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">80%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/openai.com" alt="OpenAI logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">OpenAI</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="80" data-company="openai" data-role="analytics &amp; automation lead, user safety &amp; risk operations" data-location="san francisco" data-comp="not listed" data-status="location hard filter">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-sky-700 bg-sky-100">80%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">O</span><img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="OpenAI logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">OpenAI</span></span></td>
               <td class="px-3 py-2"><a href="https://jobs.ashbyhq.com/openai/3723ec14-404b-4b36-bf8a-d953781143a3" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Analytics &amp; Automation Lead, User Safety &amp; Risk Operations</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">San Francisco</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Location hard filter</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-red-700 bg-red-100">Location hard filter</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">80%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/openai.com" alt="OpenAI logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">OpenAI</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="80" data-company="openai" data-role="technical lead manager, data engineering, trust &amp; safety" data-location="san francisco" data-comp="not listed" data-status="location hard filter">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-sky-700 bg-sky-100">80%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">O</span><img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="OpenAI logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">OpenAI</span></span></td>
               <td class="px-3 py-2"><a href="https://jobs.ashbyhq.com/openai/e1daa4e0-c42a-45a7-b9ee-559b35bfe08a" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Technical Lead Manager, Data Engineering, Trust &amp; Safety</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">San Francisco</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Location hard filter</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-red-700 bg-red-100">Location hard filter</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">79%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/redditinc.com" alt="Reddit logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Reddit</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="79" data-company="reddit" data-role="principal technical program manager, developer productivity " data-location="remote - united states" data-comp="not listed" data-status="weak primary title-domain signal">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-amber-700 bg-amber-100">79%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">R</span><img src="https://www.google.com/s2/favicons?domain=redditinc.com&amp;sz=64" alt="Reddit logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Reddit</span></span></td>
               <td class="px-3 py-2"><a href="https://job-boards.greenhouse.io/reddit/jobs/7944159" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Principal Technical Program Manager, Developer Productivity </a></td>
               <td class="px-3 py-2 hidden sm:table-cell">Remote - United States</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Weak primary title-domain signal</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-amber-700 bg-amber-100">Weak primary title-domain signal</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">77%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/palantir.com" alt="Palantir logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Palantir</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="77" data-company="palantir" data-role="information security engineer - insider risk" data-location="seattle, wa" data-comp="$145,000 - $200,000" data-status="pure engineering role">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-amber-700 bg-amber-100">77%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">P</span><img src="https://www.google.com/s2/favicons?domain=palantir.com&amp;sz=64" alt="Palantir logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Palantir</span></span></td>
               <td class="px-3 py-2"><a href="https://jobs.lever.co/palantir/6bddf672-5920-46f3-8127-2a15a377cb99" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Information Security Engineer - Insider Risk</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">Seattle, WA</td>
               <td class="px-3 py-2 hidden md:table-cell">$145,000 - $200,000</td>
-              <td class="px-3 py-2">Pure engineering role</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-red-700 bg-red-100">Pure engineering role</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">77%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/openai.com" alt="OpenAI logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">OpenAI</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="77" data-company="openai" data-role="principal security engineer, infrastructure security" data-location="remote - us, new york city, seattle, san francisco" data-comp="not listed" data-status="pure engineering role">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-amber-700 bg-amber-100">77%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">O</span><img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="OpenAI logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">OpenAI</span></span></td>
               <td class="px-3 py-2"><a href="https://jobs.ashbyhq.com/openai/8f1b8c6b-b414-4026-a434-6ca32c3b3e0d" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Principal Security Engineer, Infrastructure Security</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">Remote - US, New York City, Seattle, San Francisco</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Pure engineering role</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-red-700 bg-red-100">Pure engineering role</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">77%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/openai.com" alt="OpenAI logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">OpenAI</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="77" data-company="openai" data-role="principal software engineer, infrastructure security" data-location="remote - us, new york city, seattle, san francisco" data-comp="not listed" data-status="pure engineering role">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-amber-700 bg-amber-100">77%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">O</span><img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="OpenAI logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">OpenAI</span></span></td>
               <td class="px-3 py-2"><a href="https://jobs.ashbyhq.com/openai/ace42c6d-8663-4b30-9337-ec70cf071d73" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Principal Software Engineer, Infrastructure Security</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">Remote - US, New York City, Seattle, San Francisco</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Pure engineering role</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-red-700 bg-red-100">Pure engineering role</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">77%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/amazon.com" alt="Amazon logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Amazon</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="77" data-company="amazon" data-role="software privacy engineer, devices &amp; services trust, privacy, and accessibility (tpa)" data-location="us, wa, bellevue" data-comp="not listed" data-status="pure engineering role">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-amber-700 bg-amber-100">77%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">A</span><img src="https://www.google.com/s2/favicons?domain=amazon.com&amp;sz=64" alt="Amazon logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Amazon</span></span></td>
               <td class="px-3 py-2"><a href="https://www.amazon.jobs/en/jobs/10404350/software-privacy-engineer-devices-services-trust-privacy-and-accessibility-tpa" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Software Privacy Engineer, Devices &amp; Services Trust, Privacy, and Accessibility (TPA)</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">US, WA, Bellevue</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Pure engineering role</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-red-700 bg-red-100">Pure engineering role</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">77%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/amazon.com" alt="Amazon logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Amazon</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="77" data-company="amazon" data-role="privacy engineer, incident response, devices &amp; services trust, privacy, and accessibility (tpa)" data-location="us, wa, bellevue" data-comp="not listed" data-status="pure engineering role">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-amber-700 bg-amber-100">77%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">A</span><img src="https://www.google.com/s2/favicons?domain=amazon.com&amp;sz=64" alt="Amazon logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Amazon</span></span></td>
               <td class="px-3 py-2"><a href="https://www.amazon.jobs/en/jobs/10416051/privacy-engineer-incident-response-devices-services-trust-privacy-and-accessibility-tpa" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Privacy Engineer, Incident Response, Devices &amp; Services Trust, Privacy, and Accessibility (TPA)</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">US, WA, Bellevue</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Pure engineering role</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-red-700 bg-red-100">Pure engineering role</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">77%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/amazon.com" alt="Amazon logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Amazon</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="77" data-company="amazon" data-role="trust and privacy technical program manager, devices &amp; services trust, privacy, and accessibility (tpa)" data-location="us, wa, bellevue" data-comp="not listed" data-status="below seniority threshold">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-amber-700 bg-amber-100">77%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">A</span><img src="https://www.google.com/s2/favicons?domain=amazon.com&amp;sz=64" alt="Amazon logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Amazon</span></span></td>
               <td class="px-3 py-2"><a href="https://www.amazon.jobs/en/jobs/3168920/trust-and-privacy-technical-program-manager-devices-services-trust-privacy-and-accessibility-tpa" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Trust and Privacy Technical Program Manager, Devices &amp; Services Trust, Privacy, and Accessibility (TPA)</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">US, WA, Bellevue</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Below seniority threshold</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-amber-700 bg-amber-100">Below seniority threshold</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">77%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/amazon.com" alt="Amazon logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Amazon</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="77" data-company="amazon" data-role="sr. program manager, leo trust, privacy, and safety" data-location="us, wa, redmond" data-comp="not listed" data-status="below seniority threshold">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-amber-700 bg-amber-100">77%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">A</span><img src="https://www.google.com/s2/favicons?domain=amazon.com&amp;sz=64" alt="Amazon logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Amazon</span></span></td>
               <td class="px-3 py-2"><a href="https://www.amazon.jobs/en/jobs/10457404/sr-program-manager-leo-trust-privacy-and-safety" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Sr. Program Manager, Leo Trust, Privacy, and Safety</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">US, WA, Redmond</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Below seniority threshold</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-amber-700 bg-amber-100">Below seniority threshold</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">77%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/amazon.com" alt="Amazon logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Amazon</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="77" data-company="amazon" data-role="program manager, trust &amp; safety, prime video, prime video trust &amp; safety" data-location="us, wa, seattle" data-comp="not listed" data-status="below seniority threshold">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-amber-700 bg-amber-100">77%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">A</span><img src="https://www.google.com/s2/favicons?domain=amazon.com&amp;sz=64" alt="Amazon logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Amazon</span></span></td>
               <td class="px-3 py-2"><a href="https://www.amazon.jobs/en/jobs/10436077/program-manager-trust-safety-prime-video-prime-video-trust-safety" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Program Manager, Trust &amp; Safety, Prime Video, Prime Video Trust &amp; Safety</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">US, WA, Seattle</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Below seniority threshold</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-amber-700 bg-amber-100">Below seniority threshold</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">77%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/amazon.com" alt="Amazon logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Amazon</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="77" data-company="amazon" data-role="senior program manager iii,  selling partner trust and store integrity (tsi)" data-location="us, wa, seattle" data-comp="not listed" data-status="below seniority threshold">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-amber-700 bg-amber-100">77%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">A</span><img src="https://www.google.com/s2/favicons?domain=amazon.com&amp;sz=64" alt="Amazon logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Amazon</span></span></td>
               <td class="px-3 py-2"><a href="https://www.amazon.jobs/en/jobs/10450628/senior-program-manager-iii-selling-partner-trust-and-store-integrity-tsi" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Senior Program Manager III,  Selling Partner Trust and Store Integrity (TSI)</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">US, WA, Seattle</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Below seniority threshold</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-amber-700 bg-amber-100">Below seniority threshold</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">76%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/scale.com" alt="Scale AI logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Scale AI</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="76" data-company="scale ai" data-role="head of policy &amp; security research lab" data-location="london, uk; san francisco, ca; seattle, wa; new york, ny; washington, dc" data-comp="not listed" data-status="weak primary title-domain signal">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-amber-700 bg-amber-100">76%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">SA</span><img src="https://www.google.com/s2/favicons?domain=scale.com&amp;sz=64" alt="Scale AI logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Scale AI</span></span></td>
               <td class="px-3 py-2"><a href="https://job-boards.greenhouse.io/scaleai/jobs/4696072005" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Head of Policy &amp; Security Research Lab</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">London, UK; San Francisco, CA; Seattle, WA; New York, NY; Washington, DC</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Weak primary title-domain signal</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-amber-700 bg-amber-100">Weak primary title-domain signal</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">76%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/okta.com" alt="Okta logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Okta</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="76" data-company="okta" data-role="principal product manager, iam security &amp; agentic identity" data-location="bellevue, washington; chicago, illinois; san francisco, california; washington, dc" data-comp="not listed" data-status="weak primary title-domain signal">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-amber-700 bg-amber-100">76%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">O</span><img src="https://www.google.com/s2/favicons?domain=okta.com&amp;sz=64" alt="Okta logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Okta</span></span></td>
               <td class="px-3 py-2"><a href="https://www.okta.com/company/careers/opportunity/8009100?gh_jid=8009100" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Principal Product Manager, IAM Security &amp; Agentic Identity</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">Bellevue, Washington; Chicago, Illinois; San Francisco, California; Washington, DC</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Weak primary title-domain signal</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-amber-700 bg-amber-100">Weak primary title-domain signal</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">76%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/openai.com" alt="OpenAI logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">OpenAI</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="76" data-company="openai" data-role="safety response operations lead" data-location="singapore" data-comp="not listed" data-status="no seattle/redmond/bellevue/remote us signal">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-amber-700 bg-amber-100">76%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">O</span><img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="OpenAI logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">OpenAI</span></span></td>
               <td class="px-3 py-2"><a href="https://jobs.ashbyhq.com/openai/d9be9157-c307-4ac4-9aa6-ad2fe7104808" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Safety Response Operations Lead</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">Singapore</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">No Seattle/Redmond/Bellevue/Remote US signal</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-red-700 bg-red-100">No Seattle/Redmond/Bellevue/Remote US signal</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">75%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/anthropic.com" alt="Anthropic logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Anthropic</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="75" data-company="anthropic" data-role="compute &amp; infrastructure counsel, security &amp; compliance" data-location="san francisco, ca | seattle, wa | new york city, ny | washington, dc" data-comp="not listed" data-status="below seniority threshold">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-amber-700 bg-amber-100">75%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">A</span><img src="https://www.google.com/s2/favicons?domain=anthropic.com&amp;sz=64" alt="Anthropic logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Anthropic</span></span></td>
               <td class="px-3 py-2"><a href="https://job-boards.greenhouse.io/anthropic/jobs/5205894008" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Compute &amp; Infrastructure Counsel, Security &amp; Compliance</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">San Francisco, CA | Seattle, WA | New York City, NY | Washington, DC</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Below seniority threshold</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-amber-700 bg-amber-100">Below seniority threshold</span></td>
             </tr>
 
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2 font-bold">75%</td>
-              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden"><img src="https://logo.clearbit.com/anthropic.com" alt="Anthropic logo" class="h-full w-full object-contain" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Anthropic</span></span></td>
+            <tr class="hover:bg-slate-50" data-score="75" data-company="anthropic" data-role="engineering manager - privacy infrastructure" data-location="san francisco, ca | seattle, wa" data-comp="not listed" data-status="below seniority threshold">
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold text-amber-700 bg-amber-100">75%</span></td>
+              <td class="px-3 py-2"><span class="inline-flex items-center gap-2 align-middle"><span class="h-6 w-6 relative rounded bg-slate-100 border border-slate-200 inline-flex items-center justify-center overflow-hidden text-[10px] font-bold text-slate-600"><span aria-hidden="true">A</span><img src="https://www.google.com/s2/favicons?domain=anthropic.com&amp;sz=64" alt="Anthropic logo" class="absolute inset-0 h-full w-full object-contain bg-white" loading="lazy" onerror="this.style.display=&quot;none&quot;"></span><span class="text-slate-800">Anthropic</span></span></td>
               <td class="px-3 py-2"><a href="https://job-boards.greenhouse.io/anthropic/jobs/5227810008" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">Engineering Manager - Privacy Infrastructure</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">San Francisco, CA | Seattle, WA</td>
               <td class="px-3 py-2 hidden md:table-cell">Not listed</td>
-              <td class="px-3 py-2">Below seniority threshold</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold text-amber-700 bg-amber-100">Below seniority threshold</span></td>
             </tr></tbody>
         </table>
       </div>
@@ -521,6 +530,31 @@
       active.classList.add('text-white', 'border-white');
       active.classList.remove('text-slate-400', 'border-transparent');
     }
+
+    function sortEvaluatedTable(header) {
+      const key = header.dataset.sortKey;
+      const type = header.dataset.sortType || 'text';
+      const tbody = document.getElementById('evaluated-tbody');
+      if (!tbody) return;
+      const current = header.dataset.sortDir || 'desc';
+      const next = current === 'asc' ? 'desc' : 'asc';
+      document.querySelectorAll('.sort-header').forEach(el => el.removeAttribute('data-sort-dir'));
+      header.dataset.sortDir = next;
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+      rows.sort((a, b) => {
+        const av = a.dataset[key] || '';
+        const bv = b.dataset[key] || '';
+        if (type === 'number') {
+          return next === 'asc' ? Number(av) - Number(bv) : Number(bv) - Number(av);
+        }
+        return next === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
+      });
+      rows.forEach(row => tbody.appendChild(row));
+    }
+
+    document.querySelectorAll('.sort-header').forEach(header => {
+      header.addEventListener('click', () => sortEvaluatedTable(header));
+    });
   </script>
 </body>
 </html>
