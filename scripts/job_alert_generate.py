@@ -131,6 +131,63 @@ COMPANY_DOMAINS = {
     "OpenAI": "openai.com",
 }
 
+STATE_ALIASES = {
+    "alabama": "AL",
+    "alaska": "AK",
+    "arizona": "AZ",
+    "arkansas": "AR",
+    "california": "CA",
+    "colorado": "CO",
+    "connecticut": "CT",
+    "delaware": "DE",
+    "district of columbia": "DC",
+    "florida": "FL",
+    "georgia": "GA",
+    "hawaii": "HI",
+    "idaho": "ID",
+    "illinois": "IL",
+    "indiana": "IN",
+    "iowa": "IA",
+    "kansas": "KS",
+    "kentucky": "KY",
+    "louisiana": "LA",
+    "maine": "ME",
+    "maryland": "MD",
+    "massachusetts": "MA",
+    "michigan": "MI",
+    "minnesota": "MN",
+    "mississippi": "MS",
+    "missouri": "MO",
+    "montana": "MT",
+    "nebraska": "NE",
+    "nevada": "NV",
+    "new hampshire": "NH",
+    "new jersey": "NJ",
+    "new mexico": "NM",
+    "new york": "NY",
+    "north carolina": "NC",
+    "north dakota": "ND",
+    "ohio": "OH",
+    "oklahoma": "OK",
+    "oregon": "OR",
+    "pennsylvania": "PA",
+    "rhode island": "RI",
+    "south carolina": "SC",
+    "south dakota": "SD",
+    "tennessee": "TN",
+    "texas": "TX",
+    "utah": "UT",
+    "vermont": "VT",
+    "virginia": "VA",
+    "washington": "WA",
+    "washington d.c.": "DC",
+    "washington dc": "DC",
+    "west virginia": "WV",
+    "wisconsin": "WI",
+    "wyoming": "WY",
+}
+STATE_ABBRS = set(STATE_ALIASES.values())
+
 
 @dataclass
 class Candidate:
@@ -321,6 +378,7 @@ def dedupe(candidates: list[Candidate]) -> list[Candidate]:
     deduped: list[Candidate] = []
     for candidate in candidates:
         candidate.company = canonical_company(candidate.company)
+        candidate.location = normalize_location(candidate.location)
         key = candidate.url or f"{candidate.company}:{candidate.title}:{candidate.location}"
         if not candidate.title or not candidate.url or key in seen:
             continue
@@ -336,6 +394,91 @@ def canonical_company(name: str) -> str:
             return canonical
     cleaned = re.sub(r"\s+(inc\.?|llc|ltd\.?|corp\.?|corporation|services|technologies)$", "", cleaned, flags=re.I).strip()
     return cleaned or "Unknown"
+
+
+def normalize_location(location: str) -> str:
+    raw = re.sub(r"\s+", " ", location or "").strip()
+    if not raw or raw.lower() == "not listed":
+        return "Not listed"
+
+    lowered = raw.lower()
+    if "remote" in lowered and any(token in lowered for token in ["united states", " u.s.", " usa", " us", "- us"]):
+        return "Remote, US"
+    remote_state = re.match(r"^Remote\s*[-,]\s*(.+)$", raw, re.I)
+    if remote_state:
+        state = normalize_state(remote_state.group(1))
+        if state:
+            return f"Remote, {state}, US"
+
+    raw = raw.replace("United States of America", "US").replace("United States", "US")
+    raw = re.sub(r"\bUSA\b|\bU\.S\.\b|\bU\.S\.A\.\b", "US", raw, flags=re.I)
+    raw = raw.replace("Washington, D.C.", "Washington, DC").replace("Washington D.C.", "Washington, DC")
+    known_city_states = {
+        "seattle": ("Seattle", "WA"),
+        "bellevue": ("Bellevue", "WA"),
+        "redmond": ("Redmond", "WA"),
+        "san francisco": ("San Francisco", "CA"),
+        "san francisco bay area": ("Bay Area", "CA"),
+        "bay area": ("Bay Area", "CA"),
+        "new york city": ("New York City", "NY"),
+        "new york": ("New York", "NY"),
+        "washington": ("Washington", "DC"),
+        "chicago": ("Chicago", "IL"),
+        "san mateo": ("San Mateo", "CA"),
+        "los angeles": ("Los Angeles", "CA"),
+    }
+    if re.search(r"\s*(?:\||;)\s*", raw):
+        parts = []
+        for part in re.split(r"\s*(?:\||;)\s*", raw):
+            normalized = normalize_location(part)
+            if part.strip() and normalized not in parts:
+                parts.append(normalized)
+        return "; ".join(parts)
+
+    comma_parts = [part.strip().lower() for part in raw.split(",")]
+    if len(comma_parts) > 1 and all(part in known_city_states for part in comma_parts):
+        normalized_parts = []
+        for part in comma_parts:
+            city, state = known_city_states[part]
+            value = f"{city}, {state}, US"
+            if value not in normalized_parts:
+                normalized_parts.append(value)
+        return "; ".join(normalized_parts)
+
+    us_state_city = re.match(r"^US,\s*([A-Z]{2}|[A-Za-z ]+),\s*(.+)$", raw)
+    if us_state_city:
+        state = normalize_state(us_state_city.group(1))
+        city = clean_city(us_state_city.group(2))
+        return f"{city}, {state}, US" if state else f"{city}, US"
+
+    city_state = re.match(r"^(.+?),\s*([A-Z]{2}|[A-Za-z ]+)(?:,\s*US)?$", raw)
+    if city_state:
+        city = clean_city(city_state.group(1))
+        state = normalize_state(city_state.group(2))
+        if state:
+            return f"{city}, {state}, US"
+
+    city_key = raw.lower().strip(",")
+    if city_key in known_city_states:
+        city, state = known_city_states[city_key]
+        return f"{city}, {state}, US"
+    state = normalize_state(raw)
+    if state:
+        return f"{state}, US"
+
+    return raw
+
+
+def normalize_state(value: str) -> str:
+    cleaned = value.strip().strip(",")
+    upper = cleaned.upper()
+    if upper in STATE_ABBRS:
+        return upper
+    return STATE_ALIASES.get(cleaned.lower(), "")
+
+
+def clean_city(value: str) -> str:
+    return re.sub(r"\s+", " ", value.strip().strip(","))
 
 
 def keyword_hits(text: str, keywords: list[str]) -> list[str]:
@@ -585,7 +728,7 @@ def render_html(evaluated: list[Evaluated], errors: list[str]) -> str:
     criteria_html = render_criteria()
     summary = (
         f"Generated from public ATS APIs across {len(GREENHOUSE) + len(LEVER) + len(ASHBY)} company boards plus Amazon Jobs search. "
-        f"{len(included)} roles passed the 60% threshold and hard filters; {len(discarded)} near matches or filtered roles are listed in All Evaluated."
+        f"{len(included)} roles passed the 60% threshold and hard filters; {len(discarded)} near matches or filtered roles are listed in Filtered Out."
     )
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -628,7 +771,7 @@ def render_html(evaluated: list[Evaluated], errors: list[str]) -> str:
     <div class="max-w-5xl mx-auto px-4 sm:px-6 flex flex-wrap">
       <button onclick="switchTab('fulltime')" id="tab-fulltime" class="tab-btn px-4 py-3 text-sm font-semibold text-white border-b-2 border-white">Full-Time Roles <span>{len(fulltime)}</span></button>
       <button onclick="switchTab('fractional')" id="tab-fractional" class="tab-btn px-4 py-3 text-sm font-semibold text-slate-400 border-b-2 border-transparent">Fractional &amp; Advisory <span>{len(fractional)}</span></button>
-      <button onclick="switchTab('all')" id="tab-all" class="tab-btn px-4 py-3 text-sm font-semibold text-slate-400 border-b-2 border-transparent">All Evaluated <span>{len(discarded)}</span></button>
+      <button onclick="switchTab('all')" id="tab-all" class="tab-btn px-4 py-3 text-sm font-semibold text-slate-400 border-b-2 border-transparent">Filtered Out <span>{len(discarded)}</span></button>
       <button onclick="switchTab('criteria')" id="tab-criteria" class="tab-btn px-4 py-3 text-sm font-semibold text-slate-400 border-b-2 border-transparent">Criteria</button>
     </div>
   </nav>
@@ -648,7 +791,7 @@ def render_html(evaluated: list[Evaluated], errors: list[str]) -> str:
 
   <div id="tab-content-all" class="tab-content hidden">
     <main class="max-w-5xl mx-auto px-4 sm:px-6 py-5">
-      <p class="text-sm text-slate-500 mb-3">Near matches and filtered roles from today's structured source crawl. Roles already shown in Full-Time or Fractional are omitted here.</p>
+      <p class="text-sm text-slate-500 mb-3">Job postings that did not make the cut from today's structured source crawl. Roles already shown in Full-Time or Fractional are omitted here.</p>
       <div class="bg-white border border-slate-200 rounded-lg overflow-hidden">
         <table id="evaluated-table" class="w-full text-xs">
           <thead class="bg-slate-50"><tr><th class="sort-header text-left px-3 py-2" data-sort-key="score" data-sort-type="number">Score</th><th class="sort-header text-left px-3 py-2" data-sort-key="company">Company</th><th class="sort-header text-left px-3 py-2" data-sort-key="role">Role</th><th class="sort-header text-left px-3 py-2 hidden sm:table-cell" data-sort-key="location">Location</th><th class="sort-header text-left px-3 py-2 hidden md:table-cell" data-sort-key="comp">Comp</th><th class="sort-header text-left px-3 py-2" data-sort-key="status">Status</th></tr></thead>

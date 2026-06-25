@@ -40,7 +40,7 @@ AGGREGATOR_DOMAINS = [
 TAB_IDS = [
     ("Full-Time Roles", "tab-content-fulltime"),
     ("Fractional & Advisory", "tab-content-fractional"),
-    ("All Evaluated", "tab-content-all"),
+    ("Filtered Out", "tab-content-all"),
 ]
 LINK_VALIDATION_TAB_IDS = [
     ("Full-Time Roles", "tab-content-fulltime"),
@@ -267,7 +267,7 @@ def tab_job_links(html: str) -> dict[str, list[dict[str, str]]]:
 
 
 def all_evaluated_reason_rows(html: str) -> list[dict[str, str]]:
-    section = tab_sections(html).get("All Evaluated", "")
+    section = tab_sections(html).get("Filtered Out", "")
     parser = TableParser()
     parser.feed(section)
     rows = []
@@ -483,7 +483,7 @@ def main() -> int:
     reason_case_passes: list[str] = []
     reason_rows = all_evaluated_reason_rows(public_html)
     if not reason_rows:
-        reason_case_failures.append("No All Evaluated rows with reason/status text were found")
+        reason_case_failures.append("No Filtered Out rows with reason/status text were found")
     for row in reason_rows:
         href = row["href"]
         if not href:
@@ -495,7 +495,7 @@ def main() -> int:
         reason_results.append(result_line)
         if contradiction:
             reason_case_failures.append(contradiction)
-            failures.append(f"All Evaluated reason mismatch: {contradiction}")
+            failures.append(f"Filtered Out reason mismatch: {contradiction}")
         else:
             reason_case_passes.append(result_line)
 
@@ -526,14 +526,14 @@ def main() -> int:
         else "This test is marked PASS because every checked job posting link in the Full-Time Roles and Fractional & Advisory tabs resolved to a live direct company or ATS page."
     )
     reason_case_actual = (
-        f"{len(reason_rows)} All Evaluated reason row(s) inspected; "
+        f"{len(reason_rows)} Filtered Out reason row(s) inspected; "
         f"{len(reason_case_failures)} contradiction(s); "
         f"{len(reason_case_passes)} non-contradicting row(s)."
     )
     reason_case_why = (
-        "This test is marked FAIL because at least one All Evaluated row's reason contradicts the observed link behavior."
+        "This test is marked FAIL because at least one Filtered Out row's reason contradicts the observed link behavior."
         if reason_case_failures
-        else "This test is marked PASS because no All Evaluated reason contradicted the observed link behavior."
+        else "This test is marked PASS because no Filtered Out reason contradicted the observed link behavior."
     )
     title = f"Job Alerts Test Report - {today_iso}"
     generated = now.strftime("%Y-%m-%d %H:%M:%S %Z")
@@ -595,7 +595,7 @@ Result: **{link_case_status}**
 Expected:
 
 - Every job posting link in Full-Time Roles and Fractional & Advisory must resolve through redirects to a direct company or ATS page.
-- All Evaluated links are excluded from this test and are covered by `TC-P0-REASON-001` when the reason/status text makes a link-status claim.
+- Filtered Out links are excluded from this test and are covered by `TC-P0-REASON-001` when the reason/status text makes a link-status claim.
 - `404`, `410`, `403`, `5xx`, timeout, DNS/TLS failure, expired posting, and aggregator links are failures.
 - `Could not verify` is not acceptable for an included card.
 
@@ -615,13 +615,13 @@ Passing Details:
 
 {markdown_list(link_case_passes)}
 
-### TC-P0-REASON-001: All Evaluated discard/status reasons must match observed link behavior
+### TC-P0-REASON-001: Filtered Out discard/status reasons must match observed link behavior
 
 Result: **{reason_case_status}**
 
 Expected:
 
-- If the All Evaluated reason says a link returned `403`, was blocked, was closed, or had no working direct URL, the validator should observe the same kind of failure.
+- If the Filtered Out reason says a link returned `403`, was blocked, was closed, or had no working direct URL, the validator should observe the same kind of failure.
 - A row is a failure if its reason says the link is blocked/closed/unverifiable but the live link validates successfully.
 - This check currently verifies link-status claims in the reason text; location, level, compensation, and policy-fit claims may still require separate semantic checks.
 
@@ -657,7 +657,7 @@ Passing Details:
 
 {markdown_list(link_results)}
 
-## All Evaluated Reason Results
+## Filtered Out Reason Results
 
 {markdown_list(reason_results)}
 
