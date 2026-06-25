@@ -101,6 +101,36 @@ FUNCTION_KEYWORDS = [
 ]
 EXCLUDED_COMPANIES = ["meta", "instagram", "whatsapp", "reality labs"]
 
+COMPANY_ALIASES = [
+    (re.compile(r"\bamazon\b", re.I), "Amazon"),
+    (re.compile(r"\bopenai\b", re.I), "OpenAI"),
+    (re.compile(r"\breddit\b", re.I), "Reddit"),
+    (re.compile(r"\banthropic\b", re.I), "Anthropic"),
+    (re.compile(r"\bdiscord\b", re.I), "Discord"),
+    (re.compile(r"\bdatabricks\b", re.I), "Databricks"),
+    (re.compile(r"\bokta\b", re.I), "Okta"),
+    (re.compile(r"\bcoinbase\b", re.I), "Coinbase"),
+    (re.compile(r"\bscale ai\b|\bscaleai\b", re.I), "Scale AI"),
+    (re.compile(r"\bblock\b", re.I), "Block"),
+    (re.compile(r"\bmoonpay\b", re.I), "MoonPay"),
+    (re.compile(r"\bpalantir\b", re.I), "Palantir"),
+]
+
+COMPANY_DOMAINS = {
+    "Amazon": "amazon.com",
+    "Anthropic": "anthropic.com",
+    "Reddit": "redditinc.com",
+    "Scale AI": "scale.com",
+    "Discord": "discord.com",
+    "Coinbase": "coinbase.com",
+    "Databricks": "databricks.com",
+    "Okta": "okta.com",
+    "Block": "block.xyz",
+    "MoonPay": "moonpay.com",
+    "Palantir": "palantir.com",
+    "OpenAI": "openai.com",
+}
+
 
 @dataclass
 class Candidate:
@@ -290,12 +320,22 @@ def dedupe(candidates: list[Candidate]) -> list[Candidate]:
     seen: set[str] = set()
     deduped: list[Candidate] = []
     for candidate in candidates:
+        candidate.company = canonical_company(candidate.company)
         key = candidate.url or f"{candidate.company}:{candidate.title}:{candidate.location}"
         if not candidate.title or not candidate.url or key in seen:
             continue
         seen.add(key)
         deduped.append(candidate)
     return deduped
+
+
+def canonical_company(name: str) -> str:
+    cleaned = re.sub(r"\s+", " ", name or "").strip()
+    for pattern, canonical in COMPANY_ALIASES:
+        if pattern.search(cleaned):
+            return canonical
+    cleaned = re.sub(r"\s+(inc\.?|llc|ltd\.?|corp\.?|corporation|services|technologies)$", "", cleaned, flags=re.I).strip()
+    return cleaned or "Unknown"
 
 
 def keyword_hits(text: str, keywords: list[str]) -> list[str]:
@@ -382,6 +422,38 @@ def esc(value: object) -> str:
     return html.escape(str(value or ""), quote=True)
 
 
+def logo_url(company: str) -> str:
+    domain = COMPANY_DOMAINS.get(canonical_company(company))
+    if not domain:
+        return ""
+    return f"https://logo.clearbit.com/{domain}"
+
+
+def company_logo_html(company: str, *, size: str = "h-6 w-6") -> str:
+    canonical = canonical_company(company)
+    url = logo_url(canonical)
+    initials = "".join(part[0] for part in canonical.split()[:2]).upper()
+    fallback = f'<span class="{size} rounded bg-slate-200 text-slate-700 inline-flex items-center justify-center text-[10px] font-bold">{esc(initials)}</span>'
+    if not url:
+        return fallback
+    return (
+        f'<span class="{size} rounded bg-white border border-slate-200 inline-flex items-center justify-center overflow-hidden">'
+        f'<img src="{esc(url)}" alt="{esc(canonical)} logo" class="h-full w-full object-contain" loading="lazy" '
+        f'onerror="this.style.display=&quot;none&quot;">'
+        "</span>"
+    )
+
+
+def company_name_html(company: str, *, muted: bool = False) -> str:
+    text_class = "text-slate-600" if muted else "text-slate-800"
+    return (
+        f'<span class="inline-flex items-center gap-2 align-middle">'
+        f'{company_logo_html(company)}'
+        f'<span class="{text_class}">{esc(canonical_company(company))}</span>'
+        f'</span>'
+    )
+
+
 def score_color(score: int) -> str:
     if score >= 90:
         return "text-green-700 bg-green-100"
@@ -394,12 +466,13 @@ def score_color(score: int) -> str:
 
 def render_card(item: Evaluated) -> str:
     c = item.candidate
+    company = canonical_company(c.company)
     tags = "".join(
         f'<span class="px-2 py-0.5 rounded-full border border-slate-200 bg-slate-50 text-slate-600">{esc(tag)}</span>'
         for tag in item.tags[:6]
     )
     why = [
-        f"{esc(c.company)} role contains {esc(', '.join(item.tags[:3]) or 'relevant trust/safety signals')}.",
+        f"{esc(company)} role contains {esc(', '.join(item.tags[:3]) or 'relevant trust/safety signals')}.",
         f"Seniority/function score maps to Kevin's T&S, privacy, GenAI trust, and TPM leadership background.",
         f"Location passes current filter: {esc(c.location)}.",
     ]
@@ -413,7 +486,7 @@ def render_card(item: Evaluated) -> str:
               <span class="px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700">Verified via {esc(c.source)}</span>
             </div>
             <h2 class="text-lg font-bold text-slate-900">{esc(c.title)}</h2>
-            <p class="text-sm text-slate-600">{esc(c.company)} · {esc(c.location)}</p>
+            <p class="text-sm text-slate-600 mt-1">{company_name_html(company, muted=True)} <span class="mx-1 text-slate-300">·</span> {esc(c.location)}</p>
           </div>
           <a href="{esc(c.url)}" target="_blank" class="shrink-0 text-center bg-slate-900 text-white text-xs font-semibold px-3 py-2 rounded hover:bg-slate-700">Apply</a>
         </div>
@@ -440,13 +513,50 @@ def render_rows(items: list[Evaluated]) -> str:
             f"""
             <tr class="hover:bg-slate-50">
               <td class="px-3 py-2 font-bold">{item.score}%</td>
-              <td class="px-3 py-2"><a href="{esc(c.url)}" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">{esc(c.company)} · {esc(c.title)}</a></td>
+              <td class="px-3 py-2">{company_name_html(c.company)}</td>
+              <td class="px-3 py-2"><a href="{esc(c.url)}" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">{esc(c.title)}</a></td>
               <td class="px-3 py-2 hidden sm:table-cell">{esc(c.location)}</td>
               <td class="px-3 py-2 hidden md:table-cell">{esc(c.comp)}</td>
               <td class="px-3 py-2">{esc(item.band if item.included else item.reason)}</td>
             </tr>"""
         )
-    return "\n".join(rows) or '<tr><td class="px-3 py-3 text-slate-400" colspan="5">No rows.</td></tr>'
+    return "\n".join(rows) or '<tr><td class="px-3 py-3 text-slate-400" colspan="6">No rows.</td></tr>'
+
+
+def render_criteria() -> str:
+    criteria = [
+        ("Domain fit", "Trust & Safety, privacy, regulatory compliance, governance, integrity, abuse prevention, youth safety, responsible AI, and GenAI trust signals in the title and role scope."),
+        ("Leadership level", "Director, VP, Head, Principal, Staff, or equivalent senior ownership. IC engineering roles are filtered unless the title clearly carries leadership or product/program ownership."),
+        ("Function fit", "TPM, technical program leadership, product management, risk/compliance leadership, platform governance, and cross-functional operating roles."),
+        ("Location", "Seattle, Bellevue, Redmond, or Remote US. Bay Area, NYC, LA, and other explicit non-target locations are filtered out."),
+        ("Company filter", "Meta, Instagram, WhatsApp, and Reality Labs are excluded. Subsidiary names are normalized so Amazon variants render as Amazon."),
+        ("Compensation", "Listed compensation is a positive signal, but missing compensation is treated as a review gap rather than an automatic reject."),
+    ]
+    profile = [
+        "Head of TPM background across Reality Labs Trust and Instagram Trust.",
+        "Deep privacy and regulatory compliance experience spanning GDPR, COPPA, AADC, DMA, developer platform compliance, and security/integrity programs.",
+        "Strong fit for roles that combine executive stakeholder management, ambiguous regulatory or safety problems, platform/product governance, and AI trust/responsible AI operating models.",
+        "Current target: senior trust, safety, privacy, compliance, responsible AI, and TPM/product leadership roles in Seattle-area or Remote US environments.",
+    ]
+    criteria_html = "".join(
+        f"""
+        <div class="bg-white border border-slate-200 rounded-lg p-4">
+          <p class="font-semibold text-slate-900">{esc(title)}</p>
+          <p class="text-sm text-slate-600 mt-1">{esc(body)}</p>
+        </div>"""
+        for title, body in criteria
+    )
+    profile_html = "".join(f"<li>{esc(item)}</li>" for item in profile)
+    return f"""
+      <div class="grid md:grid-cols-2 gap-3">{criteria_html}</div>
+      <div class="bg-white border border-slate-200 rounded-lg p-4 mt-4">
+        <p class="font-semibold text-slate-900">Kevin profile signals used</p>
+        <ul class="list-disc pl-5 mt-2 space-y-1 text-sm text-slate-600">{profile_html}</ul>
+      </div>
+      <div class="bg-slate-900 text-white rounded-lg p-4 mt-4">
+        <p class="font-semibold">Scoring model</p>
+        <p class="text-sm text-slate-300 mt-1">Up to 35 points for domain match, 25 for seniority, 20 for function fit, 10 for target location, and 10 for listed compensation. Inclusion requires a passing location, seniority signal, primary title-domain signal, and at least 60% score.</p>
+      </div>"""
 
 
 def render_html(evaluated: list[Evaluated], errors: list[str]) -> str:
@@ -460,7 +570,8 @@ def render_html(evaluated: list[Evaluated], errors: list[str]) -> str:
     source_errors = "".join(f"<li>{esc(error)}</li>" for error in errors) or "<li>No source fetch errors.</li>"
     cards = "\n".join(render_card(item) for item in fulltime) or '<p class="text-sm text-slate-500 italic">No full-time roles passed filters today.</p>'
     fractional_cards = "\n".join(render_card(item) for item in fractional) or '<p class="text-sm text-slate-500 italic">No fractional or advisory roles with verified candidate-usable Apply links today.</p>'
-    all_rows = render_rows(included + discarded)
+    all_rows = render_rows(discarded)
+    criteria_html = render_criteria()
     summary = (
         f"Generated from public ATS APIs across {len(GREENHOUSE) + len(LEVER) + len(ASHBY)} company boards plus Amazon Jobs search. "
         f"{len(included)} roles passed the 60% threshold and hard filters; {len(discarded)} near matches or filtered roles are listed in All Evaluated."
@@ -494,10 +605,11 @@ def render_html(evaluated: list[Evaluated], errors: list[str]) -> str:
         <div><p class="text-2xl font-bold text-sky-400">{len(evaluated)}</p><p class="text-xs text-slate-400">Postings evaluated</p></div>
       </div>
     </div>
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 flex">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 flex flex-wrap">
       <button onclick="switchTab('fulltime')" id="tab-fulltime" class="tab-btn px-4 py-3 text-sm font-semibold text-white border-b-2 border-white">Full-Time Roles <span>{len(fulltime)}</span></button>
       <button onclick="switchTab('fractional')" id="tab-fractional" class="tab-btn px-4 py-3 text-sm font-semibold text-slate-400 border-b-2 border-transparent">Fractional &amp; Advisory <span>{len(fractional)}</span></button>
-      <button onclick="switchTab('all')" id="tab-all" class="tab-btn px-4 py-3 text-sm font-semibold text-slate-400 border-b-2 border-transparent">All Evaluated <span>{len(included) + len(discarded)}</span></button>
+      <button onclick="switchTab('all')" id="tab-all" class="tab-btn px-4 py-3 text-sm font-semibold text-slate-400 border-b-2 border-transparent">All Evaluated <span>{len(discarded)}</span></button>
+      <button onclick="switchTab('criteria')" id="tab-criteria" class="tab-btn px-4 py-3 text-sm font-semibold text-slate-400 border-b-2 border-transparent">Criteria</button>
     </div>
   </header>
 
@@ -516,14 +628,20 @@ def render_html(evaluated: list[Evaluated], errors: list[str]) -> str:
 
   <div id="tab-content-all" class="tab-content hidden">
     <main class="max-w-5xl mx-auto px-4 sm:px-6 py-5">
-      <p class="text-sm text-slate-500 mb-3">Included, discarded, and filtered roles from today's structured source crawl.</p>
+      <p class="text-sm text-slate-500 mb-3">Near matches and filtered roles from today's structured source crawl. Roles already shown in Full-Time or Fractional are omitted here.</p>
       <div class="bg-white border border-slate-200 rounded-lg overflow-hidden">
         <table class="w-full text-xs">
-          <thead class="bg-slate-50"><tr><th class="text-left px-3 py-2">Score</th><th class="text-left px-3 py-2">Company · Role</th><th class="text-left px-3 py-2 hidden sm:table-cell">Location</th><th class="text-left px-3 py-2 hidden md:table-cell">Comp</th><th class="text-left px-3 py-2">Status</th></tr></thead>
+          <thead class="bg-slate-50"><tr><th class="text-left px-3 py-2">Score</th><th class="text-left px-3 py-2">Company</th><th class="text-left px-3 py-2">Role</th><th class="text-left px-3 py-2 hidden sm:table-cell">Location</th><th class="text-left px-3 py-2 hidden md:table-cell">Comp</th><th class="text-left px-3 py-2">Status</th></tr></thead>
           <tbody class="divide-y divide-slate-100">{all_rows}</tbody>
         </table>
       </div>
       <div class="mt-4 text-xs text-slate-500"><p class="font-semibold">Source fetch notes</p><ul class="list-disc pl-4">{source_errors}</ul></div>
+    </main>
+  </div>
+
+  <div id="tab-content-criteria" class="tab-content hidden">
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 py-5">
+{criteria_html}
     </main>
   </div>
 

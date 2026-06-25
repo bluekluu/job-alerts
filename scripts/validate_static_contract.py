@@ -12,6 +12,7 @@ REQUIRED = [
     'id="tab-content-fulltime"',
     'id="tab-content-fractional"',
     'id="tab-content-all"',
+    'id="tab-content-criteria"',
 ]
 FORBIDDEN = [
     'id="tab-content-sources"',
