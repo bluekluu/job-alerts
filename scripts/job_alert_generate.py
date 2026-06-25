@@ -488,6 +488,7 @@ def display_location(location: str) -> str:
             display = cleaned[:-4]
         else:
             display = cleaned
+        display = re.sub(r",\s*(WA|CA|NY|DC|IL)$", "", display)
         if display and display not in parts:
             parts.append(display)
     return "; ".join(parts) or "Not listed"
@@ -865,7 +866,7 @@ def render_html(evaluated: list[Evaluated], errors: list[str]) -> str:
       <p class="text-sm text-slate-500 mb-3">Job postings that did not make the cut from today's structured source crawl. Roles already shown in Full-Time or Fractional are omitted here.</p>
       <div class="bg-white border border-slate-200 rounded-lg overflow-x-auto">
         <table id="evaluated-table" class="min-w-[760px] w-full text-[11px] sm:text-xs">
-          <thead class="bg-slate-50"><tr><th class="sort-header text-left px-2 sm:px-3 py-2" data-sort-key="score" data-sort-type="number">Score</th><th class="sort-header text-left px-2 sm:px-3 py-2" data-sort-key="company">Company</th><th class="sort-header text-left px-2 sm:px-3 py-2" data-sort-key="role">Role</th><th class="sort-header text-left px-2 sm:px-3 py-2" data-sort-key="location">Location</th><th class="sort-header text-left px-2 sm:px-3 py-2" data-sort-key="comp">Comp</th><th class="sort-header text-left px-2 sm:px-3 py-2" data-sort-key="status">Status</th></tr></thead>
+          <thead class="bg-slate-50"><tr><th class="sort-header sticky top-12 sm:top-14 z-20 bg-slate-50 text-left px-2 sm:px-3 py-2" data-sort-key="score" data-sort-type="number">Score</th><th class="sort-header sticky top-12 sm:top-14 z-20 bg-slate-50 text-left px-2 sm:px-3 py-2" data-sort-key="company">Company</th><th class="sort-header sticky top-12 sm:top-14 z-20 bg-slate-50 text-left px-2 sm:px-3 py-2" data-sort-key="role">Role</th><th class="sort-header sticky top-12 sm:top-14 z-20 bg-slate-50 text-left px-2 sm:px-3 py-2" data-sort-key="location">Location</th><th class="sort-header sticky top-12 sm:top-14 z-20 bg-slate-50 text-left px-2 sm:px-3 py-2" data-sort-key="comp">Comp</th><th class="sort-header sticky top-12 sm:top-14 z-20 bg-slate-50 text-left px-2 sm:px-3 py-2" data-sort-key="status">Status</th></tr></thead>
           <tbody id="evaluated-tbody" class="divide-y divide-slate-100">{all_rows}</tbody>
         </table>
       </div>
