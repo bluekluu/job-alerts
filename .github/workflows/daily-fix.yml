@@ -1,0 +1,58 @@
+name: Daily Safe Fix
+
+on:
+  schedule:
+    - cron: "25 15 * * *"
+    - cron: "25 16 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  safe-fix:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Pacific run window
+        id: pacific
+        run: |
+          SHOULD_RUN=$(TZ=America/Los_Angeles date +%H | python3 -c "import sys; print('true' if sys.stdin.read().strip() == '08' else 'false')")
+          echo "should_run=$SHOULD_RUN" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-python@v5
+        if: steps.pacific.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
+        with:
+          python-version: "3.12"
+      - name: Run QA report
+        if: steps.pacific.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
+        run: python scripts/job_alert_test_report.py
+        continue-on-error: true
+      - name: Apply safe fixes
+        if: steps.pacific.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
+        run: python scripts/job_alert_safe_fix.py
+      - name: Re-run QA report after fixes
+        if: steps.pacific.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
+        run: python scripts/job_alert_test_report.py
+        continue-on-error: true
+      - name: File or update GitHub issues
+        if: steps.pacific.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
+        run: python scripts/job_alert_file_bugs.py --apply --comment-existing
+      - name: Upload fix report artifact
+        if: steps.pacific.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: job-alert-safe-fix-report
+          path: reports/*.md
+      - name: Commit safe fixes and reports
+        if: steps.pacific.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html reports/
+          if ! git diff --cached --quiet; then
+            git commit -m "Safe fix: $(date -u +%F)"
+            git push
+          fi

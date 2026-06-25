@@ -38,7 +38,7 @@
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 pt-4 border-t border-slate-700">
         <div><p class="text-2xl font-bold text-white">2</p><p class="text-slate-400 text-xs mt-0.5">Full-time matches (≥ 60%)</p></div>
         <div><p class="text-2xl font-bold text-green-400">0</p><p class="text-slate-400 text-xs mt-0.5">Strong (≥ 90%)</p></div>
-        <div><p class="text-2xl font-bold text-purple-400">1</p><p class="text-slate-400 text-xs mt-0.5">Fractional &amp; Advisory matches</p></div>
+        <div><p class="text-2xl font-bold text-purple-400">0</p><p class="text-slate-400 text-xs mt-0.5">Fractional &amp; Advisory matches</p></div>
         <div>
           <p class="text-slate-400 text-xs mt-0.5 mb-0.5">Postings crawled</p>
           <div class="flex items-baseline gap-1.5">
@@ -62,11 +62,11 @@
       </button>
       <button onclick="switchTab('fractional')" id="tab-fractional"
         class="tab-btn px-4 py-3 text-sm font-semibold text-slate-400 border-b-2 border-transparent hover:text-slate-200 transition-colors">
-        Fractional &amp; Advisory <span class="ml-1.5 bg-slate-700 text-slate-300 text-xs px-1.5 py-0.5 rounded-full">1</span>
+        Fractional &amp; Advisory <span class="ml-1.5 bg-slate-700 text-slate-300 text-xs px-1.5 py-0.5 rounded-full">0</span>
       </button>
-      <button onclick="switchTab('sources')" id="tab-sources"
+      <button onclick="switchTab('all')" id="tab-all"
         class="tab-btn px-4 py-3 text-sm font-semibold text-slate-400 border-b-2 border-transparent hover:text-slate-200 transition-colors">
-        All Evaluated <span class="ml-1.5 bg-slate-700 text-slate-300 text-xs px-1.5 py-0.5 rounded-full">19</span>
+        All Evaluated <span class="ml-1.5 bg-slate-700 text-slate-300 text-xs px-1.5 py-0.5 rounded-full">18</span>
       </button>
     </div>
   </div>
@@ -118,7 +118,7 @@
         <span class="text-amber-500 text-lg shrink-0">⚠</span>
         <div class="text-xs text-amber-800">
           <p class="font-semibold">Summary note — Tuesday, Jun 23 2026</p>
-          <p class="mt-0.5">Today's crawl surfaced 2 verified full-time Amazon Principal roles in the Seattle/Bellevue area — one in Alexa Responsible AI (GenAI trust, Bellevue) and one in Prime Video Trust &amp; Safety (content moderation, Seattle) — plus one Gartner Sr. Director Analyst advisory role (Remote US) in the Fractional tab. Several high-potential matches were blocked by verification protocol: Reddit's Director of Safety ML (~88% est., Remote, $277K–$387K) and Salesforce's Director of Responsible AI (~85% est., Seattle hybrid) both returned HTTP 403 from non-bot-protected domains and could not be confirmed per protocol. OpenAI continues to post active T&amp;S and Safety leadership roles, all requiring San Francisco office presence.</p>
+          <p class="mt-0.5">Today's crawl surfaced 2 verified full-time Amazon Principal roles in the Seattle/Bellevue area — one in Alexa Responsible AI (GenAI trust, Bellevue) and one in Prime Video Trust &amp; Safety (content moderation, Seattle). No fractional or advisory roles had candidate-usable Apply links after validation. Several high-potential matches were blocked by verification protocol: Reddit's Director of Safety ML (~88% est., Remote, $277K–$387K) and Salesforce's Director of Responsible AI (~85% est., Seattle hybrid) both returned HTTP 403 from non-bot-protected domains and could not be confirmed per protocol. OpenAI continues to post active T&amp;S and Safety leadership roles, all requiring San Francisco office presence.</p>
         </div>
       </div>
     </div>
@@ -291,7 +291,7 @@
         <div class="flex-1 h-px bg-slate-200"></div>
         <span class="text-xs text-slate-400 shrink-0">0 roles today</span>
       </div>
-      <p class="text-xs text-slate-400 italic pl-5 mb-5">No roles in this range today. See Fractional &amp; Advisory tab for the Gartner Sr. Director Analyst role (63%, Remote US).</p>
+      <p class="text-xs text-slate-400 italic pl-5 mb-5">No roles in this range today.</p>
 
     </main>
   </div>
@@ -305,114 +305,26 @@
         <span class="w-2.5 h-2.5 rounded-full bg-slate-400 shrink-0"></span>
         <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">60–69% · Stretch</span>
         <div class="flex-1 h-px bg-slate-200"></div>
-        <span class="text-xs text-slate-400 shrink-0">1 role today</span>
+        <span class="text-xs text-slate-400 shrink-0">0 roles today</span>
       </div>
       <div class="space-y-3 mb-5">
-
-      <!-- Card: Gartner Sr. Director Analyst 63% -->
-      <article class="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow overflow-hidden opacity-85">
-        <div class="flex flex-col sm:flex-row">
-          <div class="flex sm:flex-col items-center gap-2.5 sm:gap-0 sm:justify-center
-                      px-3 py-2.5 sm:py-5 sm:w-20
-                      bg-slate-100 border-b sm:border-b-0 sm:border-r border-slate-200 shrink-0">
-            <div class="relative w-11 h-11 sm:w-12 sm:h-12">
-              <svg class="w-11 h-11 sm:w-12 sm:h-12 -rotate-90" viewBox="0 0 56 56">
-                <circle cx="28" cy="28" r="24" stroke="#f1f5f9" stroke-width="6" fill="none"/>
-                <circle cx="28" cy="28" r="24" stroke="#64748b" stroke-width="6" fill="none"
-                  stroke-dasharray="150.8" stroke-dashoffset="55.8" stroke-linecap="round"/>
-              </svg>
-              <span class="absolute inset-0 flex items-center justify-center text-xs font-bold text-slate-600">63%</span>
-            </div>
-            <span class="text-xs font-semibold text-slate-500 sm:mt-1.5">Stretch</span>
-          </div>
-          <div class="flex-1 p-3 sm:p-4">
-            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
-              <div class="flex-1 min-w-0">
-                <div class="flex flex-wrap items-center gap-1.5 mb-1">
-                  <span class="px-1.5 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-700">⚠ Bot-protected · verify before applying</span>
-                  <span class="px-1.5 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">✓ Remote US</span>
-                  <span class="px-1.5 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-700">⚠ Comp below floor</span>
-                  <span class="px-1.5 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-700">Research / Advisory</span>
-                </div>
-                <h2 class="text-base sm:text-lg font-bold text-slate-900 leading-snug">Sr. Director, Analyst — CIO &amp; AI Leader Group (Cybersecurity &amp; Emerging Technologies, Enterprise Risk)</h2>
-                <div class="flex items-center gap-1.5 mt-0.5">
-                  <img src="https://www.google.com/s2/favicons?domain=gartner.com&sz=64" class="w-5 h-5 rounded object-contain bg-white" alt="" onerror="this.style.display='none'" />
-                  <span class="text-slate-600 font-medium text-sm">Gartner</span>
-                </div>
-              </div>
-              <a href="https://jobs.gartner.com/jobs/job/110898-sr-director-analyst-cio-ai-leader-group-cybersecurity-emerging-technologies-enterprise-risk-remote-us/"
-                 target="_blank"
-                 class="w-full sm:w-auto shrink-0 text-center bg-navy-900 text-white text-xs font-semibold px-3 py-2 rounded-lg hover:bg-slate-700 transition-colors">
-                Apply →
-              </a>
-            </div>
-            <div class="flex flex-wrap gap-x-3 gap-y-1 mt-2 text-xs text-slate-500">
-              <span>📍 Remote, US</span>
-              <span>💰 $172K–$202.5K base (est.)</span>
-              <span>🗓 Active on jobs.gartner.com</span>
-            </div>
-            <div class="flex flex-wrap gap-1.5 mt-2.5">
-              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ Remote US</span>
-              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ Sr. Director Analyst level</span>
-              <span class="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full border border-green-200">✓ AI governance &amp; emerging tech</span>
-              <span class="px-2 py-0.5 bg-amber-50 text-amber-700 text-xs font-medium rounded-full border border-amber-200">~ Cybersecurity GRC focus (gap vs. T&amp;S)</span>
-              <span class="px-2 py-0.5 bg-red-50 text-red-600 text-xs font-medium rounded-full border border-red-200">✗ Comp $172–$202.5K (below $200K advisory floor)</span>
-              <span class="px-2 py-0.5 bg-amber-50 text-amber-700 text-xs font-medium rounded-full border border-amber-200">⚠ Wants former CIO/CISO background</span>
-            </div>
-            <div class="mt-2.5 bg-slate-50 rounded-lg px-3 py-2">
-              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Why it matches</p>
-              <ul class="space-y-0.5 text-xs text-slate-600">
-                <li>· Gartner's CIO &amp; AI Leader group advises enterprises on AI governance, emerging technology risk, and regulatory compliance — Kevin's 16-year track record at Google (EU AI Act, GDPR, DMA) and Meta (developer platform compliance, responsible AI) directly maps to the advisory mandate</li>
-                <li>· Sr. Director Analyst role involves producing research, market predictions, and best practices for enterprise leaders — Kevin's cross-industry breadth (search, maps, social, AR/VR, developer platforms) positions him as a credible voice on AI trust and enterprise risk</li>
-                <li>· Remote US and advisory engagement model aligns with Kevin's fractional/advisory focus; the "Emerging Technologies" pillar of the group specifically covers Generative AI risk, where Kevin has deep hands-on program management experience</li>
-              </ul>
-            </div>
-            <div class="mt-2 bg-slate-50 rounded-lg px-3 py-2">
-              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Gaps</p>
-              <p class="text-xs text-slate-500">The role primarily targets former CIOs/CISOs with deep technical cybersecurity expertise (AI/ML security, quantum-safe cryptography, cloud-native security) — Kevin's background is T&amp;S program management and privacy, not cybersecurity architecture. Comp ($172K–$202.5K) is below the $200K advisory floor. This is a full-time Gartner employment position, not a fractional/advisory engagement. Treat as a long-shot advisory pivot rather than a primary application.</p>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      </div><!-- end 60–69% advisory cards -->
-
-      <div class="bg-white rounded-xl border border-purple-100 p-4 mt-4">
-        <p class="text-xs font-semibold text-purple-700 mb-2">Fractional T&amp;S market context</p>
-        <p class="text-xs text-slate-500 mb-3">Fractional T&amp;S / Responsible AI engagements rarely surface on public boards — this market is primarily network-driven. GoFractional.com returned no matching roles today (403 on direct fetch; no search results). Consider proactive outreach via:</p>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-w-3xl text-left">
-          <a href="https://www.bolster.com" target="_blank"
-             class="block bg-white border border-purple-200 rounded-lg p-3 hover:shadow-sm transition-shadow">
-            <p class="text-xs font-semibold text-purple-700 mb-0.5">Bolster</p>
-            <p class="text-xs text-slate-500">Executive fractional marketplace. Strong for VC-backed startups seeking Head-level T&amp;S advisors.</p>
-          </a>
-          <a href="https://alltechishuman.org" target="_blank"
-             class="block bg-white border border-purple-200 rounded-lg p-3 hover:shadow-sm transition-shadow">
-            <p class="text-xs font-semibold text-purple-700 mb-0.5">All Tech Is Human</p>
-            <p class="text-xs text-slate-500">T&amp;S-specific career network. Posts fractional + advisory roles not found on general boards.</p>
-          </a>
-          <a href="https://www.infotech.com/about/careers" target="_blank"
-             class="block bg-white border border-purple-200 rounded-lg p-3 hover:shadow-sm transition-shadow">
-            <p class="text-xs font-semibold text-purple-700 mb-0.5">Info-Tech Research Group</p>
-            <p class="text-xs text-slate-500">Research &amp; Advisory and Consulting roles advising IT/AI leaders on trust, privacy, and governance.</p>
-          </a>
-        </div>
       </div>
+      <p class="text-xs text-slate-400 italic pl-5 mb-5">No fractional or advisory roles with verified candidate-usable Apply links today.</p>
 
     </main>
   </div>
 
   <!-- ── ALL EVALUATED TAB ── -->
-  <div id="tab-content-sources" class="tab-content">
+  <div id="tab-content-all" class="tab-content">
     <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6">
       <p class="text-xs text-slate-500 mb-4">Every posting the agent fetched or searched today — included, discarded, and blocked. All rows are linked: included rows go directly to the company ATS; discarded rows link to the best available URL (even if it returned 404/403) so you can spot-check manually.</p>
 
-      <!-- ── Included on this page (3) ── -->
+      <!-- ── Included on this page (2) ── -->
       <div class="flex items-center gap-2.5 pb-1.5 mb-2">
         <span class="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></span>
         <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Included on this page</span>
         <div class="flex-1 h-px bg-slate-200"></div>
-        <span class="text-xs text-slate-400 shrink-0">3 postings</span>
+        <span class="text-xs text-slate-400 shrink-0">2 postings</span>
       </div>
       <div class="bg-white rounded-xl border border-slate-200 overflow-hidden mb-6">
         <table class="w-full text-xs">
@@ -449,18 +361,6 @@
               <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">Seattle, WA · On-site</td>
               <td class="px-3 py-2.5 text-slate-500 hidden md:table-cell">$179K–$243K base + RSUs</td>
               <td class="px-3 py-2.5"><span class="px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded font-medium">Potential</span></td>
-            </tr>
-            <tr class="hover:bg-slate-50">
-              <td class="px-3 py-2.5 font-bold text-slate-600">63%</td>
-              <td class="px-3 py-2.5">
-                <div class="flex items-center gap-2">
-                  <img src="https://www.google.com/s2/favicons?domain=gartner.com&sz=64" class="w-5 h-5 rounded object-contain bg-white shrink-0" alt="" onerror="this.style.display='none'" />
-                  <a href="https://jobs.gartner.com/jobs/job/110898-sr-director-analyst-cio-ai-leader-group-cybersecurity-emerging-technologies-enterprise-risk-remote-us/" target="_blank" class="font-medium text-slate-800 hover:text-sky-600 hover:underline">Gartner · Sr. Director Analyst, CIO &amp; AI Leader Group (Cybersecurity &amp; Enterprise Risk)</a>
-                </div>
-              </td>
-              <td class="px-3 py-2.5 text-slate-500 hidden sm:table-cell">Remote, US</td>
-              <td class="px-3 py-2.5 text-slate-500 hidden md:table-cell">$172K–$202.5K base</td>
-              <td class="px-3 py-2.5"><span class="px-1.5 py-0.5 bg-slate-100 text-slate-600 rounded font-medium">Stretch · Advisory</span></td>
             </tr>
           </tbody>
         </table>
@@ -706,10 +606,10 @@
   <footer class="max-w-5xl mx-auto px-4 sm:px-6 pb-8 mt-2">
     <div class="border-t border-slate-200 pt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5 text-xs text-slate-400">
       <div>
-        <p>Crawled 47 full-time postings · 8 fractional/advisory sources · 3 cleared 60% threshold · 2 cleared all hard filters (Seattle/Bellevue/Remote + level)</p>
+        <p>Crawled 47 full-time postings · 8 fractional/advisory sources · 2 cleared 60% threshold · 2 cleared all hard filters (Seattle/Bellevue/Remote + level)</p>
         <p class="mt-0.5">Filters: Seattle/Bellevue/Remote US · Excluded: Meta · Level: Director/VP/Head/Principal · Comp: $280K+ · Score: ≥ 60%</p>
       </div>
-      <p class="sm:text-right shrink-0">Generated by Claude Code · <a href="./archive/" class="underline hover:text-slate-600">Past alerts</a></p>
+      <p class="sm:text-right shrink-0">Generated by Codex/GitHub Actions · <a href="./archive/" class="underline hover:text-slate-600">Past alerts</a></p>
       <!-- alert-date: 2026-06-23 -->
     </div>
   </footer>
