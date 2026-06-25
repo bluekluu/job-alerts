@@ -409,6 +409,8 @@ def normalize_location(location: str) -> str:
         return "Not listed"
 
     lowered = raw.lower()
+    if "san francisco bay area" in lowered and "los angeles area" in lowered:
+        return "Bay Area, CA, US; Los Angeles, CA, US"
     if "remote" in lowered and any(token in lowered for token in ["united states", " u.s.", " usa", " us", "- us"]):
         return "Remote, US"
     remote_state = re.match(r"^Remote\s*[-,]\s*(.+)$", raw, re.I)
@@ -544,7 +546,20 @@ def normalize_compensation(value: str) -> str:
     value = re.sub(r"\s+", " ", value).strip()
     value = re.sub(r"\s*(?:–|—|to|-)\s*", " - ", value, count=1, flags=re.I)
     value = value.replace("$ ", "$")
-    return value
+    amounts = re.findall(r"\$?\s*([0-9][0-9,]*(?:\.[0-9]+)?)\s*([Kk])?", value)
+    if not amounts:
+        return value
+    formatted = []
+    for number, suffix in amounts[:2]:
+        amount = float(number.replace(",", ""))
+        if suffix:
+            thousands = amount
+        else:
+            thousands = amount / 1000 if amount >= 1000 else amount
+        formatted.append(f"${round(thousands):,}k")
+    if len(formatted) == 1:
+        return formatted[0]
+    return f"{formatted[0]} - {formatted[1]}"
 
 
 def enrich_compensation(items: list[Evaluated]) -> None:
@@ -688,18 +703,18 @@ def render_card(item: Evaluated) -> str:
     return f"""
       <article class="bg-white border border-slate-200 rounded-lg shadow-sm p-4">
         <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-          <div>
+          <div class="min-w-0">
             <div class="flex flex-wrap items-center gap-2 mb-1">
               <span class="px-2 py-0.5 rounded text-xs font-semibold {score_color(item.score)}">{item.score}% · {esc(item.band)}</span>
               <span class="px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700">Verified via {esc(c.source)}</span>
             </div>
-            <h2 class="text-lg font-bold text-slate-900">{esc(c.title)}</h2>
+            <h2 class="text-base sm:text-lg font-bold text-slate-900 leading-snug break-words">{esc(c.title)}</h2>
             <p class="text-sm text-slate-600 mt-1">{company_name_html(company, muted=True)} <span class="mx-1 text-slate-300">·</span> {esc(location)}</p>
           </div>
-          <a href="{esc(c.url)}" target="_blank" class="shrink-0 text-center bg-slate-900 text-white text-xs font-semibold px-3 py-2 rounded hover:bg-slate-700">Apply</a>
+          <a href="{esc(c.url)}" target="_blank" class="shrink-0 text-center bg-slate-900 text-white text-xs font-semibold px-3 py-2 rounded hover:bg-slate-700 w-full sm:w-auto">Apply</a>
         </div>
         <div class="flex flex-wrap gap-1.5 mt-3 text-xs">{tags}</div>
-        <div class="grid sm:grid-cols-2 gap-3 mt-3 text-xs text-slate-600">
+        <div class="grid md:grid-cols-2 gap-3 mt-3 text-xs text-slate-600">
           <div class="bg-green-50 border border-green-100 rounded p-3">
             <p class="font-semibold text-green-700 uppercase mb-1">Why it matches</p>
             <ul class="list-disc pl-4 space-y-1">{why_html}</ul>
@@ -721,12 +736,12 @@ def render_rows(items: list[Evaluated]) -> str:
         rows.append(
             f"""
             <tr class="hover:bg-slate-50" data-score="{item.score}" data-company="{esc(canonical_company(c.company).lower())}" data-role="{esc(c.title.lower())}" data-location="{esc(location.lower())}" data-comp="{esc(c.comp.lower())}" data-status="{esc((item.band if item.included else item.reason).lower())}">
-              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold {score_color(item.score)}">{item.score}%</span></td>
-              <td class="px-3 py-2">{company_name_html(c.company)}</td>
-              <td class="px-3 py-2"><a href="{esc(c.url)}" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">{esc(c.title)}</a></td>
-              <td class="px-3 py-2 hidden sm:table-cell">{esc(location)}</td>
-              <td class="px-3 py-2 hidden md:table-cell">{esc(c.comp)}</td>
-              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-semibold {status_color(item)}">{esc(item.band if item.included else item.reason)}</span></td>
+              <td class="px-2 sm:px-3 py-2"><span class="px-2 py-0.5 rounded text-xs font-bold {score_color(item.score)}">{item.score}%</span></td>
+              <td class="px-2 sm:px-3 py-2 whitespace-nowrap">{company_name_html(c.company)}</td>
+              <td class="px-2 sm:px-3 py-2 min-w-56"><a href="{esc(c.url)}" target="_blank" class="font-medium text-slate-800 hover:text-sky-700 hover:underline">{esc(c.title)}</a></td>
+              <td class="px-2 sm:px-3 py-2 min-w-40">{esc(location)}</td>
+              <td class="px-2 sm:px-3 py-2 whitespace-nowrap">{esc(c.comp)}</td>
+              <td class="px-2 sm:px-3 py-2 min-w-36"><span class="px-2 py-0.5 rounded text-xs font-semibold {status_color(item)}">{esc(item.band if item.included else item.reason)}</span></td>
             </tr>"""
         )
     return "\n".join(rows) or '<tr><td class="px-3 py-3 text-slate-400" colspan="6">No rows.</td></tr>'
@@ -795,62 +810,62 @@ def render_html(evaluated: list[Evaluated], errors: list[str]) -> str:
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     html {{ overflow-y: scroll; scrollbar-gutter: stable; }}
-    .sort-header {{ cursor: pointer; user-select: none; }}
+    .sort-header {{ cursor: pointer; user-select: none; white-space: nowrap; }}
     .sort-header::after {{ content: "↕"; margin-left: 0.35rem; color: #94a3b8; font-size: 0.7rem; }}
     .sort-header[data-sort-dir="asc"]::after {{ content: "↑"; color: #0f172a; }}
     .sort-header[data-sort-dir="desc"]::after {{ content: "↓"; color: #0f172a; }}
   </style>
 </head>
-<body class="bg-slate-50 text-slate-900">
+<body class="bg-slate-50 text-slate-900 antialiased">
   <header class="bg-slate-900 text-white">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-6">
+    <div class="max-w-5xl mx-auto px-3 sm:px-5 lg:px-6 py-5 sm:py-6">
       <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
         <div>
           <p class="text-slate-400 text-xs font-semibold uppercase tracking-widest">Daily Job Alert</p>
-          <h1 class="text-3xl font-bold">Kevin Luu</h1>
+          <h1 class="text-2xl sm:text-3xl font-bold">Kevin Luu</h1>
           <p class="text-slate-400 text-sm">Trust &amp; Safety · Privacy · GenAI Trust · TPM</p>
         </div>
         <div class="sm:text-right">
-          <p class="text-2xl font-semibold">{today.strftime('%A, %b %-d %Y')}</p>
+          <p class="text-xl sm:text-2xl font-semibold">{today.strftime('%A, %b %-d %Y')}</p>
           <p class="text-xs text-slate-400">Generated {now.strftime('%I:%M %p')} PT · alert-date: {today.isoformat()}</p>
         </div>
       </div>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 pt-4 border-t border-slate-700">
-        <div><p class="text-2xl font-bold">{len(fulltime)}</p><p class="text-xs text-slate-400">Full-time matches</p></div>
-        <div><p class="text-2xl font-bold text-green-400">{len(strong)}</p><p class="text-xs text-slate-400">Strong matches</p></div>
-        <div><p class="text-2xl font-bold text-purple-400">{len(fractional)}</p><p class="text-xs text-slate-400">Fractional &amp; Advisory matches</p></div>
-        <div><p class="text-2xl font-bold text-sky-400">{len(evaluated)}</p><p class="text-xs text-slate-400">Postings evaluated</p></div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 mt-5 pt-4 border-t border-slate-700">
+        <div><p class="text-xl sm:text-2xl font-bold">{len(fulltime)}</p><p class="text-xs text-slate-400">Full-time matches</p></div>
+        <div><p class="text-xl sm:text-2xl font-bold text-green-400">{len(strong)}</p><p class="text-xs text-slate-400">Strong matches</p></div>
+        <div><p class="text-xl sm:text-2xl font-bold text-purple-400">{len(fractional)}</p><p class="text-xs text-slate-400">Fractional &amp; Advisory matches</p></div>
+        <div><p class="text-xl sm:text-2xl font-bold text-sky-400">{len(evaluated)}</p><p class="text-xs text-slate-400">Postings evaluated</p></div>
       </div>
     </div>
   </header>
   <nav class="sticky top-0 z-30 bg-slate-900 shadow-lg">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 flex flex-wrap">
-      <button onclick="switchTab('fulltime')" id="tab-fulltime" class="tab-btn px-4 py-3 text-sm font-semibold text-white border-b-2 border-white">Full-Time Roles <span>{len(fulltime)}</span></button>
-      <button onclick="switchTab('fractional')" id="tab-fractional" class="tab-btn px-4 py-3 text-sm font-semibold text-slate-400 border-b-2 border-transparent">Fractional &amp; Advisory <span>{len(fractional)}</span></button>
-      <button onclick="switchTab('all')" id="tab-all" class="tab-btn px-4 py-3 text-sm font-semibold text-slate-400 border-b-2 border-transparent">Filtered Out <span>{len(discarded)}</span></button>
-      <button onclick="switchTab('criteria')" id="tab-criteria" class="tab-btn px-4 py-3 text-sm font-semibold text-slate-400 border-b-2 border-transparent">Criteria</button>
+    <div class="max-w-5xl mx-auto px-3 sm:px-5 lg:px-6 flex overflow-x-auto whitespace-nowrap">
+      <button onclick="switchTab('fulltime')" id="tab-fulltime" class="tab-btn flex-none px-3 sm:px-4 py-3 text-xs sm:text-sm font-semibold text-white border-b-2 border-white">Full-Time <span>{len(fulltime)}</span></button>
+      <button onclick="switchTab('fractional')" id="tab-fractional" class="tab-btn flex-none px-3 sm:px-4 py-3 text-xs sm:text-sm font-semibold text-slate-400 border-b-2 border-transparent">Fractional <span>{len(fractional)}</span></button>
+      <button onclick="switchTab('all')" id="tab-all" class="tab-btn flex-none px-3 sm:px-4 py-3 text-xs sm:text-sm font-semibold text-slate-400 border-b-2 border-transparent">Filtered Out <span>{len(discarded)}</span></button>
+      <button onclick="switchTab('criteria')" id="tab-criteria" class="tab-btn flex-none px-3 sm:px-4 py-3 text-xs sm:text-sm font-semibold text-slate-400 border-b-2 border-transparent">Criteria</button>
     </div>
   </nav>
 
   <div id="tab-content-fulltime" class="tab-content active">
-    <main class="max-w-5xl mx-auto px-4 sm:px-6 py-5">
+    <main class="max-w-5xl mx-auto px-3 sm:px-5 lg:px-6 py-4 sm:py-5">
       <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4 text-sm text-amber-900">{esc(summary)}</div>
       <div class="space-y-3">{cards}</div>
     </main>
   </div>
 
   <div id="tab-content-fractional" class="tab-content hidden">
-    <main class="max-w-5xl mx-auto px-4 sm:px-6 py-5">
+    <main class="max-w-5xl mx-auto px-3 sm:px-5 lg:px-6 py-4 sm:py-5">
       <div class="space-y-3">{fractional_cards}</div>
     </main>
   </div>
 
   <div id="tab-content-all" class="tab-content hidden">
-    <main class="max-w-5xl mx-auto px-4 sm:px-6 py-5">
+    <main class="max-w-5xl mx-auto px-3 sm:px-5 lg:px-6 py-4 sm:py-5">
       <p class="text-sm text-slate-500 mb-3">Job postings that did not make the cut from today's structured source crawl. Roles already shown in Full-Time or Fractional are omitted here.</p>
-      <div class="bg-white border border-slate-200 rounded-lg overflow-hidden">
-        <table id="evaluated-table" class="w-full text-xs">
-          <thead class="bg-slate-50"><tr><th class="sort-header text-left px-3 py-2" data-sort-key="score" data-sort-type="number">Score</th><th class="sort-header text-left px-3 py-2" data-sort-key="company">Company</th><th class="sort-header text-left px-3 py-2" data-sort-key="role">Role</th><th class="sort-header text-left px-3 py-2 hidden sm:table-cell" data-sort-key="location">Location</th><th class="sort-header text-left px-3 py-2 hidden md:table-cell" data-sort-key="comp">Comp</th><th class="sort-header text-left px-3 py-2" data-sort-key="status">Status</th></tr></thead>
+      <div class="bg-white border border-slate-200 rounded-lg overflow-x-auto">
+        <table id="evaluated-table" class="min-w-[760px] w-full text-[11px] sm:text-xs">
+          <thead class="bg-slate-50"><tr><th class="sort-header text-left px-2 sm:px-3 py-2" data-sort-key="score" data-sort-type="number">Score</th><th class="sort-header text-left px-2 sm:px-3 py-2" data-sort-key="company">Company</th><th class="sort-header text-left px-2 sm:px-3 py-2" data-sort-key="role">Role</th><th class="sort-header text-left px-2 sm:px-3 py-2" data-sort-key="location">Location</th><th class="sort-header text-left px-2 sm:px-3 py-2" data-sort-key="comp">Comp</th><th class="sort-header text-left px-2 sm:px-3 py-2" data-sort-key="status">Status</th></tr></thead>
           <tbody id="evaluated-tbody" class="divide-y divide-slate-100">{all_rows}</tbody>
         </table>
       </div>
@@ -859,7 +874,7 @@ def render_html(evaluated: list[Evaluated], errors: list[str]) -> str:
   </div>
 
   <div id="tab-content-criteria" class="tab-content hidden">
-    <main class="max-w-5xl mx-auto px-4 sm:px-6 py-5">
+    <main class="max-w-5xl mx-auto px-3 sm:px-5 lg:px-6 py-4 sm:py-5">
 {criteria_html}
     </main>
   </div>
