@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import base64
 import datetime as dt
+import hashlib
 import html
 import json
 import re
@@ -223,6 +224,17 @@ class Evaluated:
     gaps: str
 
 
+@dataclass
+class SourceStat:
+    source: str
+    name: str
+    source_url: str
+    status: str
+    fetched: int
+    evaluated: int = 0
+    error: str | None = None
+
+
 def load_criteria() -> dict[str, object]:
     criteria = json.loads(CRITERIA.read_text()) if CRITERIA.exists() else {}
     if not isinstance(criteria, dict):
@@ -400,24 +412,77 @@ def amazon_candidates() -> list[Candidate]:
     return candidates
 
 
-def collect_candidates() -> tuple[list[Candidate], list[str]]:
+def collect_candidates() -> tuple[list[Candidate], list[str], list[SourceStat]]:
     candidates: list[Candidate] = []
     errors: list[str] = []
+    source_stats: list[SourceStat] = []
     source_calls = []
     source_calls.extend((greenhouse_candidates, slug, company) for slug, company in GREENHOUSE.items())
     source_calls.extend((lever_candidates, slug, company) for slug, company in LEVER.items())
     source_calls.extend((ashby_candidates, slug, company) for slug, company in ASHBY.items())
 
     for fn, slug, company in source_calls:
+        source_url = ""
         try:
-            candidates.extend(fn(slug, company))
+            fetched = fn(slug, company)
+            source_url = fetched[0].source_url if fetched else ""
+            candidates.extend(fetched)
+            source_stats.append(
+                SourceStat(
+                    source=fetched[0].source if fetched else fn.__name__.replace("_candidates", "").title(),
+                    name=company,
+                    source_url=source_url,
+                    status="ok",
+                    fetched=len(fetched),
+                )
+            )
         except Exception as exc:
             errors.append(f"{company}: {exc}")
+            source_stats.append(
+                SourceStat(
+                    source=fn.__name__.replace("_candidates", "").title(),
+                    name=company,
+                    source_url=source_url,
+                    status="error",
+                    fetched=0,
+                    error=str(exc),
+                )
+            )
     try:
-        candidates.extend(amazon_candidates())
+        fetched = amazon_candidates()
+        candidates.extend(fetched)
+        source_stats.append(
+            SourceStat(
+                source="Amazon Jobs API",
+                name="Amazon",
+                source_url="https://www.amazon.jobs/en/search.json",
+                status="ok",
+                fetched=len(fetched),
+            )
+        )
     except Exception as exc:
         errors.append(f"Amazon: {exc}")
-    return dedupe(candidates), errors
+        source_stats.append(
+            SourceStat(
+                source="Amazon Jobs API",
+                name="Amazon",
+                source_url="https://www.amazon.jobs/en/search.json",
+                status="error",
+                fetched=0,
+                error=str(exc),
+            )
+        )
+    deduped = dedupe(candidates)
+    evaluated_by_source: dict[tuple[str, str], int] = {}
+    for candidate in deduped:
+        key = (candidate.source, candidate.source_url)
+        evaluated_by_source[key] = evaluated_by_source.get(key, 0) + 1
+    for stat in source_stats:
+        if stat.source == "Amazon Jobs API":
+            stat.evaluated = sum(1 for candidate in deduped if candidate.source == stat.source)
+        else:
+            stat.evaluated = evaluated_by_source.get((stat.source, stat.source_url), 0)
+    return deduped, errors, source_stats
 
 
 def dedupe(candidates: list[Candidate]) -> list[Candidate]:
@@ -673,7 +738,7 @@ def evaluate(candidate: Candidate) -> Evaluated:
 
 
 def esc(value: object) -> str:
-    return html.escape(str(value or ""), quote=True)
+    return html.escape("" if value is None else str(value), quote=True)
 
 
 def clean_generated_html(value: str) -> str:
@@ -794,6 +859,191 @@ def render_rows(items: list[Evaluated]) -> str:
     return "\n".join(rows) or '<tr><td class="px-3 py-3 text-slate-400" colspan="6">No rows.</td></tr>'
 
 
+def sha256_lines(values: list[str]) -> str:
+    digest = hashlib.sha256()
+    for value in sorted(values):
+        digest.update(value.encode("utf-8"))
+        digest.update(b"\n")
+    return "sha256:" + digest.hexdigest()
+
+
+def candidate_hash_values(candidates: list[Candidate]) -> list[str]:
+    return [
+        "|".join(
+            [
+                candidate.url,
+                canonical_company(candidate.company),
+                candidate.title.strip(),
+                candidate.location.strip(),
+            ]
+        )
+        for candidate in candidates
+    ]
+
+
+def included_hash_values(evaluated: list[Evaluated]) -> list[str]:
+    return [
+        "|".join(
+            [
+                item.candidate.url,
+                canonical_company(item.candidate.company),
+                item.candidate.title.strip(),
+                str(item.score),
+                item.band,
+                item.reason,
+            ]
+        )
+        for item in evaluated
+        if item.included
+    ]
+
+
+def previous_generation_report(today: str) -> tuple[str | None, dict[str, object] | None]:
+    reports = []
+    for path in REPORTS.glob("generation-*.json"):
+        date = path.stem.replace("generation-", "")
+        if date < today:
+            reports.append((date, path))
+    if not reports:
+        return None, None
+    _, path = sorted(reports)[-1]
+    try:
+        data = json.loads(path.read_text())
+    except Exception:
+        return path.name, None
+    return path.name, data if isinstance(data, dict) else None
+
+
+def url_list_from_report(report: dict[str, object] | None, key: str) -> list[str]:
+    if not report:
+        return []
+    value = report.get(key)
+    if isinstance(value, list):
+        return sorted(str(item) for item in value if str(item))
+    freshness = report.get("freshness")
+    if isinstance(freshness, dict):
+        nested = freshness.get(key)
+        if isinstance(nested, list):
+            return sorted(str(item) for item in nested if str(item))
+    return []
+
+
+def build_generation_report(
+    *,
+    today: str,
+    generated_at: dt.datetime,
+    candidates: list[Candidate],
+    evaluated: list[Evaluated],
+    errors: list[str],
+    source_stats: list[SourceStat],
+) -> dict[str, object]:
+    included = [item for item in evaluated if item.included]
+    candidate_urls = sorted({candidate.url for candidate in candidates if candidate.url})
+    included_urls = sorted({item.candidate.url for item in included if item.candidate.url})
+    previous_name, previous_report = previous_generation_report(today)
+    previous_has_candidate_urls = bool(previous_report and isinstance(previous_report.get("candidate_urls"), list))
+    previous_has_included_urls = bool(previous_report and isinstance(previous_report.get("included_urls"), list))
+    previous_candidate_urls = set(url_list_from_report(previous_report, "candidate_urls")) if previous_has_candidate_urls else set()
+    previous_included_urls = set(url_list_from_report(previous_report, "included_urls"))
+    current_candidate_urls = set(candidate_urls)
+    current_included_urls = set(included_urls)
+    ok_sources = sum(1 for stat in source_stats if stat.status == "ok")
+    failed_sources = sum(1 for stat in source_stats if stat.status != "ok")
+    previous_total = len(previous_candidate_urls)
+    drop_percent = 0
+    if previous_total:
+        drop_percent = round(max(0, previous_total - len(current_candidate_urls)) / previous_total * 100)
+
+    freshness = {
+        "candidate_set_hash": sha256_lines(candidate_hash_values(candidates)),
+        "included_set_hash": sha256_lines(included_hash_values(evaluated)),
+        "previous_report": previous_name,
+        "candidate_delta": len(current_candidate_urls - previous_candidate_urls) - len(previous_candidate_urls - current_candidate_urls) if previous_has_candidate_urls else None,
+        "included_delta": len(current_included_urls - previous_included_urls) - len(previous_included_urls - current_included_urls) if previous_has_included_urls else None,
+        "new_candidate_urls": sorted(current_candidate_urls - previous_candidate_urls) if previous_has_candidate_urls else [],
+        "removed_candidate_urls": sorted(previous_candidate_urls - current_candidate_urls) if previous_has_candidate_urls else [],
+        "new_included_urls": sorted(current_included_urls - previous_included_urls) if previous_has_included_urls else [],
+        "removed_included_urls": sorted(previous_included_urls - current_included_urls) if previous_has_included_urls else [],
+    }
+    warnings = []
+    if not source_stats or ok_sources == 0:
+        warnings.append("No sources succeeded.")
+    if failed_sources:
+        warnings.append(f"{failed_sources} source(s) failed.")
+    if drop_percent >= 30:
+        warnings.append(f"Candidate count dropped {drop_percent}% from the previous report.")
+
+    return {
+        "date": today,
+        "generated_at_pt": generated_at.isoformat(),
+        "crawl_completed": ok_sources > 0 and failed_sources == 0,
+        "partial_crawl": ok_sources > 0 and failed_sources > 0,
+        "sources": [
+            {
+                "source": stat.source,
+                "name": stat.name,
+                "source_url": stat.source_url,
+                "status": stat.status,
+                "fetched": stat.fetched,
+                "evaluated": stat.evaluated,
+                "error": stat.error,
+            }
+            for stat in source_stats
+        ],
+        "totals": {
+            "fetched": sum(stat.fetched for stat in source_stats),
+            "evaluated": len(evaluated),
+            "included": len(included),
+            "discarded": len(evaluated) - len(included),
+            "errors": len(errors),
+            "sources_ok": ok_sources,
+            "sources_failed": failed_sources,
+        },
+        "warnings": warnings,
+        "freshness": freshness,
+        "errors": errors,
+        "candidate_urls": candidate_urls,
+        "included_urls": included_urls,
+    }
+
+
+def delta_label(delta: object, *, noun: str) -> str:
+    if not isinstance(delta, int):
+        return f"{noun}: no comparable baseline"
+    if delta == 0:
+        return f"{noun}: unchanged from previous report"
+    sign = "+" if delta > 0 else ""
+    return f"{noun}: {sign}{delta} net since previous report"
+
+
+def render_freshness_panel(report: dict[str, object]) -> str:
+    totals = report.get("totals") if isinstance(report.get("totals"), dict) else {}
+    freshness = report.get("freshness") if isinstance(report.get("freshness"), dict) else {}
+    warnings = report.get("warnings") if isinstance(report.get("warnings"), list) else []
+    if report.get("crawl_completed"):
+        health = "Crawl completed"
+        health_class = "text-emerald-700 bg-emerald-50 border-emerald-200"
+    elif report.get("partial_crawl"):
+        health = "Partial crawl"
+        health_class = "text-amber-800 bg-amber-50 border-amber-200"
+    else:
+        health = "Crawl needs attention"
+        health_class = "text-red-800 bg-red-50 border-red-200"
+    warning_html = ""
+    if warnings:
+        warning_html = '<p class="mt-2 text-xs text-amber-800">' + esc(" ".join(str(item) for item in warnings)) + "</p>"
+    return f"""
+      <section class="mt-4 rounded-lg border {health_class} p-3">
+        <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-4 text-xs">
+          <div><p class="font-semibold uppercase tracking-wide">Run health</p><p class="text-sm font-bold">{esc(health)}</p></div>
+          <div><p class="font-semibold uppercase tracking-wide">Sources</p><p class="text-sm font-bold">{esc(totals.get('sources_ok', 0))} ok · {esc(totals.get('sources_failed', 0))} failed</p></div>
+          <div><p class="font-semibold uppercase tracking-wide">Candidate set</p><p class="text-sm font-bold">{esc(delta_label(freshness.get('candidate_delta'), noun='Candidates'))}</p></div>
+          <div><p class="font-semibold uppercase tracking-wide">Included roles</p><p class="text-sm font-bold">{esc(delta_label(freshness.get('included_delta'), noun='Included'))}</p></div>
+        </div>
+        {warning_html}
+      </section>"""
+
+
 def render_menu() -> str:
     return f"""
       <div class="relative flex items-center gap-2">
@@ -849,7 +1099,7 @@ def render_criteria_cards(criteria: dict[str, object]) -> str:
     )
 
 
-def render_html(evaluated: list[Evaluated], errors: list[str], criteria: dict[str, object]) -> str:
+def render_html(evaluated: list[Evaluated], errors: list[str], criteria: dict[str, object], report: dict[str, object]) -> str:
     now = dt.datetime.now(PT)
     today = now.date()
     included = sorted([item for item in evaluated if item.included], key=lambda i: i.score, reverse=True)[:12]
@@ -863,7 +1113,16 @@ def render_html(evaluated: list[Evaluated], errors: list[str], criteria: dict[st
     fulltime = [item for item in included if item.candidate.engagement == "full-time"]
     fractional = [item for item in included if item.candidate.engagement != "full-time"]
     strong = [item for item in fulltime if item.score >= 90]
-    source_errors = "".join(f"<li>{esc(error)}</li>" for error in errors) or "<li>No source fetch errors.</li>"
+    source_stats = report.get("sources") if isinstance(report.get("sources"), list) else []
+    source_errors = "".join(f"<li>{esc(error)}</li>" for error in errors)
+    if not source_errors:
+        failed_sources = [
+            f"{stat.get('name')}: {stat.get('error')}"
+            for stat in source_stats
+            if isinstance(stat, dict) and stat.get("status") != "ok"
+        ]
+        source_errors = "".join(f"<li>{esc(error)}</li>" for error in failed_sources)
+    source_errors = source_errors or "<li>No source fetch errors.</li>"
     cards = "\n".join(render_card(item) for item in fulltime) or '<p class="text-sm text-slate-500 italic">No full-time roles passed filters today.</p>'
     fractional_cards = "\n".join(render_card(item) for item in fractional) or '<p class="text-sm text-slate-500 italic">No fractional or advisory roles with verified candidate-usable Apply links today.</p>'
     all_rows = render_rows(discarded)
@@ -910,6 +1169,7 @@ def render_html(evaluated: list[Evaluated], errors: list[str], criteria: dict[st
         <div><p class="text-xl sm:text-2xl font-bold text-purple-400">{len(fractional)}</p><p class="text-xs text-slate-400">Fractional &amp; Advisory matches</p></div>
         <div><p class="text-xl sm:text-2xl font-bold text-sky-400">{len(evaluated)}</p><p class="text-xs text-slate-400">Postings evaluated</p></div>
       </div>
+      {render_freshness_panel(report)}
     </div>
   </header>
   <nav class="sticky top-0 z-30 bg-slate-900 shadow-lg">
@@ -1191,23 +1451,37 @@ def main() -> int:
     REPORTS.mkdir(exist_ok=True)
     criteria = load_criteria()
     apply_criteria(criteria)
-    candidates, errors = collect_candidates()
+    generated_at = dt.datetime.now(PT)
+    today = generated_at.date().isoformat()
+    candidates, errors, source_stats = collect_candidates()
     evaluated = [evaluate(candidate) for candidate in candidates]
-    html_output = render_html(evaluated, errors, criteria)
-    today = dt.datetime.now(PT).date().isoformat()
+    manifest = build_generation_report(
+        today=today,
+        generated_at=generated_at,
+        candidates=candidates,
+        evaluated=evaluated,
+        errors=errors,
+        source_stats=source_stats,
+    )
+    html_output = render_html(evaluated, errors, criteria, manifest)
     INDEX.write_text(clean_generated_html(html_output))
     CRITERIA_PAGE.write_text(clean_generated_html(render_criteria_page(criteria)))
     (ARCHIVE / f"{today}.html").write_text(clean_generated_html(html_output))
     (ARCHIVE / "index.html").write_text(clean_generated_html(archive_index()))
-    manifest = {
-        "date": today,
-        "candidates": len(candidates),
-        "included": sum(1 for item in evaluated if item.included),
-        "errors": errors,
-        "included_urls": [item.candidate.url for item in evaluated if item.included],
-    }
     (REPORTS / f"generation-{today}.json").write_text(json.dumps(manifest, indent=2))
-    print(json.dumps(manifest, indent=2))
+    print(
+        json.dumps(
+            {
+                "date": manifest["date"],
+                "crawl_completed": manifest["crawl_completed"],
+                "partial_crawl": manifest["partial_crawl"],
+                "totals": manifest["totals"],
+                "freshness": manifest["freshness"],
+                "warnings": manifest["warnings"],
+            },
+            indent=2,
+        )
+    )
     return 0
 
 

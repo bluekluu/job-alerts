@@ -17,6 +17,11 @@ REQUIRED_INDEX_LINKS = [
     'href="/job-alerts/criteria.html"',
     "issues/new?template=bug_report.md",
 ]
+REQUIRED_INDEX_FRESHNESS = [
+    "Run health",
+    "Candidate set",
+    "Included roles",
+]
 REQUIRED_PAGE_MARKERS = {
     "criteria.html": [
         'id="criteria-editor"',
@@ -58,6 +63,9 @@ def validate(path: Path, *, allow_placeholders: bool) -> list[str]:
         for token in REQUIRED_INDEX_LINKS:
             if token not in html:
                 failures.append(f"{path.name}: missing {token}")
+        for token in REQUIRED_INDEX_FRESHNESS:
+            if token not in html:
+                failures.append(f"{path.name}: missing freshness marker {token}")
         if 'id="tab-content-criteria"' in html or "switchTab('criteria')" in html:
             failures.append(f"{path.name}: criteria should be a separate page, not a tab")
         if 'target="_blank" class="inline-flex items-center justify-center rounded bg-white text-slate-900 px-3 py-2 text-xs font-semibold hover:bg-slate-100">Feedback</a>' in html:
