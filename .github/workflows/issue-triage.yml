@@ -1,0 +1,30 @@
+name: Issue Triage
+
+on:
+  issues:
+    types: [opened, reopened, edited]
+
+permissions:
+  issues: write
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Label issues for Codex review
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const text = `${issue.title}\n${issue.body || ''}`;
+            const labels = ['needs-codex-fix'];
+            if (/criteria/i.test(text)) labels.push('criteria');
+            if (/bug|broken|error|incorrect|wrong/i.test(text)) labels.push('bug');
+            await github.rest.issues.addLabels({
+              owner,
+              repo,
+              issue_number: issue.number,
+              labels
+            });

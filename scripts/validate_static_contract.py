@@ -12,8 +12,16 @@ REQUIRED = [
     'id="tab-content-fulltime"',
     'id="tab-content-fractional"',
     'id="tab-content-all"',
-    'id="tab-content-criteria"',
 ]
+REQUIRED_INDEX_LINKS = [
+    'href="/job-alerts/criteria.html"',
+    'href="/job-alerts/settings.html"',
+    "issues/new?template=bug_report.md",
+]
+REQUIRED_PAGE_MARKERS = {
+    "criteria.html": ['id="criteria-editor"', "Submit Update", "criteria_update.md"],
+    "settings.html": ['id="settings-page"', "Run generation manually", "GitHub Issues"],
+}
 FORBIDDEN = [
     'id="tab-content-sources"',
     'id="tab-sources"',
@@ -38,6 +46,12 @@ def validate(path: Path, *, allow_placeholders: bool) -> list[str]:
     for token in FORBIDDEN:
         if token in html:
             failures.append(f"{path.name}: forbidden legacy token {token}")
+    if path.name == "index.html":
+        for token in REQUIRED_INDEX_LINKS:
+            if token not in html:
+                failures.append(f"{path.name}: missing {token}")
+        if 'id="tab-content-criteria"' in html or "switchTab('criteria')" in html:
+            failures.append(f"{path.name}: criteria should be a separate page, not a tab")
     if not allow_placeholders:
         for token in PLACEHOLDERS:
             if token in html:
@@ -49,6 +63,18 @@ def main() -> int:
     failures: list[str] = []
     failures.extend(validate(REPO_ROOT / "template.html", allow_placeholders=True))
     failures.extend(validate(REPO_ROOT / "index.html", allow_placeholders=False))
+    for name, markers in REQUIRED_PAGE_MARKERS.items():
+        path = REPO_ROOT / name
+        if not path.exists():
+            failures.append(f"{name}: missing generated page")
+            continue
+        html = path.read_text()
+        for token in markers:
+            if token not in html:
+                failures.append(f"{name}: missing {token}")
+        for token in FORBIDDEN:
+            if token in html:
+                failures.append(f"{name}: forbidden legacy token {token}")
     if failures:
         print("\n".join(failures), file=sys.stderr)
         return 1

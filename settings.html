@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JobAlerts Settings</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased">
+  <header class="bg-slate-900 text-white">
+    <div class="max-w-5xl mx-auto px-3 sm:px-5 lg:px-6 py-5 sm:py-6">
+      <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+        <div>
+          <p class="text-slate-400 text-xs font-semibold uppercase tracking-widest">JobAlerts</p>
+          <h1 class="text-2xl sm:text-3xl font-bold">Settings</h1>
+          <p class="text-slate-400 text-sm">Hosted workflow controls and issue tracking</p>
+        </div>
+        <div class="flex flex-col items-start sm:items-end gap-3">
+          <p class="text-xs text-slate-400">Generated 2026-06-25 08:17 PM PT</p>
+
+      <div class="relative flex items-center gap-2">
+        <a href="https://github.com/bluekluu/job-alerts/issues/new?template=bug_report.md" target="_blank" class="inline-flex items-center justify-center rounded bg-white text-slate-900 px-3 py-2 text-xs font-semibold hover:bg-slate-100">Feedback</a>
+        <button type="button" onclick="toggleMenu()" aria-label="Open menu" class="inline-flex h-9 w-9 items-center justify-center rounded border border-slate-600 text-white hover:bg-slate-800">☰</button>
+        <div id="site-menu" class="hidden absolute right-0 top-11 z-50 w-52 rounded-lg border border-slate-200 bg-white py-2 text-sm text-slate-700 shadow-xl">
+          <a class="block px-4 py-2 hover:bg-slate-50" href="/job-alerts/">Daily alert</a>
+          <a class="block px-4 py-2 hover:bg-slate-50" href="/job-alerts/criteria.html">Criteria</a>
+          <a class="block px-4 py-2 hover:bg-slate-50" href="/job-alerts/settings.html">Settings</a>
+          <a class="block px-4 py-2 hover:bg-slate-50" href="/job-alerts/archive/">Archive</a>
+          <a class="block px-4 py-2 hover:bg-slate-50" target="_blank" href="https://github.com/bluekluu/job-alerts/issues">GitHub Issues</a>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="settings-page" class="max-w-5xl mx-auto px-3 sm:px-5 lg:px-6 py-5">
+    <div class="grid md:grid-cols-2 gap-3">
+      <a href="https://github.com/bluekluu/job-alerts/actions/workflows/daily-generate.yml" target="_blank" class="block rounded-lg border border-slate-200 bg-white p-4 hover:border-sky-300">
+        <p class="font-semibold text-slate-900">Run generation manually</p>
+        <p class="mt-1 text-sm text-slate-600">GitHub Actions fetches postings, evaluates them against criteria.json, regenerates the site, and publishes to main.</p>
+      </a>
+      <a href="https://github.com/bluekluu/job-alerts/issues" target="_blank" class="block rounded-lg border border-slate-200 bg-white p-4 hover:border-sky-300">
+        <p class="font-semibold text-slate-900">Review GitHub Issues</p>
+        <p class="mt-1 text-sm text-slate-600">Feedback is tracked with needs-codex-fix for Codex review. Criteria update issues are applied automatically when the JSON is valid.</p>
+      </a>
+      <a href="https://github.com/bluekluu/job-alerts/issues/new?template=bug_report.md" target="_blank" class="block rounded-lg border border-slate-200 bg-white p-4 hover:border-sky-300">
+        <p class="font-semibold text-slate-900">File feedback</p>
+        <p class="mt-1 text-sm text-slate-600">Create a bug report or improvement request directly in the repo.</p>
+      </a>
+      <a href="/job-alerts/criteria.html" class="block rounded-lg border border-slate-200 bg-white p-4 hover:border-sky-300">
+        <p class="font-semibold text-slate-900">Adjust criteria</p>
+        <p class="mt-1 text-sm text-slate-600">Draft changes locally, submit them as an issue, and let the hosted criteria workflow regenerate and publish.</p>
+      </a>
+    </div>
+  </main>
+
+  <script>
+
+    function toggleMenu() {
+      const menu = document.getElementById('site-menu');
+      if (menu) menu.classList.toggle('hidden');
+    }
+
+    document.addEventListener('click', event => {
+      const menu = document.getElementById('site-menu');
+      if (!menu || menu.classList.contains('hidden')) return;
+      if (!event.target.closest('#site-menu') && !event.target.closest('[aria-label="Open menu"]')) {
+        menu.classList.add('hidden');
+      }
+    });
+
+  </script>
+</body>
+</html>

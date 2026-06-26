@@ -18,9 +18,17 @@ from zoneinfo import ZoneInfo
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 INDEX = REPO_ROOT / "index.html"
+CRITERIA = REPO_ROOT / "criteria.json"
+CRITERIA_PAGE = REPO_ROOT / "criteria.html"
+SETTINGS_PAGE = REPO_ROOT / "settings.html"
 ARCHIVE = REPO_ROOT / "archive"
 REPORTS = REPO_ROOT / "reports"
 PT = ZoneInfo("America/Los_Angeles")
+SITE_BASE = "/job-alerts/"
+REPO_URL = "https://github.com/bluekluu/job-alerts"
+FEEDBACK_URL = f"{REPO_URL}/issues/new?template=bug_report.md"
+CRITERIA_ISSUE_URL = f"{REPO_URL}/issues/new?template=criteria_update.md"
+GENERATE_WORKFLOW_URL = f"{REPO_URL}/actions/workflows/daily-generate.yml"
 
 GREENHOUSE = {
     "anthropic": "Anthropic",
@@ -100,6 +108,9 @@ FUNCTION_KEYWORDS = [
     "compliance",
 ]
 EXCLUDED_COMPANIES = ["meta", "instagram", "whatsapp", "reality labs"]
+EXCLUDED_TITLE_KEYWORDS = ["engineer", "engineering"]
+MINIMUM_SCORE = 60
+ACTIVE_CRITERIA: dict[str, object] = {}
 
 COMPANY_ALIASES = [
     (re.compile(r"\bamazon\b", re.I), "Amazon"),
@@ -212,6 +223,37 @@ class Evaluated:
     reason: str
     tags: list[str]
     gaps: str
+
+
+def load_criteria() -> dict[str, object]:
+    criteria = json.loads(CRITERIA.read_text()) if CRITERIA.exists() else {}
+    if not isinstance(criteria, dict):
+        raise ValueError("criteria.json must contain a JSON object")
+    return criteria
+
+
+def apply_criteria(criteria: dict[str, object]) -> None:
+    global DOMAIN_KEYWORDS, PRIMARY_DOMAIN_KEYWORDS, SENIORITY_KEYWORDS, FUNCTION_KEYWORDS
+    global EXCLUDED_COMPANIES, EXCLUDED_TITLE_KEYWORDS, MINIMUM_SCORE, ACTIVE_CRITERIA
+
+    def string_list(name: str, fallback: list[str]) -> list[str]:
+        value = criteria.get(name)
+        if not isinstance(value, list):
+            return fallback
+        cleaned = [str(item).strip().lower() for item in value if str(item).strip()]
+        return cleaned or fallback
+
+    DOMAIN_KEYWORDS = string_list("domain_keywords", DOMAIN_KEYWORDS)
+    PRIMARY_DOMAIN_KEYWORDS = string_list("primary_domain_keywords", PRIMARY_DOMAIN_KEYWORDS)
+    SENIORITY_KEYWORDS = string_list("seniority_keywords", SENIORITY_KEYWORDS)
+    FUNCTION_KEYWORDS = string_list("function_keywords", FUNCTION_KEYWORDS)
+    EXCLUDED_COMPANIES = string_list("excluded_companies", EXCLUDED_COMPANIES)
+    EXCLUDED_TITLE_KEYWORDS = string_list("excluded_title_keywords", EXCLUDED_TITLE_KEYWORDS)
+    try:
+        MINIMUM_SCORE = int(criteria.get("minimum_score", MINIMUM_SCORE))
+    except (TypeError, ValueError):
+        MINIMUM_SCORE = 60
+    ACTIVE_CRITERIA = criteria
 
 
 def fetch_json(url: str, timeout: int = 25) -> object:
@@ -489,6 +531,8 @@ def display_location(location: str) -> str:
         else:
             display = cleaned
         display = re.sub(r",\s*(WA|CA|NY|DC|IL)$", "", display)
+        if display == "Washington":
+            display = "DC"
         if display and display not in parts:
             parts.append(display)
     return "; ".join(parts) or "Not listed"
@@ -586,6 +630,8 @@ def evaluate(candidate: Candidate) -> Evaluated:
     text = f"{short_text} {candidate.description}".lower()
     if any(excluded in candidate.company.lower() for excluded in EXCLUDED_COMPANIES):
         return Evaluated(candidate, 0, "Discarded", False, "Excluded company", [], "")
+    if any(keyword in title_text for keyword in EXCLUDED_TITLE_KEYWORDS):
+        return Evaluated(candidate, 0, "Discarded", False, "Excluded by title criteria", [], "Title matches an excluded keyword in criteria.json.")
 
     loc_ok, loc_reason = location_pass(candidate.location, candidate.description)
     title_domain = keyword_hits(title_text, DOMAIN_KEYWORDS)
@@ -608,14 +654,12 @@ def evaluate(candidate: Candidate) -> Evaluated:
 
     if not loc_ok:
         return Evaluated(candidate, score, "Discarded", False, loc_reason, domain[:5], "Fails location hard filter.")
-    if "engineer" in title_text and not any(term in title_text for term in ["manager", "director", "head"]):
-        return Evaluated(candidate, score, "Discarded", False, "Pure engineering role", domain[:5], "Role appears to be an engineering IC role rather than TPM/T&S leadership.")
     if not title_seniority:
         return Evaluated(candidate, score, "Discarded", False, "Below seniority threshold", domain[:5], "No Director/Head/Principal/Staff signal.")
     if not title_primary_domain:
         return Evaluated(candidate, score, "Discarded", False, "Weak primary title-domain signal", domain[:5], "Title does not carry a primary trust/safety/privacy/compliance/governance signal.")
-    if score < 60:
-        return Evaluated(candidate, score, "Discarded", False, "Below 60% threshold", domain[:5], "Insufficient domain/function fit.")
+    if score < MINIMUM_SCORE:
+        return Evaluated(candidate, score, "Discarded", False, f"Below {MINIMUM_SCORE}% threshold", domain[:5], "Insufficient domain/function fit.")
 
     if score >= 90:
         band = "Strong"
@@ -632,6 +676,10 @@ def evaluate(candidate: Candidate) -> Evaluated:
 
 def esc(value: object) -> str:
     return html.escape(str(value or ""), quote=True)
+
+
+def clean_generated_html(value: str) -> str:
+    return "\n".join(line.rstrip() for line in value.splitlines()) + "\n"
 
 
 def logo_url(company: str) -> str:
@@ -680,9 +728,9 @@ def score_color(score: int) -> str:
 def status_color(item: Evaluated) -> str:
     if item.included:
         return score_color(item.score)
-    if item.reason in {"Location hard filter", "No Seattle/Redmond/Bellevue/Remote US signal", "Pure engineering role"}:
+    if item.reason in {"Location hard filter", "No Seattle/Redmond/Bellevue/Remote US signal", "Excluded by title criteria"}:
         return "text-red-700 bg-red-100"
-    if item.reason in {"Weak primary title-domain signal", "Below seniority threshold", "Below 60% threshold"}:
+    if item.reason in {"Weak primary title-domain signal", "Below seniority threshold", f"Below {MINIMUM_SCORE}% threshold"}:
         return "text-amber-700 bg-amber-100"
     return "text-slate-700 bg-slate-100"
 
@@ -748,47 +796,73 @@ def render_rows(items: list[Evaluated]) -> str:
     return "\n".join(rows) or '<tr><td class="px-3 py-3 text-slate-400" colspan="6">No rows.</td></tr>'
 
 
-def render_criteria() -> str:
-    criteria = [
-        ("Domain fit", "Trust & Safety, privacy, regulatory compliance, governance, integrity, abuse prevention, youth safety, responsible AI, and GenAI trust signals in the title and role scope."),
-        ("Leadership level", "Director, VP, Head, Principal, Staff, or equivalent senior ownership. IC engineering roles are filtered unless the title clearly carries leadership or product/program ownership."),
-        ("Function fit", "TPM, technical program leadership, product management, risk/compliance leadership, platform governance, and cross-functional operating roles."),
-        ("Location", "Seattle, Bellevue, Redmond, or Remote US. Bay Area, NYC, LA, and other explicit non-target locations are filtered out."),
-        ("Company filter", "Meta, Instagram, WhatsApp, and Reality Labs are excluded. Subsidiary names are normalized so Amazon variants render as Amazon."),
-        ("Compensation", "Listed compensation is a positive signal, but missing compensation is treated as a review gap rather than an automatic reject."),
+def render_menu() -> str:
+    return f"""
+      <div class="relative flex items-center gap-2">
+        <a href="{FEEDBACK_URL}" target="_blank" class="inline-flex items-center justify-center rounded bg-white text-slate-900 px-3 py-2 text-xs font-semibold hover:bg-slate-100">Feedback</a>
+        <button type="button" onclick="toggleMenu()" aria-label="Open menu" class="inline-flex h-9 w-9 items-center justify-center rounded border border-slate-600 text-white hover:bg-slate-800">☰</button>
+        <div id="site-menu" class="hidden absolute right-0 top-11 z-50 w-52 rounded-lg border border-slate-200 bg-white py-2 text-sm text-slate-700 shadow-xl">
+          <a class="block px-4 py-2 hover:bg-slate-50" href="{SITE_BASE}">Daily alert</a>
+          <a class="block px-4 py-2 hover:bg-slate-50" href="{SITE_BASE}criteria.html">Criteria</a>
+          <a class="block px-4 py-2 hover:bg-slate-50" href="{SITE_BASE}settings.html">Settings</a>
+          <a class="block px-4 py-2 hover:bg-slate-50" href="{SITE_BASE}archive/">Archive</a>
+          <a class="block px-4 py-2 hover:bg-slate-50" target="_blank" href="{REPO_URL}/issues">GitHub Issues</a>
+        </div>
+      </div>"""
+
+
+def render_nav_script() -> str:
+    return """
+    function toggleMenu() {
+      const menu = document.getElementById('site-menu');
+      if (menu) menu.classList.toggle('hidden');
+    }
+
+    document.addEventListener('click', event => {
+      const menu = document.getElementById('site-menu');
+      if (!menu || menu.classList.contains('hidden')) return;
+      if (!event.target.closest('#site-menu') && !event.target.closest('[aria-label="Open menu"]')) {
+        menu.classList.add('hidden');
+      }
+    });
+    """
+
+
+def render_criteria_cards(criteria: dict[str, object]) -> str:
+    def values(name: str) -> str:
+        value = criteria.get(name, [])
+        if not isinstance(value, list):
+            return "Not configured"
+        return ", ".join(str(item) for item in value) or "Not configured"
+
+    cards = [
+        ("Domain fit", values("primary_domain_keywords")),
+        ("Leadership level", values("seniority_keywords")),
+        ("Function fit", values("function_keywords")),
+        ("Location", values("target_locations")),
+        ("Excluded companies", values("excluded_companies")),
+        ("Excluded title keywords", values("excluded_title_keywords")),
     ]
-    profile = [
-        "Head of TPM background across Reality Labs Trust and Instagram Trust.",
-        "Deep privacy and regulatory compliance experience spanning GDPR, COPPA, AADC, DMA, developer platform compliance, and security/integrity programs.",
-        "Strong fit for roles that combine executive stakeholder management, ambiguous regulatory or safety problems, platform/product governance, and AI trust/responsible AI operating models.",
-        "Current target: senior trust, safety, privacy, compliance, responsible AI, and TPM/product leadership roles in Seattle-area or Remote US environments.",
-    ]
-    criteria_html = "".join(
+    return "".join(
         f"""
         <div class="bg-white border border-slate-200 rounded-lg p-4">
           <p class="font-semibold text-slate-900">{esc(title)}</p>
           <p class="text-sm text-slate-600 mt-1">{esc(body)}</p>
         </div>"""
-        for title, body in criteria
+        for title, body in cards
     )
-    profile_html = "".join(f"<li>{esc(item)}</li>" for item in profile)
-    return f"""
-      <div class="grid md:grid-cols-2 gap-3">{criteria_html}</div>
-      <div class="bg-white border border-slate-200 rounded-lg p-4 mt-4">
-        <p class="font-semibold text-slate-900">Kevin profile signals used</p>
-        <ul class="list-disc pl-5 mt-2 space-y-1 text-sm text-slate-600">{profile_html}</ul>
-      </div>
-      <div class="bg-slate-900 text-white rounded-lg p-4 mt-4">
-        <p class="font-semibold">Scoring model</p>
-        <p class="text-sm text-slate-300 mt-1">Up to 35 points for domain match, 25 for seniority, 20 for function fit, 10 for target location, and 10 for listed compensation. Inclusion requires a passing location, seniority signal, primary title-domain signal, and at least 60% score.</p>
-      </div>"""
 
 
-def render_html(evaluated: list[Evaluated], errors: list[str]) -> str:
+def render_html(evaluated: list[Evaluated], errors: list[str], criteria: dict[str, object]) -> str:
     now = dt.datetime.now(PT)
     today = now.date()
     included = sorted([item for item in evaluated if item.included], key=lambda i: i.score, reverse=True)[:12]
-    discarded = sorted([item for item in evaluated if not item.included and item.score >= 35], key=lambda i: i.score, reverse=True)[:30]
+    hidden_reasons = {"Excluded company", "Excluded by title criteria"}
+    discarded = sorted(
+        [item for item in evaluated if not item.included and item.score >= 35 and item.reason not in hidden_reasons],
+        key=lambda i: i.score,
+        reverse=True,
+    )[:30]
     enrich_compensation(included + discarded)
     fulltime = [item for item in included if item.candidate.engagement == "full-time"]
     fractional = [item for item in included if item.candidate.engagement != "full-time"]
@@ -797,11 +871,11 @@ def render_html(evaluated: list[Evaluated], errors: list[str]) -> str:
     cards = "\n".join(render_card(item) for item in fulltime) or '<p class="text-sm text-slate-500 italic">No full-time roles passed filters today.</p>'
     fractional_cards = "\n".join(render_card(item) for item in fractional) or '<p class="text-sm text-slate-500 italic">No fractional or advisory roles with verified candidate-usable Apply links today.</p>'
     all_rows = render_rows(discarded)
-    criteria_html = render_criteria()
     summary = (
         f"Generated from public ATS APIs across {len(GREENHOUSE) + len(LEVER) + len(ASHBY)} company boards plus Amazon Jobs search. "
-        f"{len(included)} roles passed the 60% threshold and hard filters; {len(discarded)} near matches or filtered roles are listed in Filtered Out."
+        f"{len(included)} roles passed the {MINIMUM_SCORE}% threshold and hard filters; {len(discarded)} near matches or filtered roles are listed in Filtered Out."
     )
+    menu = render_menu()
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -826,9 +900,12 @@ def render_html(evaluated: list[Evaluated], errors: list[str]) -> str:
           <h1 class="text-2xl sm:text-3xl font-bold">Kevin Luu</h1>
           <p class="text-slate-400 text-sm">Trust &amp; Safety · Privacy · GenAI Trust · TPM</p>
         </div>
-        <div class="sm:text-right">
-          <p class="text-xl sm:text-2xl font-semibold">{today.strftime('%A, %b %-d %Y')}</p>
-          <p class="text-xs text-slate-400">Generated {now.strftime('%I:%M %p')} PT · alert-date: {today.isoformat()}</p>
+        <div class="flex flex-col items-start sm:items-end gap-3">
+          <div class="sm:text-right">
+            <p class="text-xl sm:text-2xl font-semibold">{today.strftime('%A, %b %-d %Y')}</p>
+            <p class="text-xs text-slate-400">Generated {now.strftime('%I:%M %p')} PT · alert-date: {today.isoformat()}</p>
+          </div>
+          {menu}
         </div>
       </div>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 mt-5 pt-4 border-t border-slate-700">
@@ -844,7 +921,6 @@ def render_html(evaluated: list[Evaluated], errors: list[str]) -> str:
       <button onclick="switchTab('fulltime')" id="tab-fulltime" class="tab-btn flex-none px-3 sm:px-4 py-3 text-xs sm:text-sm font-semibold text-white border-b-2 border-white">Full-Time <span>{len(fulltime)}</span></button>
       <button onclick="switchTab('fractional')" id="tab-fractional" class="tab-btn flex-none px-3 sm:px-4 py-3 text-xs sm:text-sm font-semibold text-slate-400 border-b-2 border-transparent">Fractional <span>{len(fractional)}</span></button>
       <button onclick="switchTab('all')" id="tab-all" class="tab-btn flex-none px-3 sm:px-4 py-3 text-xs sm:text-sm font-semibold text-slate-400 border-b-2 border-transparent">Filtered Out <span>{len(discarded)}</span></button>
-      <button onclick="switchTab('criteria')" id="tab-criteria" class="tab-btn flex-none px-3 sm:px-4 py-3 text-xs sm:text-sm font-semibold text-slate-400 border-b-2 border-transparent">Criteria</button>
     </div>
   </nav>
 
@@ -874,20 +950,16 @@ def render_html(evaluated: list[Evaluated], errors: list[str]) -> str:
     </main>
   </div>
 
-  <div id="tab-content-criteria" class="tab-content hidden">
-    <main class="max-w-5xl mx-auto px-3 sm:px-5 lg:px-6 py-4 sm:py-5">
-{criteria_html}
-    </main>
-  </div>
-
   <footer class="max-w-5xl mx-auto px-4 sm:px-6 pb-8 text-xs text-slate-400">
     <div class="border-t border-slate-200 pt-4 flex flex-col sm:flex-row sm:justify-between gap-2">
-      <p>Filters: Seattle/Bellevue/Redmond/Remote US · Excluded: Meta · Level: Director/VP/Head/Principal/Staff · Score: ≥ 60%</p>
-      <p>Generated by Codex/GitHub Actions · <a href="./archive/" class="underline">Past alerts</a></p>
+      <p>Filters: Seattle/Bellevue/Redmond/Remote US · Excluded: Meta and title exclusions · Score: ≥ {MINIMUM_SCORE}%</p>
+      <p>Generated by Codex/GitHub Actions · <a href="{SITE_BASE}archive/" class="underline">Past alerts</a> · <a href="{SITE_BASE}criteria.html" class="underline">Criteria</a></p>
     </div>
   </footer>
 
   <script>
+{render_nav_script()}
+
     function switchTab(name) {{
       document.querySelectorAll('.tab-content').forEach(el => {{
         el.classList.add('hidden');
@@ -934,6 +1006,181 @@ def render_html(evaluated: list[Evaluated], errors: list[str]) -> str:
 """
 
 
+def render_criteria_page(criteria: dict[str, object]) -> str:
+    now = dt.datetime.now(PT)
+    criteria_pretty = json.dumps(criteria, indent=2)
+    criteria_script = json.dumps(criteria)
+    profile = criteria.get("profile_signals", [])
+    profile_html = "".join(f"<li>{esc(item)}</li>" for item in profile) if isinstance(profile, list) else ""
+    cards = render_criteria_cards(criteria)
+    menu = render_menu()
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JobAlerts Criteria</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased">
+  <header class="bg-slate-900 text-white">
+    <div class="max-w-5xl mx-auto px-3 sm:px-5 lg:px-6 py-5 sm:py-6">
+      <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+        <div>
+          <p class="text-slate-400 text-xs font-semibold uppercase tracking-widest">JobAlerts</p>
+          <h1 class="text-2xl sm:text-3xl font-bold">Criteria</h1>
+          <p class="text-slate-400 text-sm">Evaluation profile, filters, and scoring inputs</p>
+        </div>
+        <div class="flex flex-col items-start sm:items-end gap-3">
+          <p class="text-xs text-slate-400">Generated {now.strftime('%Y-%m-%d %I:%M %p')} PT</p>
+          {menu}
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-3 sm:px-5 lg:px-6 py-5 space-y-5">
+    <section class="grid md:grid-cols-2 gap-3">{cards}</section>
+    <section class="bg-white border border-slate-200 rounded-lg p-4">
+      <p class="font-semibold text-slate-900">Kevin profile signals used</p>
+      <ul class="list-disc pl-5 mt-2 space-y-1 text-sm text-slate-600">{profile_html}</ul>
+    </section>
+    <section id="criteria-editor" class="bg-white border border-slate-200 rounded-lg p-4">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
+        <div>
+          <h2 class="font-semibold text-slate-900">Editable criteria JSON</h2>
+          <p class="text-sm text-slate-500">Save stores a browser draft. Submit opens a GitHub Issue that applies criteria.json, regenerates, validates, and publishes through GitHub Actions.</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button type="button" onclick="saveCriteriaDraft()" class="rounded bg-slate-900 text-white px-3 py-2 text-xs font-semibold hover:bg-slate-700">Save Draft</button>
+          <button type="button" onclick="resetCriteriaDraft()" class="rounded border border-slate-300 bg-white px-3 py-2 text-xs font-semibold hover:bg-slate-50">Reset</button>
+          <button type="button" onclick="submitCriteriaIssue()" class="rounded bg-green-700 text-white px-3 py-2 text-xs font-semibold hover:bg-green-600">Submit Update</button>
+        </div>
+      </div>
+      <textarea id="criteria-json" class="h-[32rem] w-full rounded border border-slate-300 bg-slate-950 p-3 font-mono text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500">{esc(criteria_pretty)}</textarea>
+      <p id="criteria-status" class="mt-2 text-xs text-slate-500"></p>
+    </section>
+  </main>
+
+  <script>
+{render_nav_script()}
+
+    const DEFAULT_CRITERIA = {criteria_script};
+    const STORAGE_KEY = 'jobalerts.criteriaDraft';
+    const textarea = document.getElementById('criteria-json');
+    const statusEl = document.getElementById('criteria-status');
+    const draft = localStorage.getItem(STORAGE_KEY);
+    if (draft) {{
+      textarea.value = draft;
+      statusEl.textContent = 'Loaded saved browser draft.';
+    }}
+
+    function parseCriteria() {{
+      return JSON.parse(textarea.value);
+    }}
+
+    function saveCriteriaDraft() {{
+      try {{
+        const parsed = parseCriteria();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed, null, 2));
+        textarea.value = JSON.stringify(parsed, null, 2);
+        statusEl.textContent = 'Draft saved in this browser.';
+        statusEl.className = 'mt-2 text-xs text-green-700';
+      }} catch (error) {{
+        statusEl.textContent = 'Invalid JSON: ' + error.message;
+        statusEl.className = 'mt-2 text-xs text-red-700';
+      }}
+    }}
+
+    function resetCriteriaDraft() {{
+      localStorage.removeItem(STORAGE_KEY);
+      textarea.value = JSON.stringify(DEFAULT_CRITERIA, null, 2);
+      statusEl.textContent = 'Reset to the published criteria.';
+      statusEl.className = 'mt-2 text-xs text-slate-500';
+    }}
+
+    function submitCriteriaIssue() {{
+      try {{
+        const parsed = parseCriteria();
+        const body = [
+          '## Requested criteria update',
+          '',
+          'Apply this criteria JSON to criteria.json, then regenerate and publish the live page.',
+          '',
+          '```json',
+          JSON.stringify(parsed, null, 2),
+          '```'
+        ].join('\\n');
+        const url = '{CRITERIA_ISSUE_URL}&title=' + encodeURIComponent('Criteria update') + '&body=' + encodeURIComponent(body);
+        window.open(url, '_blank', 'noopener');
+      }} catch (error) {{
+        statusEl.textContent = 'Invalid JSON: ' + error.message;
+        statusEl.className = 'mt-2 text-xs text-red-700';
+      }}
+    }}
+  </script>
+</body>
+</html>
+"""
+
+
+def render_settings_page(criteria: dict[str, object]) -> str:
+    now = dt.datetime.now(PT)
+    menu = render_menu()
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JobAlerts Settings</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased">
+  <header class="bg-slate-900 text-white">
+    <div class="max-w-5xl mx-auto px-3 sm:px-5 lg:px-6 py-5 sm:py-6">
+      <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+        <div>
+          <p class="text-slate-400 text-xs font-semibold uppercase tracking-widest">JobAlerts</p>
+          <h1 class="text-2xl sm:text-3xl font-bold">Settings</h1>
+          <p class="text-slate-400 text-sm">Hosted workflow controls and issue tracking</p>
+        </div>
+        <div class="flex flex-col items-start sm:items-end gap-3">
+          <p class="text-xs text-slate-400">Generated {now.strftime('%Y-%m-%d %I:%M %p')} PT</p>
+          {menu}
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="settings-page" class="max-w-5xl mx-auto px-3 sm:px-5 lg:px-6 py-5">
+    <div class="grid md:grid-cols-2 gap-3">
+      <a href="{GENERATE_WORKFLOW_URL}" target="_blank" class="block rounded-lg border border-slate-200 bg-white p-4 hover:border-sky-300">
+        <p class="font-semibold text-slate-900">Run generation manually</p>
+        <p class="mt-1 text-sm text-slate-600">GitHub Actions fetches postings, evaluates them against criteria.json, regenerates the site, and publishes to main.</p>
+      </a>
+      <a href="{REPO_URL}/issues" target="_blank" class="block rounded-lg border border-slate-200 bg-white p-4 hover:border-sky-300">
+        <p class="font-semibold text-slate-900">Review GitHub Issues</p>
+        <p class="mt-1 text-sm text-slate-600">Feedback is tracked with needs-codex-fix for Codex review. Criteria update issues are applied automatically when the JSON is valid.</p>
+      </a>
+      <a href="{FEEDBACK_URL}" target="_blank" class="block rounded-lg border border-slate-200 bg-white p-4 hover:border-sky-300">
+        <p class="font-semibold text-slate-900">File feedback</p>
+        <p class="mt-1 text-sm text-slate-600">Create a bug report or improvement request directly in the repo.</p>
+      </a>
+      <a href="{SITE_BASE}criteria.html" class="block rounded-lg border border-slate-200 bg-white p-4 hover:border-sky-300">
+        <p class="font-semibold text-slate-900">Adjust criteria</p>
+        <p class="mt-1 text-sm text-slate-600">Draft changes locally, submit them as an issue, and let the hosted criteria workflow regenerate and publish.</p>
+      </a>
+    </div>
+  </main>
+
+  <script>
+{render_nav_script()}
+  </script>
+</body>
+</html>
+"""
+
+
 def archive_index() -> str:
     files = sorted([path.name for path in ARCHIVE.glob("*.html") if path.name != "index.html"], reverse=True)
     rows = "\n".join(f'<li><a href="{esc(name)}" class="text-blue-600 hover:underline">{esc(name[:-5])}</a></li>' for name in files)
@@ -945,13 +1192,17 @@ def archive_index() -> str:
 def main() -> int:
     ARCHIVE.mkdir(exist_ok=True)
     REPORTS.mkdir(exist_ok=True)
+    criteria = load_criteria()
+    apply_criteria(criteria)
     candidates, errors = collect_candidates()
     evaluated = [evaluate(candidate) for candidate in candidates]
-    html_output = render_html(evaluated, errors)
+    html_output = render_html(evaluated, errors, criteria)
     today = dt.datetime.now(PT).date().isoformat()
-    INDEX.write_text(html_output)
-    (ARCHIVE / f"{today}.html").write_text(html_output)
-    (ARCHIVE / "index.html").write_text(archive_index())
+    INDEX.write_text(clean_generated_html(html_output))
+    CRITERIA_PAGE.write_text(clean_generated_html(render_criteria_page(criteria)))
+    SETTINGS_PAGE.write_text(clean_generated_html(render_settings_page(criteria)))
+    (ARCHIVE / f"{today}.html").write_text(clean_generated_html(html_output))
+    (ARCHIVE / "index.html").write_text(clean_generated_html(archive_index()))
     manifest = {
         "date": today,
         "candidates": len(candidates),

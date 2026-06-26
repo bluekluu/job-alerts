@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JobAlerts Criteria</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased">
+  <header class="bg-slate-900 text-white">
+    <div class="max-w-5xl mx-auto px-3 sm:px-5 lg:px-6 py-5 sm:py-6">
+      <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+        <div>
+          <p class="text-slate-400 text-xs font-semibold uppercase tracking-widest">JobAlerts</p>
+          <h1 class="text-2xl sm:text-3xl font-bold">Criteria</h1>
+          <p class="text-slate-400 text-sm">Evaluation profile, filters, and scoring inputs</p>
+        </div>
+        <div class="flex flex-col items-start sm:items-end gap-3">
+          <p class="text-xs text-slate-400">Generated 2026-06-25 08:17 PM PT</p>
+
+      <div class="relative flex items-center gap-2">
+        <a href="https://github.com/bluekluu/job-alerts/issues/new?template=bug_report.md" target="_blank" class="inline-flex items-center justify-center rounded bg-white text-slate-900 px-3 py-2 text-xs font-semibold hover:bg-slate-100">Feedback</a>
+        <button type="button" onclick="toggleMenu()" aria-label="Open menu" class="inline-flex h-9 w-9 items-center justify-center rounded border border-slate-600 text-white hover:bg-slate-800">☰</button>
+        <div id="site-menu" class="hidden absolute right-0 top-11 z-50 w-52 rounded-lg border border-slate-200 bg-white py-2 text-sm text-slate-700 shadow-xl">
+          <a class="block px-4 py-2 hover:bg-slate-50" href="/job-alerts/">Daily alert</a>
+          <a class="block px-4 py-2 hover:bg-slate-50" href="/job-alerts/criteria.html">Criteria</a>
+          <a class="block px-4 py-2 hover:bg-slate-50" href="/job-alerts/settings.html">Settings</a>
+          <a class="block px-4 py-2 hover:bg-slate-50" href="/job-alerts/archive/">Archive</a>
+          <a class="block px-4 py-2 hover:bg-slate-50" target="_blank" href="https://github.com/bluekluu/job-alerts/issues">GitHub Issues</a>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-3 sm:px-5 lg:px-6 py-5 space-y-5">
+    <section class="grid md:grid-cols-2 gap-3">
+        <div class="bg-white border border-slate-200 rounded-lg p-4">
+          <p class="font-semibold text-slate-900">Domain fit</p>
+          <p class="text-sm text-slate-600 mt-1">trust, safety, responsible ai, privacy, compliance, governance, integrity, abuse, moderation, child safety, youth</p>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-lg p-4">
+          <p class="font-semibold text-slate-900">Leadership level</p>
+          <p class="text-sm text-slate-600 mt-1">director, sr. director, senior director, vp, vice president, head, principal, staff, lead</p>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-lg p-4">
+          <p class="font-semibold text-slate-900">Function fit</p>
+          <p class="text-sm text-slate-600 mt-1">program manager, technical program, product manager, tpm, trust, safety, privacy, governance, risk, compliance</p>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-lg p-4">
+          <p class="font-semibold text-slate-900">Location</p>
+          <p class="text-sm text-slate-600 mt-1">Seattle, Bellevue, Redmond, Remote US</p>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-lg p-4">
+          <p class="font-semibold text-slate-900">Excluded companies</p>
+          <p class="text-sm text-slate-600 mt-1">meta, instagram, whatsapp, reality labs</p>
+        </div>
+        <div class="bg-white border border-slate-200 rounded-lg p-4">
+          <p class="font-semibold text-slate-900">Excluded title keywords</p>
+          <p class="text-sm text-slate-600 mt-1">engineer, engineering</p>
+        </div></section>
+    <section class="bg-white border border-slate-200 rounded-lg p-4">
+      <p class="font-semibold text-slate-900">Kevin profile signals used</p>
+      <ul class="list-disc pl-5 mt-2 space-y-1 text-sm text-slate-600"><li>Head of TPM across Reality Labs Trust and Instagram Trust</li><li>Privacy and regulatory compliance leadership across GDPR, COPPA, AADC, DMA, developer platform compliance, security, and integrity</li><li>Strong fit for executive stakeholder management, ambiguous safety and regulatory programs, product/platform governance, and responsible AI operating models</li><li>Targeting senior trust, safety, privacy, compliance, responsible AI, TPM, product, and governance leadership roles in Seattle-area or Remote US environments</li></ul>
+    </section>
+    <section id="criteria-editor" class="bg-white border border-slate-200 rounded-lg p-4">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
+        <div>
+          <h2 class="font-semibold text-slate-900">Editable criteria JSON</h2>
+          <p class="text-sm text-slate-500">Save stores a browser draft. Submit opens a GitHub Issue that applies criteria.json, regenerates, validates, and publishes through GitHub Actions.</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button type="button" onclick="saveCriteriaDraft()" class="rounded bg-slate-900 text-white px-3 py-2 text-xs font-semibold hover:bg-slate-700">Save Draft</button>
+          <button type="button" onclick="resetCriteriaDraft()" class="rounded border border-slate-300 bg-white px-3 py-2 text-xs font-semibold hover:bg-slate-50">Reset</button>
+          <button type="button" onclick="submitCriteriaIssue()" class="rounded bg-green-700 text-white px-3 py-2 text-xs font-semibold hover:bg-green-600">Submit Update</button>
+        </div>
+      </div>
+      <textarea id="criteria-json" class="h-[32rem] w-full rounded border border-slate-300 bg-slate-950 p-3 font-mono text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500">{
+  &quot;version&quot;: 1,
+  &quot;profile_signals&quot;: [
+    &quot;Head of TPM across Reality Labs Trust and Instagram Trust&quot;,
+    &quot;Privacy and regulatory compliance leadership across GDPR, COPPA, AADC, DMA, developer platform compliance, security, and integrity&quot;,
+    &quot;Strong fit for executive stakeholder management, ambiguous safety and regulatory programs, product/platform governance, and responsible AI operating models&quot;,
+    &quot;Targeting senior trust, safety, privacy, compliance, responsible AI, TPM, product, and governance leadership roles in Seattle-area or Remote US environments&quot;
+  ],
+  &quot;domain_keywords&quot;: [
+    &quot;trust&quot;,
+    &quot;safety&quot;,
+    &quot;responsible ai&quot;,
+    &quot;privacy&quot;,
+    &quot;compliance&quot;,
+    &quot;governance&quot;,
+    &quot;risk&quot;,
+    &quot;integrity&quot;,
+    &quot;abuse&quot;,
+    &quot;security&quot;,
+    &quot;policy&quot;,
+    &quot;moderation&quot;,
+    &quot;child safety&quot;,
+    &quot;youth&quot;
+  ],
+  &quot;primary_domain_keywords&quot;: [
+    &quot;trust&quot;,
+    &quot;safety&quot;,
+    &quot;responsible ai&quot;,
+    &quot;privacy&quot;,
+    &quot;compliance&quot;,
+    &quot;governance&quot;,
+    &quot;integrity&quot;,
+    &quot;abuse&quot;,
+    &quot;moderation&quot;,
+    &quot;child safety&quot;,
+    &quot;youth&quot;
+  ],
+  &quot;seniority_keywords&quot;: [
+    &quot;director&quot;,
+    &quot;sr. director&quot;,
+    &quot;senior director&quot;,
+    &quot;vp&quot;,
+    &quot;vice president&quot;,
+    &quot;head&quot;,
+    &quot;principal&quot;,
+    &quot;staff&quot;,
+    &quot;lead&quot;
+  ],
+  &quot;function_keywords&quot;: [
+    &quot;program manager&quot;,
+    &quot;technical program&quot;,
+    &quot;product manager&quot;,
+    &quot;tpm&quot;,
+    &quot;trust&quot;,
+    &quot;safety&quot;,
+    &quot;privacy&quot;,
+    &quot;governance&quot;,
+    &quot;risk&quot;,
+    &quot;compliance&quot;
+  ],
+  &quot;excluded_companies&quot;: [
+    &quot;meta&quot;,
+    &quot;instagram&quot;,
+    &quot;whatsapp&quot;,
+    &quot;reality labs&quot;
+  ],
+  &quot;excluded_title_keywords&quot;: [
+    &quot;engineer&quot;,
+    &quot;engineering&quot;
+  ],
+  &quot;target_locations&quot;: [
+    &quot;Seattle&quot;,
+    &quot;Bellevue&quot;,
+    &quot;Redmond&quot;,
+    &quot;Remote US&quot;
+  ],
+  &quot;minimum_score&quot;: 60
+}</textarea>
+      <p id="criteria-status" class="mt-2 text-xs text-slate-500"></p>
+    </section>
+  </main>
+
+  <script>
+
+    function toggleMenu() {
+      const menu = document.getElementById('site-menu');
+      if (menu) menu.classList.toggle('hidden');
+    }
+
+    document.addEventListener('click', event => {
+      const menu = document.getElementById('site-menu');
+      if (!menu || menu.classList.contains('hidden')) return;
+      if (!event.target.closest('#site-menu') && !event.target.closest('[aria-label="Open menu"]')) {
+        menu.classList.add('hidden');
+      }
+    });
+
+
+    const DEFAULT_CRITERIA = {"version": 1, "profile_signals": ["Head of TPM across Reality Labs Trust and Instagram Trust", "Privacy and regulatory compliance leadership across GDPR, COPPA, AADC, DMA, developer platform compliance, security, and integrity", "Strong fit for executive stakeholder management, ambiguous safety and regulatory programs, product/platform governance, and responsible AI operating models", "Targeting senior trust, safety, privacy, compliance, responsible AI, TPM, product, and governance leadership roles in Seattle-area or Remote US environments"], "domain_keywords": ["trust", "safety", "responsible ai", "privacy", "compliance", "governance", "risk", "integrity", "abuse", "security", "policy", "moderation", "child safety", "youth"], "primary_domain_keywords": ["trust", "safety", "responsible ai", "privacy", "compliance", "governance", "integrity", "abuse", "moderation", "child safety", "youth"], "seniority_keywords": ["director", "sr. director", "senior director", "vp", "vice president", "head", "principal", "staff", "lead"], "function_keywords": ["program manager", "technical program", "product manager", "tpm", "trust", "safety", "privacy", "governance", "risk", "compliance"], "excluded_companies": ["meta", "instagram", "whatsapp", "reality labs"], "excluded_title_keywords": ["engineer", "engineering"], "target_locations": ["Seattle", "Bellevue", "Redmond", "Remote US"], "minimum_score": 60};
+    const STORAGE_KEY = 'jobalerts.criteriaDraft';
+    const textarea = document.getElementById('criteria-json');
+    const statusEl = document.getElementById('criteria-status');
+    const draft = localStorage.getItem(STORAGE_KEY);
+    if (draft) {
+      textarea.value = draft;
+      statusEl.textContent = 'Loaded saved browser draft.';
+    }
+
+    function parseCriteria() {
+      return JSON.parse(textarea.value);
+    }
+
+    function saveCriteriaDraft() {
+      try {
+        const parsed = parseCriteria();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed, null, 2));
+        textarea.value = JSON.stringify(parsed, null, 2);
+        statusEl.textContent = 'Draft saved in this browser.';
+        statusEl.className = 'mt-2 text-xs text-green-700';
+      } catch (error) {
+        statusEl.textContent = 'Invalid JSON: ' + error.message;
+        statusEl.className = 'mt-2 text-xs text-red-700';
+      }
+    }
+
+    function resetCriteriaDraft() {
+      localStorage.removeItem(STORAGE_KEY);
+      textarea.value = JSON.stringify(DEFAULT_CRITERIA, null, 2);
+      statusEl.textContent = 'Reset to the published criteria.';
+      statusEl.className = 'mt-2 text-xs text-slate-500';
+    }
+
+    function submitCriteriaIssue() {
+      try {
+        const parsed = parseCriteria();
+        const body = [
+          '## Requested criteria update',
+          '',
+          'Apply this criteria JSON to criteria.json, then regenerate and publish the live page.',
+          '',
+          '```json',
+          JSON.stringify(parsed, null, 2),
+          '```'
+        ].join('\n');
+        const url = 'https://github.com/bluekluu/job-alerts/issues/new?template=criteria_update.md&title=' + encodeURIComponent('Criteria update') + '&body=' + encodeURIComponent(body);
+        window.open(url, '_blank', 'noopener');
+      } catch (error) {
+        statusEl.textContent = 'Invalid JSON: ' + error.message;
+        statusEl.className = 'mt-2 text-xs text-red-700';
+      }
+    }
+  </script>
+</body>
+</html>

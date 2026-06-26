@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "profile_signals": [
+    "Head of TPM across Reality Labs Trust and Instagram Trust",
+    "Privacy and regulatory compliance leadership across GDPR, COPPA, AADC, DMA, developer platform compliance, security, and integrity",
+    "Strong fit for executive stakeholder management, ambiguous safety and regulatory programs, product/platform governance, and responsible AI operating models",
+    "Targeting senior trust, safety, privacy, compliance, responsible AI, TPM, product, and governance leadership roles in Seattle-area or Remote US environments"
+  ],
+  "domain_keywords": [
+    "trust",
+    "safety",
+    "responsible ai",
+    "privacy",
+    "compliance",
+    "governance",
+    "risk",
+    "integrity",
+    "abuse",
+    "security",
+    "policy",
+    "moderation",
+    "child safety",
+    "youth"
+  ],
+  "primary_domain_keywords": [
+    "trust",
+    "safety",
+    "responsible ai",
+    "privacy",
+    "compliance",
+    "governance",
+    "integrity",
+    "abuse",
+    "moderation",
+    "child safety",
+    "youth"
+  ],
+  "seniority_keywords": [
+    "director",
+    "sr. director",
+    "senior director",
+    "vp",
+    "vice president",
+    "head",
+    "principal",
+    "staff",
+    "lead"
+  ],
+  "function_keywords": [
+    "program manager",
+    "technical program",
+    "product manager",
+    "tpm",
+    "trust",
+    "safety",
+    "privacy",
+    "governance",
+    "risk",
+    "compliance"
+  ],
+  "excluded_companies": [
+    "meta",
+    "instagram",
+    "whatsapp",
+    "reality labs"
+  ],
+  "excluded_title_keywords": [
+    "engineer",
+    "engineering"
+  ],
+  "target_locations": [
+    "Seattle",
+    "Bellevue",
+    "Redmond",
+    "Remote US"
+  ],
+  "minimum_score": 60
+}
