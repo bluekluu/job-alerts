@@ -16,7 +16,6 @@ REQUIRED = [
 REQUIRED_INDEX_LINKS = [
     'href="/job-alerts/criteria.html"',
     "issues/new?template=bug_report.md",
-    "actions/workflows/daily-generate.yml",
 ]
 REQUIRED_PAGE_MARKERS = {
     "criteria.html": [

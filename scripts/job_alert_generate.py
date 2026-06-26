@@ -27,7 +27,6 @@ SITE_BASE = "/job-alerts/"
 REPO_URL = "https://github.com/bluekluu/job-alerts"
 FEEDBACK_URL = f"{REPO_URL}/issues/new?template=bug_report.md"
 CRITERIA_ISSUE_URL = f"{REPO_URL}/issues/new?template=criteria_update.md"
-GENERATE_WORKFLOW_URL = f"{REPO_URL}/actions/workflows/daily-generate.yml"
 
 GREENHOUSE = {
     "anthropic": "Anthropic",
@@ -804,7 +803,6 @@ def render_menu() -> str:
           <a class="block px-4 py-2 hover:bg-slate-50" href="{SITE_BASE}criteria.html">Criteria</a>
           <a class="block px-4 py-2 hover:bg-slate-50" target="_blank" href="{FEEDBACK_URL}">Feedback</a>
           <a class="block px-4 py-2 hover:bg-slate-50" href="{SITE_BASE}archive/">Archive</a>
-          <a class="block px-4 py-2 hover:bg-slate-50" target="_blank" href="{GENERATE_WORKFLOW_URL}">Setting</a>
         </div>
       </div>"""
 
