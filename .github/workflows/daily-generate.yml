@@ -2,8 +2,8 @@ name: Daily Generate
 
 on:
   schedule:
-    - cron: "0 15 * * *"
-    - cron: "0 16 * * *"
+    - cron: "13 15 * * *"
+    - cron: "13 16 * * *"
   workflow_dispatch:
 
 permissions:
@@ -16,9 +16,25 @@ jobs:
       - uses: actions/checkout@v4
       - name: Check Pacific run window
         id: pacific
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_SCHEDULE: ${{ github.event.schedule }}
         run: |
-          SHOULD_RUN=$(TZ=America/Los_Angeles date +%H | python3 -c "import sys; print('true' if sys.stdin.read().strip() == '08' else 'false')")
-          echo "should_run=$SHOULD_RUN" >> "$GITHUB_OUTPUT"
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import datetime as dt
+          import os
+          from zoneinfo import ZoneInfo
+
+          if os.environ["EVENT_NAME"] == "workflow_dispatch":
+              print("should_run=true")
+              raise SystemExit
+
+          local_date = dt.datetime.now(ZoneInfo("America/Los_Angeles")).date()
+          target = dt.datetime.combine(local_date, dt.time(8, 13), ZoneInfo("America/Los_Angeles"))
+          expected = target.astimezone(dt.timezone.utc).strftime("%M %H * * *")
+          print(f"should_run={'true' if os.environ.get('EVENT_SCHEDULE') == expected else 'false'}")
+          print(f"expected_schedule={expected}")
+          PY
       - uses: actions/setup-python@v5
         if: steps.pacific.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
         with:
@@ -34,7 +50,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html archive/ reports/
+          git add index.html criteria.html archive/ reports/
           if ! git diff --cached --quiet; then
             git commit -m "Job alert: $(TZ=America/Los_Angeles date +%F)"
             git push
