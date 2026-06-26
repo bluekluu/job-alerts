@@ -63,7 +63,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add criteria.json index.html criteria.html settings.html archive/ reports/
+          git add criteria.json index.html criteria.html archive/ reports/
           if git diff --cached --quiet; then
             echo "No criteria or generated page changes to commit."
             exit 0

@@ -16,17 +16,16 @@
           <p class="text-slate-400 text-sm">Evaluation profile, filters, and scoring inputs</p>
         </div>
         <div class="flex flex-col items-start sm:items-end gap-3">
-          <p class="text-xs text-slate-400">Generated 2026-06-25 08:17 PM PT</p>
+          <p class="text-xs text-slate-400">Generated 2026-06-25 08:41 PM PT</p>
 
       <div class="relative flex items-center gap-2">
-        <a href="https://github.com/bluekluu/job-alerts/issues/new?template=bug_report.md" target="_blank" class="inline-flex items-center justify-center rounded bg-white text-slate-900 px-3 py-2 text-xs font-semibold hover:bg-slate-100">Feedback</a>
         <button type="button" onclick="toggleMenu()" aria-label="Open menu" class="inline-flex h-9 w-9 items-center justify-center rounded border border-slate-600 text-white hover:bg-slate-800">☰</button>
-        <div id="site-menu" class="hidden absolute right-0 top-11 z-50 w-52 rounded-lg border border-slate-200 bg-white py-2 text-sm text-slate-700 shadow-xl">
+        <div id="site-menu" class="hidden fixed right-3 top-16 z-50 w-[calc(100vw-1.5rem)] max-w-64 rounded-lg border border-slate-200 bg-white py-2 text-sm text-slate-700 shadow-xl sm:absolute sm:right-0 sm:top-11 sm:w-52">
           <a class="block px-4 py-2 hover:bg-slate-50" href="/job-alerts/">Daily alert</a>
           <a class="block px-4 py-2 hover:bg-slate-50" href="/job-alerts/criteria.html">Criteria</a>
-          <a class="block px-4 py-2 hover:bg-slate-50" href="/job-alerts/settings.html">Settings</a>
+          <a class="block px-4 py-2 hover:bg-slate-50" target="_blank" href="https://github.com/bluekluu/job-alerts/issues/new?template=bug_report.md">Feedback</a>
           <a class="block px-4 py-2 hover:bg-slate-50" href="/job-alerts/archive/">Archive</a>
-          <a class="block px-4 py-2 hover:bg-slate-50" target="_blank" href="https://github.com/bluekluu/job-alerts/issues">GitHub Issues</a>
+          <a class="block px-4 py-2 hover:bg-slate-50" target="_blank" href="https://github.com/bluekluu/job-alerts/actions/workflows/daily-generate.yml">Setting</a>
         </div>
       </div>
         </div>
@@ -67,8 +66,8 @@
     <section id="criteria-editor" class="bg-white border border-slate-200 rounded-lg p-4">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
         <div>
-          <h2 class="font-semibold text-slate-900">Editable criteria JSON</h2>
-          <p class="text-sm text-slate-500">Save stores a browser draft. Submit opens a GitHub Issue that applies criteria.json, regenerates, validates, and publishes through GitHub Actions.</p>
+          <h2 class="font-semibold text-slate-900">Edit criteria</h2>
+          <p class="text-sm text-slate-500">Save stores a browser draft. Submit opens a GitHub Issue that updates criteria.json, regenerates, validates, and publishes through GitHub Actions.</p>
         </div>
         <div class="flex flex-wrap gap-2">
           <button type="button" onclick="saveCriteriaDraft()" class="rounded bg-slate-900 text-white px-3 py-2 text-xs font-semibold hover:bg-slate-700">Save Draft</button>
@@ -76,84 +75,102 @@
           <button type="button" onclick="submitCriteriaIssue()" class="rounded bg-green-700 text-white px-3 py-2 text-xs font-semibold hover:bg-green-600">Submit Update</button>
         </div>
       </div>
-      <textarea id="criteria-json" class="h-[32rem] w-full rounded border border-slate-300 bg-slate-950 p-3 font-mono text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500">{
-  &quot;version&quot;: 1,
-  &quot;profile_signals&quot;: [
-    &quot;Head of TPM across Reality Labs Trust and Instagram Trust&quot;,
-    &quot;Privacy and regulatory compliance leadership across GDPR, COPPA, AADC, DMA, developer platform compliance, security, and integrity&quot;,
-    &quot;Strong fit for executive stakeholder management, ambiguous safety and regulatory programs, product/platform governance, and responsible AI operating models&quot;,
-    &quot;Targeting senior trust, safety, privacy, compliance, responsible AI, TPM, product, and governance leadership roles in Seattle-area or Remote US environments&quot;
-  ],
-  &quot;domain_keywords&quot;: [
-    &quot;trust&quot;,
-    &quot;safety&quot;,
-    &quot;responsible ai&quot;,
-    &quot;privacy&quot;,
-    &quot;compliance&quot;,
-    &quot;governance&quot;,
-    &quot;risk&quot;,
-    &quot;integrity&quot;,
-    &quot;abuse&quot;,
-    &quot;security&quot;,
-    &quot;policy&quot;,
-    &quot;moderation&quot;,
-    &quot;child safety&quot;,
-    &quot;youth&quot;
-  ],
-  &quot;primary_domain_keywords&quot;: [
-    &quot;trust&quot;,
-    &quot;safety&quot;,
-    &quot;responsible ai&quot;,
-    &quot;privacy&quot;,
-    &quot;compliance&quot;,
-    &quot;governance&quot;,
-    &quot;integrity&quot;,
-    &quot;abuse&quot;,
-    &quot;moderation&quot;,
-    &quot;child safety&quot;,
-    &quot;youth&quot;
-  ],
-  &quot;seniority_keywords&quot;: [
-    &quot;director&quot;,
-    &quot;sr. director&quot;,
-    &quot;senior director&quot;,
-    &quot;vp&quot;,
-    &quot;vice president&quot;,
-    &quot;head&quot;,
-    &quot;principal&quot;,
-    &quot;staff&quot;,
-    &quot;lead&quot;
-  ],
-  &quot;function_keywords&quot;: [
-    &quot;program manager&quot;,
-    &quot;technical program&quot;,
-    &quot;product manager&quot;,
-    &quot;tpm&quot;,
-    &quot;trust&quot;,
-    &quot;safety&quot;,
-    &quot;privacy&quot;,
-    &quot;governance&quot;,
-    &quot;risk&quot;,
-    &quot;compliance&quot;
-  ],
-  &quot;excluded_companies&quot;: [
-    &quot;meta&quot;,
-    &quot;instagram&quot;,
-    &quot;whatsapp&quot;,
-    &quot;reality labs&quot;
-  ],
-  &quot;excluded_title_keywords&quot;: [
-    &quot;engineer&quot;,
-    &quot;engineering&quot;
-  ],
-  &quot;target_locations&quot;: [
-    &quot;Seattle&quot;,
-    &quot;Bellevue&quot;,
-    &quot;Redmond&quot;,
-    &quot;Remote US&quot;
-  ],
-  &quot;minimum_score&quot;: 60
-}</textarea>
+      <form class="grid gap-4 md:grid-cols-2" onsubmit="event.preventDefault(); submitCriteriaIssue();">
+
+          <label class="block">
+            <span class="text-sm font-semibold text-slate-800">Primary title-domain signals</span>
+            <span class="block text-xs text-slate-500 mb-1">Must appear in the title for inclusion.</span>
+            <textarea data-criteria-list="primary_domain_keywords" rows="5" class="w-full rounded border border-slate-300 bg-white p-3 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500">trust
+safety
+responsible ai
+privacy
+compliance
+governance
+integrity
+abuse
+moderation
+child safety
+youth</textarea>
+          </label>
+
+          <label class="block">
+            <span class="text-sm font-semibold text-slate-800">Role/domain signals</span>
+            <span class="block text-xs text-slate-500 mb-1">Used across title and description scoring.</span>
+            <textarea data-criteria-list="domain_keywords" rows="7" class="w-full rounded border border-slate-300 bg-white p-3 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500">trust
+safety
+responsible ai
+privacy
+compliance
+governance
+risk
+integrity
+abuse
+security
+policy
+moderation
+child safety
+youth</textarea>
+          </label>
+
+          <label class="block">
+            <span class="text-sm font-semibold text-slate-800">Seniority signals</span>
+            <span class="block text-xs text-slate-500 mb-1">Used to identify senior leadership fit.</span>
+            <textarea data-criteria-list="seniority_keywords" rows="5" class="w-full rounded border border-slate-300 bg-white p-3 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500">director
+sr. director
+senior director
+vp
+vice president
+head
+principal
+staff
+lead</textarea>
+          </label>
+
+          <label class="block">
+            <span class="text-sm font-semibold text-slate-800">Function signals</span>
+            <span class="block text-xs text-slate-500 mb-1">Used to identify TPM, product, governance, risk, and compliance fit.</span>
+            <textarea data-criteria-list="function_keywords" rows="5" class="w-full rounded border border-slate-300 bg-white p-3 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500">program manager
+technical program
+product manager
+tpm
+trust
+safety
+privacy
+governance
+risk
+compliance</textarea>
+          </label>
+
+          <label class="block">
+            <span class="text-sm font-semibold text-slate-800">Excluded companies</span>
+            <span class="block text-xs text-slate-500 mb-1">Companies to always remove before scoring.</span>
+            <textarea data-criteria-list="excluded_companies" rows="4" class="w-full rounded border border-slate-300 bg-white p-3 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500">meta
+instagram
+whatsapp
+reality labs</textarea>
+          </label>
+
+          <label class="block">
+            <span class="text-sm font-semibold text-slate-800">Excluded title keywords</span>
+            <span class="block text-xs text-slate-500 mb-1">Titles containing these terms are removed before scoring.</span>
+            <textarea data-criteria-list="excluded_title_keywords" rows="4" class="w-full rounded border border-slate-300 bg-white p-3 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500">engineer
+engineering</textarea>
+          </label>
+
+          <label class="block">
+            <span class="text-sm font-semibold text-slate-800">Target locations</span>
+            <span class="block text-xs text-slate-500 mb-1">Displayed reference for the active location filter.</span>
+            <textarea data-criteria-list="target_locations" rows="4" class="w-full rounded border border-slate-300 bg-white p-3 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500">Seattle
+Bellevue
+Redmond
+Remote US</textarea>
+          </label>
+        <label class="block">
+          <span class="text-sm font-semibold text-slate-800">Minimum score</span>
+          <span class="block text-xs text-slate-500 mb-1">Inclusion threshold after hard filters pass.</span>
+          <input id="minimum-score" type="number" min="0" max="100" step="1" value="60" class="w-full rounded border border-slate-300 bg-white p-3 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500">
+        </label>
+      </form>
       <p id="criteria-status" class="mt-2 text-xs text-slate-500"></p>
     </section>
   </main>
@@ -176,41 +193,72 @@
 
     const DEFAULT_CRITERIA = {"version": 1, "profile_signals": ["Head of TPM across Reality Labs Trust and Instagram Trust", "Privacy and regulatory compliance leadership across GDPR, COPPA, AADC, DMA, developer platform compliance, security, and integrity", "Strong fit for executive stakeholder management, ambiguous safety and regulatory programs, product/platform governance, and responsible AI operating models", "Targeting senior trust, safety, privacy, compliance, responsible AI, TPM, product, and governance leadership roles in Seattle-area or Remote US environments"], "domain_keywords": ["trust", "safety", "responsible ai", "privacy", "compliance", "governance", "risk", "integrity", "abuse", "security", "policy", "moderation", "child safety", "youth"], "primary_domain_keywords": ["trust", "safety", "responsible ai", "privacy", "compliance", "governance", "integrity", "abuse", "moderation", "child safety", "youth"], "seniority_keywords": ["director", "sr. director", "senior director", "vp", "vice president", "head", "principal", "staff", "lead"], "function_keywords": ["program manager", "technical program", "product manager", "tpm", "trust", "safety", "privacy", "governance", "risk", "compliance"], "excluded_companies": ["meta", "instagram", "whatsapp", "reality labs"], "excluded_title_keywords": ["engineer", "engineering"], "target_locations": ["Seattle", "Bellevue", "Redmond", "Remote US"], "minimum_score": 60};
     const STORAGE_KEY = 'jobalerts.criteriaDraft';
-    const textarea = document.getElementById('criteria-json');
     const statusEl = document.getElementById('criteria-status');
     const draft = localStorage.getItem(STORAGE_KEY);
     if (draft) {
-      textarea.value = draft;
-      statusEl.textContent = 'Loaded saved browser draft.';
+      try {
+        fillForm(JSON.parse(draft));
+        statusEl.textContent = 'Loaded saved browser draft.';
+      } catch (error) {
+        localStorage.removeItem(STORAGE_KEY);
+      }
+    } else {
+      fillForm(DEFAULT_CRITERIA);
     }
 
-    function parseCriteria() {
-      return JSON.parse(textarea.value);
+    function splitList(value) {
+      return value
+        .split(/[\n,]/)
+        .map(item => item.trim())
+        .filter(Boolean);
+    }
+
+    function fillForm(criteria) {
+      document.querySelectorAll('[data-criteria-list]').forEach(field => {
+        const key = field.dataset.criteriaList;
+        field.value = Array.isArray(criteria[key]) ? criteria[key].join('\n') : '';
+      });
+      document.getElementById('minimum-score').value = Number.isInteger(criteria.minimum_score) ? criteria.minimum_score : 60;
+    }
+
+    function collectCriteria() {
+      const criteria = {
+        ...DEFAULT_CRITERIA,
+        profile_signals: DEFAULT_CRITERIA.profile_signals || []
+      };
+      document.querySelectorAll('[data-criteria-list]').forEach(field => {
+        criteria[field.dataset.criteriaList] = splitList(field.value);
+      });
+      criteria.minimum_score = Number.parseInt(document.getElementById('minimum-score').value, 10);
+      if (!Number.isInteger(criteria.minimum_score) || criteria.minimum_score < 0 || criteria.minimum_score > 100) {
+        throw new Error('Minimum score must be an integer from 0 to 100.');
+      }
+      return criteria;
     }
 
     function saveCriteriaDraft() {
       try {
-        const parsed = parseCriteria();
+        const parsed = collectCriteria();
         localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed, null, 2));
-        textarea.value = JSON.stringify(parsed, null, 2);
+        fillForm(parsed);
         statusEl.textContent = 'Draft saved in this browser.';
         statusEl.className = 'mt-2 text-xs text-green-700';
       } catch (error) {
-        statusEl.textContent = 'Invalid JSON: ' + error.message;
+        statusEl.textContent = error.message;
         statusEl.className = 'mt-2 text-xs text-red-700';
       }
     }
 
     function resetCriteriaDraft() {
       localStorage.removeItem(STORAGE_KEY);
-      textarea.value = JSON.stringify(DEFAULT_CRITERIA, null, 2);
+      fillForm(DEFAULT_CRITERIA);
       statusEl.textContent = 'Reset to the published criteria.';
       statusEl.className = 'mt-2 text-xs text-slate-500';
     }
 
     function submitCriteriaIssue() {
       try {
-        const parsed = parseCriteria();
+        const parsed = collectCriteria();
         const body = [
           '## Requested criteria update',
           '',
@@ -223,7 +271,7 @@
         const url = 'https://github.com/bluekluu/job-alerts/issues/new?template=criteria_update.md&title=' + encodeURIComponent('Criteria update') + '&body=' + encodeURIComponent(body);
         window.open(url, '_blank', 'noopener');
       } catch (error) {
-        statusEl.textContent = 'Invalid JSON: ' + error.message;
+        statusEl.textContent = error.message;
         statusEl.className = 'mt-2 text-xs text-red-700';
       }
     }

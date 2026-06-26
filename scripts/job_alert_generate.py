@@ -20,7 +20,6 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 INDEX = REPO_ROOT / "index.html"
 CRITERIA = REPO_ROOT / "criteria.json"
 CRITERIA_PAGE = REPO_ROOT / "criteria.html"
-SETTINGS_PAGE = REPO_ROOT / "settings.html"
 ARCHIVE = REPO_ROOT / "archive"
 REPORTS = REPO_ROOT / "reports"
 PT = ZoneInfo("America/Los_Angeles")
@@ -799,14 +798,13 @@ def render_rows(items: list[Evaluated]) -> str:
 def render_menu() -> str:
     return f"""
       <div class="relative flex items-center gap-2">
-        <a href="{FEEDBACK_URL}" target="_blank" class="inline-flex items-center justify-center rounded bg-white text-slate-900 px-3 py-2 text-xs font-semibold hover:bg-slate-100">Feedback</a>
         <button type="button" onclick="toggleMenu()" aria-label="Open menu" class="inline-flex h-9 w-9 items-center justify-center rounded border border-slate-600 text-white hover:bg-slate-800">☰</button>
-        <div id="site-menu" class="hidden absolute right-0 top-11 z-50 w-52 rounded-lg border border-slate-200 bg-white py-2 text-sm text-slate-700 shadow-xl">
+        <div id="site-menu" class="hidden fixed right-3 top-16 z-50 w-[calc(100vw-1.5rem)] max-w-64 rounded-lg border border-slate-200 bg-white py-2 text-sm text-slate-700 shadow-xl sm:absolute sm:right-0 sm:top-11 sm:w-52">
           <a class="block px-4 py-2 hover:bg-slate-50" href="{SITE_BASE}">Daily alert</a>
           <a class="block px-4 py-2 hover:bg-slate-50" href="{SITE_BASE}criteria.html">Criteria</a>
-          <a class="block px-4 py-2 hover:bg-slate-50" href="{SITE_BASE}settings.html">Settings</a>
+          <a class="block px-4 py-2 hover:bg-slate-50" target="_blank" href="{FEEDBACK_URL}">Feedback</a>
           <a class="block px-4 py-2 hover:bg-slate-50" href="{SITE_BASE}archive/">Archive</a>
-          <a class="block px-4 py-2 hover:bg-slate-50" target="_blank" href="{REPO_URL}/issues">GitHub Issues</a>
+          <a class="block px-4 py-2 hover:bg-slate-50" target="_blank" href="{GENERATE_WORKFLOW_URL}">Setting</a>
         </div>
       </div>"""
 
@@ -1008,12 +1006,26 @@ def render_html(evaluated: list[Evaluated], errors: list[str], criteria: dict[st
 
 def render_criteria_page(criteria: dict[str, object]) -> str:
     now = dt.datetime.now(PT)
-    criteria_pretty = json.dumps(criteria, indent=2)
     criteria_script = json.dumps(criteria)
     profile = criteria.get("profile_signals", [])
     profile_html = "".join(f"<li>{esc(item)}</li>" for item in profile) if isinstance(profile, list) else ""
     cards = render_criteria_cards(criteria)
     menu = render_menu()
+
+    def list_value(name: str) -> str:
+        value = criteria.get(name, [])
+        if not isinstance(value, list):
+            return ""
+        return "\n".join(str(item) for item in value)
+
+    def textarea(name: str, label: str, helper: str, rows: int = 5) -> str:
+        return f"""
+          <label class="block">
+            <span class="text-sm font-semibold text-slate-800">{esc(label)}</span>
+            <span class="block text-xs text-slate-500 mb-1">{esc(helper)}</span>
+            <textarea data-criteria-list="{esc(name)}" rows="{rows}" class="w-full rounded border border-slate-300 bg-white p-3 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500">{esc(list_value(name))}</textarea>
+          </label>"""
+
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1048,8 +1060,8 @@ def render_criteria_page(criteria: dict[str, object]) -> str:
     <section id="criteria-editor" class="bg-white border border-slate-200 rounded-lg p-4">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
         <div>
-          <h2 class="font-semibold text-slate-900">Editable criteria JSON</h2>
-          <p class="text-sm text-slate-500">Save stores a browser draft. Submit opens a GitHub Issue that applies criteria.json, regenerates, validates, and publishes through GitHub Actions.</p>
+          <h2 class="font-semibold text-slate-900">Edit criteria</h2>
+          <p class="text-sm text-slate-500">Save stores a browser draft. Submit opens a GitHub Issue that updates criteria.json, regenerates, validates, and publishes through GitHub Actions.</p>
         </div>
         <div class="flex flex-wrap gap-2">
           <button type="button" onclick="saveCriteriaDraft()" class="rounded bg-slate-900 text-white px-3 py-2 text-xs font-semibold hover:bg-slate-700">Save Draft</button>
@@ -1057,7 +1069,20 @@ def render_criteria_page(criteria: dict[str, object]) -> str:
           <button type="button" onclick="submitCriteriaIssue()" class="rounded bg-green-700 text-white px-3 py-2 text-xs font-semibold hover:bg-green-600">Submit Update</button>
         </div>
       </div>
-      <textarea id="criteria-json" class="h-[32rem] w-full rounded border border-slate-300 bg-slate-950 p-3 font-mono text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500">{esc(criteria_pretty)}</textarea>
+      <form class="grid gap-4 md:grid-cols-2" onsubmit="event.preventDefault(); submitCriteriaIssue();">
+        {textarea("primary_domain_keywords", "Primary title-domain signals", "Must appear in the title for inclusion.", 5)}
+        {textarea("domain_keywords", "Role/domain signals", "Used across title and description scoring.", 7)}
+        {textarea("seniority_keywords", "Seniority signals", "Used to identify senior leadership fit.", 5)}
+        {textarea("function_keywords", "Function signals", "Used to identify TPM, product, governance, risk, and compliance fit.", 5)}
+        {textarea("excluded_companies", "Excluded companies", "Companies to always remove before scoring.", 4)}
+        {textarea("excluded_title_keywords", "Excluded title keywords", "Titles containing these terms are removed before scoring.", 4)}
+        {textarea("target_locations", "Target locations", "Displayed reference for the active location filter.", 4)}
+        <label class="block">
+          <span class="text-sm font-semibold text-slate-800">Minimum score</span>
+          <span class="block text-xs text-slate-500 mb-1">Inclusion threshold after hard filters pass.</span>
+          <input id="minimum-score" type="number" min="0" max="100" step="1" value="{esc(criteria.get('minimum_score', MINIMUM_SCORE))}" class="w-full rounded border border-slate-300 bg-white p-3 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500">
+        </label>
+      </form>
       <p id="criteria-status" class="mt-2 text-xs text-slate-500"></p>
     </section>
   </main>
@@ -1067,41 +1092,72 @@ def render_criteria_page(criteria: dict[str, object]) -> str:
 
     const DEFAULT_CRITERIA = {criteria_script};
     const STORAGE_KEY = 'jobalerts.criteriaDraft';
-    const textarea = document.getElementById('criteria-json');
     const statusEl = document.getElementById('criteria-status');
     const draft = localStorage.getItem(STORAGE_KEY);
     if (draft) {{
-      textarea.value = draft;
-      statusEl.textContent = 'Loaded saved browser draft.';
+      try {{
+        fillForm(JSON.parse(draft));
+        statusEl.textContent = 'Loaded saved browser draft.';
+      }} catch (error) {{
+        localStorage.removeItem(STORAGE_KEY);
+      }}
+    }} else {{
+      fillForm(DEFAULT_CRITERIA);
     }}
 
-    function parseCriteria() {{
-      return JSON.parse(textarea.value);
+    function splitList(value) {{
+      return value
+        .split(/[\\n,]/)
+        .map(item => item.trim())
+        .filter(Boolean);
+    }}
+
+    function fillForm(criteria) {{
+      document.querySelectorAll('[data-criteria-list]').forEach(field => {{
+        const key = field.dataset.criteriaList;
+        field.value = Array.isArray(criteria[key]) ? criteria[key].join('\\n') : '';
+      }});
+      document.getElementById('minimum-score').value = Number.isInteger(criteria.minimum_score) ? criteria.minimum_score : {MINIMUM_SCORE};
+    }}
+
+    function collectCriteria() {{
+      const criteria = {{
+        ...DEFAULT_CRITERIA,
+        profile_signals: DEFAULT_CRITERIA.profile_signals || []
+      }};
+      document.querySelectorAll('[data-criteria-list]').forEach(field => {{
+        criteria[field.dataset.criteriaList] = splitList(field.value);
+      }});
+      criteria.minimum_score = Number.parseInt(document.getElementById('minimum-score').value, 10);
+      if (!Number.isInteger(criteria.minimum_score) || criteria.minimum_score < 0 || criteria.minimum_score > 100) {{
+        throw new Error('Minimum score must be an integer from 0 to 100.');
+      }}
+      return criteria;
     }}
 
     function saveCriteriaDraft() {{
       try {{
-        const parsed = parseCriteria();
+        const parsed = collectCriteria();
         localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed, null, 2));
-        textarea.value = JSON.stringify(parsed, null, 2);
+        fillForm(parsed);
         statusEl.textContent = 'Draft saved in this browser.';
         statusEl.className = 'mt-2 text-xs text-green-700';
       }} catch (error) {{
-        statusEl.textContent = 'Invalid JSON: ' + error.message;
+        statusEl.textContent = error.message;
         statusEl.className = 'mt-2 text-xs text-red-700';
       }}
     }}
 
     function resetCriteriaDraft() {{
       localStorage.removeItem(STORAGE_KEY);
-      textarea.value = JSON.stringify(DEFAULT_CRITERIA, null, 2);
+      fillForm(DEFAULT_CRITERIA);
       statusEl.textContent = 'Reset to the published criteria.';
       statusEl.className = 'mt-2 text-xs text-slate-500';
     }}
 
     function submitCriteriaIssue() {{
       try {{
-        const parsed = parseCriteria();
+        const parsed = collectCriteria();
         const body = [
           '## Requested criteria update',
           '',
@@ -1114,67 +1170,10 @@ def render_criteria_page(criteria: dict[str, object]) -> str:
         const url = '{CRITERIA_ISSUE_URL}&title=' + encodeURIComponent('Criteria update') + '&body=' + encodeURIComponent(body);
         window.open(url, '_blank', 'noopener');
       }} catch (error) {{
-        statusEl.textContent = 'Invalid JSON: ' + error.message;
+        statusEl.textContent = error.message;
         statusEl.className = 'mt-2 text-xs text-red-700';
       }}
     }}
-  </script>
-</body>
-</html>
-"""
-
-
-def render_settings_page(criteria: dict[str, object]) -> str:
-    now = dt.datetime.now(PT)
-    menu = render_menu()
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JobAlerts Settings</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-slate-50 text-slate-900 antialiased">
-  <header class="bg-slate-900 text-white">
-    <div class="max-w-5xl mx-auto px-3 sm:px-5 lg:px-6 py-5 sm:py-6">
-      <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-        <div>
-          <p class="text-slate-400 text-xs font-semibold uppercase tracking-widest">JobAlerts</p>
-          <h1 class="text-2xl sm:text-3xl font-bold">Settings</h1>
-          <p class="text-slate-400 text-sm">Hosted workflow controls and issue tracking</p>
-        </div>
-        <div class="flex flex-col items-start sm:items-end gap-3">
-          <p class="text-xs text-slate-400">Generated {now.strftime('%Y-%m-%d %I:%M %p')} PT</p>
-          {menu}
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main id="settings-page" class="max-w-5xl mx-auto px-3 sm:px-5 lg:px-6 py-5">
-    <div class="grid md:grid-cols-2 gap-3">
-      <a href="{GENERATE_WORKFLOW_URL}" target="_blank" class="block rounded-lg border border-slate-200 bg-white p-4 hover:border-sky-300">
-        <p class="font-semibold text-slate-900">Run generation manually</p>
-        <p class="mt-1 text-sm text-slate-600">GitHub Actions fetches postings, evaluates them against criteria.json, regenerates the site, and publishes to main.</p>
-      </a>
-      <a href="{REPO_URL}/issues" target="_blank" class="block rounded-lg border border-slate-200 bg-white p-4 hover:border-sky-300">
-        <p class="font-semibold text-slate-900">Review GitHub Issues</p>
-        <p class="mt-1 text-sm text-slate-600">Feedback is tracked with needs-codex-fix for Codex review. Criteria update issues are applied automatically when the JSON is valid.</p>
-      </a>
-      <a href="{FEEDBACK_URL}" target="_blank" class="block rounded-lg border border-slate-200 bg-white p-4 hover:border-sky-300">
-        <p class="font-semibold text-slate-900">File feedback</p>
-        <p class="mt-1 text-sm text-slate-600">Create a bug report or improvement request directly in the repo.</p>
-      </a>
-      <a href="{SITE_BASE}criteria.html" class="block rounded-lg border border-slate-200 bg-white p-4 hover:border-sky-300">
-        <p class="font-semibold text-slate-900">Adjust criteria</p>
-        <p class="mt-1 text-sm text-slate-600">Draft changes locally, submit them as an issue, and let the hosted criteria workflow regenerate and publish.</p>
-      </a>
-    </div>
-  </main>
-
-  <script>
-{render_nav_script()}
   </script>
 </body>
 </html>
@@ -1200,7 +1199,6 @@ def main() -> int:
     today = dt.datetime.now(PT).date().isoformat()
     INDEX.write_text(clean_generated_html(html_output))
     CRITERIA_PAGE.write_text(clean_generated_html(render_criteria_page(criteria)))
-    SETTINGS_PAGE.write_text(clean_generated_html(render_settings_page(criteria)))
     (ARCHIVE / f"{today}.html").write_text(clean_generated_html(html_output))
     (ARCHIVE / "index.html").write_text(clean_generated_html(archive_index()))
     manifest = {
