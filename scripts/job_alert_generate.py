@@ -8,6 +8,7 @@ import datetime as dt
 import hashlib
 import html
 import json
+import os
 import re
 import ssl
 import urllib.parse
@@ -27,6 +28,7 @@ PT = ZoneInfo("America/Los_Angeles")
 SITE_BASE = "/job-alerts/"
 REPO_URL = "https://github.com/bluekluu/job-alerts"
 FEEDBACK_URL = f"{REPO_URL}/issues/new?template=bug_report.md"
+FEEDBACK_ENDPOINT = os.environ.get("JOB_ALERT_FEEDBACK_ENDPOINT", "")
 CRITERIA_ISSUE_URL = f"{REPO_URL}/issues/new?template=criteria_update.md"
 
 GREENHOUSE = {
@@ -1051,17 +1053,153 @@ def render_menu() -> str:
         <div id="site-menu" class="hidden fixed right-3 top-16 z-50 w-[calc(100vw-1.5rem)] max-w-64 rounded-lg border border-slate-200 bg-white py-2 text-sm text-slate-700 shadow-xl sm:absolute sm:right-0 sm:top-11 sm:w-52">
           <a class="block px-4 py-2 hover:bg-slate-50" href="{SITE_BASE}">Daily alert</a>
           <a class="block px-4 py-2 hover:bg-slate-50" href="{SITE_BASE}criteria.html">Criteria</a>
-          <a class="block px-4 py-2 hover:bg-slate-50" target="_blank" href="{FEEDBACK_URL}">Feedback</a>
+          <button type="button" class="block w-full px-4 py-2 text-left hover:bg-slate-50" onclick="openFeedbackForm()">Feedback</button>
           <a class="block px-4 py-2 hover:bg-slate-50" href="{SITE_BASE}archive/">Archive</a>
         </div>
       </div>"""
 
 
-def render_nav_script() -> str:
+def render_feedback_modal() -> str:
     return """
+  <div id="feedback-modal" class="hidden fixed inset-0 z-[60] overflow-y-auto bg-slate-950/60 px-3 py-6">
+    <div class="mx-auto max-w-lg rounded-lg bg-white text-slate-900 shadow-2xl">
+      <div class="flex items-start justify-between gap-3 border-b border-slate-200 px-4 py-3">
+        <div>
+          <h2 class="text-base font-semibold">Send feedback</h2>
+          <p class="text-xs text-slate-500">Submit a bug or incorrect result directly from this page.</p>
+        </div>
+        <button type="button" onclick="closeFeedbackForm()" aria-label="Close feedback form" class="rounded border border-slate-300 px-2 py-1 text-sm hover:bg-slate-50">x</button>
+      </div>
+      <form id="feedback-form" class="space-y-3 px-4 py-4" onsubmit="event.preventDefault(); submitFeedback();">
+        <input id="feedback-company" type="text" autocomplete="off" tabindex="-1" class="hidden" aria-hidden="true">
+        <label class="block">
+          <span class="text-sm font-semibold text-slate-800">Type</span>
+          <select id="feedback-type" class="mt-1 w-full rounded border border-slate-300 bg-white p-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500">
+            <option>Bug</option>
+            <option>Incorrect job result</option>
+            <option>Broken link</option>
+            <option>Missing role</option>
+            <option>Criteria suggestion</option>
+          </select>
+        </label>
+        <label class="block">
+          <span class="text-sm font-semibold text-slate-800">Summary</span>
+          <input id="feedback-summary" required maxlength="120" class="mt-1 w-full rounded border border-slate-300 bg-white p-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500" placeholder="Short description">
+        </label>
+        <label class="block">
+          <span class="text-sm font-semibold text-slate-800">Details</span>
+          <textarea id="feedback-details" required rows="5" maxlength="3000" class="mt-1 w-full rounded border border-slate-300 bg-white p-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500" placeholder="What happened? What should have happened? Include role/company/tab if relevant."></textarea>
+        </label>
+        <div class="grid gap-3 sm:grid-cols-2">
+          <label class="block">
+            <span class="text-sm font-semibold text-slate-800">Page or tab</span>
+            <input id="feedback-page" maxlength="200" class="mt-1 w-full rounded border border-slate-300 bg-white p-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500">
+          </label>
+          <label class="block">
+            <span class="text-sm font-semibold text-slate-800">Contact optional</span>
+            <input id="feedback-contact" maxlength="120" class="mt-1 w-full rounded border border-slate-300 bg-white p-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500" placeholder="Email or name">
+          </label>
+        </div>
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pt-1">
+          <p id="feedback-status" class="text-xs text-slate-500"></p>
+          <div class="flex gap-2">
+            <button type="button" onclick="closeFeedbackForm()" class="rounded border border-slate-300 bg-white px-3 py-2 text-xs font-semibold hover:bg-slate-50">Cancel</button>
+            <button id="feedback-submit" type="submit" class="rounded bg-slate-900 px-3 py-2 text-xs font-semibold text-white hover:bg-slate-700">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>"""
+
+
+def render_nav_script() -> str:
+    endpoint = json.dumps(FEEDBACK_ENDPOINT)
+    script = """
+    const FEEDBACK_ENDPOINT = __FEEDBACK_ENDPOINT__;
+
     function toggleMenu() {
       const menu = document.getElementById('site-menu');
       if (menu) menu.classList.toggle('hidden');
+    }
+
+    function openFeedbackForm() {
+      const menu = document.getElementById('site-menu');
+      const modal = document.getElementById('feedback-modal');
+      const status = document.getElementById('feedback-status');
+      const page = document.getElementById('feedback-page');
+      if (menu) menu.classList.add('hidden');
+      if (page && !page.value) page.value = window.location.href;
+      if (status) {
+        status.textContent = FEEDBACK_ENDPOINT ? '' : 'Feedback service is not configured yet.';
+        status.className = FEEDBACK_ENDPOINT ? 'text-xs text-slate-500' : 'text-xs text-amber-700';
+      }
+      if (modal) modal.classList.remove('hidden');
+      const summary = document.getElementById('feedback-summary');
+      if (summary) summary.focus();
+    }
+
+    function closeFeedbackForm() {
+      const modal = document.getElementById('feedback-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function activeFeedbackContext() {
+      const activeTab = document.querySelector('.tab-content.active');
+      const activeButton = document.querySelector('.tab-btn.text-white');
+      return {
+        url: window.location.href,
+        title: document.title,
+        alertDate: document.body.innerText.match(/alert-date:\\s*([0-9-]+)/)?.[1] || '',
+        activeTab: activeButton ? activeButton.textContent.trim() : '',
+        activeSectionId: activeTab ? activeTab.id : ''
+      };
+    }
+
+    async function submitFeedback() {
+      const status = document.getElementById('feedback-status');
+      const submit = document.getElementById('feedback-submit');
+      const honeypot = document.getElementById('feedback-company');
+      if (!FEEDBACK_ENDPOINT) {
+        status.textContent = 'Feedback service is not configured yet.';
+        status.className = 'text-xs text-amber-700';
+        return;
+      }
+      if (honeypot && honeypot.value) return;
+      const payload = {
+        type: document.getElementById('feedback-type').value,
+        summary: document.getElementById('feedback-summary').value.trim(),
+        details: document.getElementById('feedback-details').value.trim(),
+        page: document.getElementById('feedback-page').value.trim(),
+        contact: document.getElementById('feedback-contact').value.trim(),
+        context: activeFeedbackContext()
+      };
+      if (!payload.summary || !payload.details) {
+        status.textContent = 'Summary and details are required.';
+        status.className = 'text-xs text-red-700';
+        return;
+      }
+      submit.disabled = true;
+      submit.textContent = 'Submitting...';
+      status.textContent = 'Submitting feedback...';
+      status.className = 'text-xs text-slate-500';
+      try {
+        const response = await fetch(FEEDBACK_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(result.error || 'Feedback submission failed.');
+        status.innerHTML = 'Submitted as GitHub issue <a class="underline" target="_blank" rel="noopener" href="' + result.html_url + '">#' + result.number + '</a>.';
+        status.className = 'text-xs text-green-700';
+        document.getElementById('feedback-form').reset();
+      } catch (error) {
+        status.textContent = error.message;
+        status.className = 'text-xs text-red-700';
+      } finally {
+        submit.disabled = false;
+        submit.textContent = 'Submit';
+      }
     }
 
     document.addEventListener('click', event => {
@@ -1071,7 +1209,12 @@ def render_nav_script() -> str:
         menu.classList.add('hidden');
       }
     });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeFeedbackForm();
+    });
     """
+    return script.replace("__FEEDBACK_ENDPOINT__", endpoint)
 
 
 def render_criteria_cards(criteria: dict[str, object]) -> str:
@@ -1205,6 +1348,8 @@ def render_html(evaluated: list[Evaluated], errors: list[str], criteria: dict[st
       <div class="mt-4 text-xs text-slate-500"><p class="font-semibold">Source fetch notes</p><ul class="list-disc pl-4">{source_errors}</ul></div>
     </main>
   </div>
+
+  {render_feedback_modal()}
 
   <footer class="max-w-5xl mx-auto px-4 sm:px-6 pb-8 text-xs text-slate-400">
     <div class="border-t border-slate-200 pt-4 flex flex-col sm:flex-row sm:justify-between gap-2">
@@ -1344,6 +1489,8 @@ def render_criteria_page(criteria: dict[str, object]) -> str:
       <p id="criteria-status" class="mt-2 text-xs text-slate-500"></p>
     </section>
   </main>
+
+  {render_feedback_modal()}
 
   <script>
 {render_nav_script()}

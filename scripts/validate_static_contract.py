@@ -15,7 +15,9 @@ REQUIRED = [
 ]
 REQUIRED_INDEX_LINKS = [
     'href="/job-alerts/criteria.html"',
-    "issues/new?template=bug_report.md",
+    'id="feedback-modal"',
+    'id="feedback-form"',
+    "openFeedbackForm()",
 ]
 REQUIRED_INDEX_FRESHNESS = [
     "Run health",

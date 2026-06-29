@@ -1,0 +1,5 @@
+{
+  "name": "job-alerts-feedback",
+  "compatibility_date": "2026-06-29",
+  "main": "workers/feedback-worker.js"
+}
