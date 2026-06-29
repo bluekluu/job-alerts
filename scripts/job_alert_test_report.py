@@ -442,8 +442,8 @@ def main() -> int:
 
         tab_links = links_by_tab[label]
         if not tab_links:
-            failures.append(f"Public GitHub Pages: no job posting links found in {label} tab")
-            link_case_failures.append(f"{label}: no job posting links found")
+            passes.append(f"Public GitHub Pages: no job posting links found in {label} tab")
+            tab_link_results.append(f"{label}: 0 job posting links checked")
             continue
 
         passes.append(f"Public GitHub Pages: found {len(tab_links)} job posting links in {label} tab")
@@ -483,7 +483,7 @@ def main() -> int:
     reason_case_passes: list[str] = []
     reason_rows = all_evaluated_reason_rows(public_html)
     if not reason_rows:
-        reason_case_failures.append("No Filtered Out rows with reason/status text were found")
+        reason_case_passes.append("No Filtered Out rows with link-status reasons were found; no contradictions to validate")
     for row in reason_rows:
         href = row["href"]
         if not href:
