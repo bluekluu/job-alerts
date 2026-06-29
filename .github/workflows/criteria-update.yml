@@ -16,6 +16,8 @@ jobs:
   apply:
     if: contains(github.event.issue.title, 'Criteria update') || contains(join(github.event.issue.labels.*.name, ','), 'criteria')
     runs-on: ubuntu-latest
+    env:
+      JOB_ALERT_FEEDBACK_ENDPOINT: https://job-alerts-feedback.bluekluu.workers.dev
     steps:
       - uses: actions/checkout@v4
 

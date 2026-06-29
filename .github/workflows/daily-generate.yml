@@ -12,6 +12,8 @@ permissions:
 jobs:
   generate:
     runs-on: ubuntu-latest
+    env:
+      JOB_ALERT_FEEDBACK_ENDPOINT: https://job-alerts-feedback.bluekluu.workers.dev
     steps:
       - uses: actions/checkout@v4
       - name: Check Pacific run window
