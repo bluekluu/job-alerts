@@ -21,22 +21,15 @@ JOB_ALERT_FEEDBACK_ENDPOINT=https://job-alerts-feedback.bluekluu.workers.dev
 
 so regenerated pages keep the form connected. See `workers/README.md` for Worker deployment and secret maintenance.
 
-## Codex Issue Fixer
+## Issue Fixing
 
-Issues labeled `needs-codex-fix` are eligible for `.github/workflows/codex-issue-fixer.yml`.
+Issues labeled `needs-codex-fix` are the review queue for manual or locally run Codex work.
 
-The workflow:
+There is intentionally no hosted Codex fixer workflow in this repository because hosted Codex Actions require an OpenAI API key. Do not add workflows that require `OPENAI_API_KEY`.
 
-1. Reads the issue.
-2. Runs `openai/codex-action@v1` on a branch named `codex/issue-<number>`.
-3. Validates static contracts and scripts.
-4. Opens or updates a pull request with `Fixes #<number>` when code changes are made.
-5. Comments back on the issue.
+Recommended operating model:
 
-Required repository secret:
-
-```text
-OPENAI_API_KEY
-```
-
-The fixer does not push directly to `main` and does not auto-close issues. Issues close when the linked PR is merged.
+1. Review open issues labeled `needs-codex-fix`.
+2. Use Codex manually from the Codex app/CLI/web, or fix directly.
+3. Open a PR with `Fixes #<number>`.
+4. Merge after validation. GitHub closes the linked issue.
