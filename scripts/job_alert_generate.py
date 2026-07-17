@@ -1193,6 +1193,7 @@ def render_nav_script() -> str:
         status.innerHTML = 'Submitted as GitHub issue <a class="underline" target="_blank" rel="noopener" href="' + result.html_url + '">#' + result.number + '</a>.';
         status.className = 'text-xs text-green-700';
         document.getElementById('feedback-form').reset();
+        closeFeedbackForm();
       } catch (error) {
         status.textContent = error.message;
         status.className = 'text-xs text-red-700';

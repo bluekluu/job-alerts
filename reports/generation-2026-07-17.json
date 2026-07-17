@@ -1,6 +1,6 @@
 {
   "date": "2026-07-17",
-  "generated_at_pt": "2026-07-17T09:23:03.426005-07:00",
+  "generated_at_pt": "2026-07-17T10:09:39.949640-07:00",
   "crawl_completed": true,
   "partial_crawl": false,
   "sources": [
@@ -9,8 +9,8 @@
       "name": "Anthropic",
       "source_url": "https://api.greenhouse.io/v1/boards/anthropic/jobs?content=true",
       "status": "ok",
-      "fetched": 414,
-      "evaluated": 414,
+      "fetched": 413,
+      "evaluated": 413,
       "error": null
     },
     {
@@ -63,8 +63,8 @@
       "name": "Okta",
       "source_url": "https://api.greenhouse.io/v1/boards/okta/jobs?content=true",
       "status": "ok",
-      "fetched": 340,
-      "evaluated": 340,
+      "fetched": 341,
+      "evaluated": 341,
       "error": null
     },
     {
@@ -90,8 +90,8 @@
       "name": "Palantir",
       "source_url": "https://api.lever.co/v0/postings/palantir?mode=json",
       "status": "ok",
-      "fetched": 273,
-      "evaluated": 273,
+      "fetched": 274,
+      "evaluated": 274,
       "error": null
     },
     {
@@ -114,21 +114,21 @@
     }
   ],
   "totals": {
-    "fetched": 3434,
-    "evaluated": 3434,
-    "included": 6,
-    "discarded": 3428,
+    "fetched": 3435,
+    "evaluated": 3435,
+    "included": 4,
+    "discarded": 3431,
     "errors": 0,
     "sources_ok": 12,
     "sources_failed": 0
   },
   "warnings": [],
   "freshness": {
-    "candidate_set_hash": "sha256:9e2c9f8f93d5c7a5a5d5654d0d423c0c41ae1bd7dd3ba27e3bd2524ecdc1fc0f",
-    "included_set_hash": "sha256:0de98eb30e26c860bb288308c23de971b5887278e86730fbdb6d4c70219a86f6",
+    "candidate_set_hash": "sha256:62e3099781401dfcde3c49d1a0b17a36bf00ddc54f0b33843ff3117e904bb5ff",
+    "included_set_hash": "sha256:454edb23f8c73780049542fbb0d5b88fb83512b6d3075b12a5bfe8c092c27d33",
     "previous_report": "generation-2026-07-16.json",
-    "candidate_delta": -1,
-    "included_delta": 2,
+    "candidate_delta": 0,
+    "included_delta": 0,
     "new_candidate_urls": [
       "http://block.xyz/careers/jobs/4809166008?gh_jid=4809166008",
       "http://block.xyz/careers/jobs/5294486008?gh_jid=5294486008",
@@ -140,6 +140,7 @@
       "https://databricks.com/company/careers/open-positions/job?gh_jid=8629113002",
       "https://databricks.com/company/careers/open-positions/job?gh_jid=8636157002",
       "https://databricks.com/company/careers/open-positions/job?gh_jid=8637143002",
+      "https://databricks.com/company/careers/open-positions/job?gh_jid=8638732002",
       "https://job-boards.greenhouse.io/anthropic/jobs/5355526008",
       "https://job-boards.greenhouse.io/anthropic/jobs/5357739008",
       "https://job-boards.greenhouse.io/anthropic/jobs/5357746008",
@@ -162,6 +163,7 @@
       "https://jobs.ashbyhq.com/openai/3f696fe7-6a85-40e9-9514-6833a228a030",
       "https://jobs.ashbyhq.com/openai/6d642115-b495-4119-818d-cdef2003ae93",
       "https://jobs.ashbyhq.com/openai/71c4dd25-bfff-419b-913f-5ff81d8aede3",
+      "https://jobs.ashbyhq.com/openai/78c2a68b-cc77-4c62-8891-96afb603650a",
       "https://jobs.ashbyhq.com/openai/a6a421a5-0d3d-4f2f-9767-7c25b6e7d2fc",
       "https://jobs.ashbyhq.com/openai/ad387960-a0ec-4699-bed8-069d51aafc8a",
       "https://jobs.ashbyhq.com/openai/b1d19dac-065d-42d3-9f2c-97cc3fe73cdf",
@@ -170,6 +172,7 @@
       "https://jobs.ashbyhq.com/openai/f56ab5d8-9f0c-4622-906b-554ca28bd0ff",
       "https://jobs.ashbyhq.com/openai/fced529d-4523-436d-9559-cf1a8321b0fa",
       "https://jobs.lever.co/moonpay/c83bdba9-477b-4336-9498-487d93a77b4b",
+      "https://jobs.lever.co/palantir/e65e0d73-1d91-4696-809f-7810ecd474d1",
       "https://www.amazon.jobs/en/jobs/10425508/technical-program-manager-ii-amz9673806",
       "https://www.amazon.jobs/en/jobs/10468126/regulatory-assurance-lead-security-privacy-regulatory-enablement-spre",
       "https://www.amazon.jobs/en/jobs/10469655/technical-program-manager-external-fulfillment",
@@ -190,7 +193,8 @@
       "https://www.okta.com/company/careers/opportunity/8065236?gh_jid=8065236",
       "https://www.okta.com/company/careers/opportunity/8068775?gh_jid=8068775",
       "https://www.okta.com/company/careers/opportunity/8070608?gh_jid=8070608",
-      "https://www.okta.com/company/careers/opportunity/8070902?gh_jid=8070902"
+      "https://www.okta.com/company/careers/opportunity/8070902?gh_jid=8070902",
+      "https://www.okta.com/company/careers/opportunity/8072078?gh_jid=8072078"
     ],
     "removed_candidate_urls": [
       "http://block.xyz/careers/jobs/5225559008?gh_jid=5225559008",
@@ -200,6 +204,7 @@
       "http://block.xyz/careers/jobs/5228607008?gh_jid=5228607008",
       "http://block.xyz/careers/jobs/5258101008?gh_jid=5258101008",
       "http://block.xyz/careers/jobs/5258139008?gh_jid=5258139008",
+      "https://databricks.com/company/careers/open-positions/job?gh_jid=8431973002",
       "https://databricks.com/company/careers/open-positions/job?gh_jid=8463169002",
       "https://databricks.com/company/careers/open-positions/job?gh_jid=8505897002",
       "https://databricks.com/company/careers/open-positions/job?gh_jid=8520024002",
@@ -210,6 +215,7 @@
       "https://databricks.com/company/careers/open-positions/job?gh_jid=8587320002",
       "https://databricks.com/company/careers/open-positions/job?gh_jid=8610866002",
       "https://databricks.com/company/careers/open-positions/job?gh_jid=8635900002",
+      "https://job-boards.greenhouse.io/anthropic/jobs/5153564008",
       "https://job-boards.greenhouse.io/anthropic/jobs/5156326008",
       "https://job-boards.greenhouse.io/anthropic/jobs/5223741008",
       "https://job-boards.greenhouse.io/anthropic/jobs/5262369008",
@@ -220,6 +226,7 @@
       "https://job-boards.greenhouse.io/reddit/jobs/8012700",
       "https://job-boards.greenhouse.io/reddit/jobs/8012744",
       "https://job-boards.greenhouse.io/scaleai/jobs/4706127005",
+      "https://jobs.ashbyhq.com/openai/1bc3cc54-6013-4f0a-882f-a9b6c0e3f6e2",
       "https://jobs.ashbyhq.com/openai/7a4efcc4-ccc6-46ed-bbfb-77ad2096b12b",
       "https://jobs.ashbyhq.com/openai/ab2a6711-4a2f-46aa-9d1c-f9de243b8845",
       "https://jobs.ashbyhq.com/openai/b83a3e32-50b2-4347-9059-5981b707831a",
@@ -256,10 +263,7 @@
       "https://www.okta.com/company/careers/opportunity/8022961?gh_jid=8022961",
       "https://www.okta.com/company/careers/opportunity/8034876?gh_jid=8034876"
     ],
-    "new_included_urls": [
-      "https://job-boards.greenhouse.io/reddit/jobs/8072046",
-      "https://job-boards.greenhouse.io/reddit/jobs/8072076"
-    ],
+    "new_included_urls": [],
     "removed_included_urls": []
   },
   "errors": [],
@@ -776,7 +780,6 @@
     "https://databricks.com/company/careers/open-positions/job?gh_jid=8431927002",
     "https://databricks.com/company/careers/open-positions/job?gh_jid=8431931002",
     "https://databricks.com/company/careers/open-positions/job?gh_jid=8431935002",
-    "https://databricks.com/company/careers/open-positions/job?gh_jid=8431973002",
     "https://databricks.com/company/careers/open-positions/job?gh_jid=8432305002",
     "https://databricks.com/company/careers/open-positions/job?gh_jid=8432827002",
     "https://databricks.com/company/careers/open-positions/job?gh_jid=8433583002",
@@ -1256,6 +1259,7 @@
     "https://databricks.com/company/careers/open-positions/job?gh_jid=8635225002",
     "https://databricks.com/company/careers/open-positions/job?gh_jid=8636157002",
     "https://databricks.com/company/careers/open-positions/job?gh_jid=8637143002",
+    "https://databricks.com/company/careers/open-positions/job?gh_jid=8638732002",
     "https://job-boards.greenhouse.io/anthropic/jobs/4017331008",
     "https://job-boards.greenhouse.io/anthropic/jobs/4020350008",
     "https://job-boards.greenhouse.io/anthropic/jobs/4423394008",
@@ -1390,7 +1394,6 @@
     "https://job-boards.greenhouse.io/anthropic/jobs/5150472008",
     "https://job-boards.greenhouse.io/anthropic/jobs/5152348008",
     "https://job-boards.greenhouse.io/anthropic/jobs/5153377008",
-    "https://job-boards.greenhouse.io/anthropic/jobs/5153564008",
     "https://job-boards.greenhouse.io/anthropic/jobs/5153580008",
     "https://job-boards.greenhouse.io/anthropic/jobs/5153924008",
     "https://job-boards.greenhouse.io/anthropic/jobs/5157023008",
@@ -2177,7 +2180,6 @@
     "https://jobs.ashbyhq.com/openai/1ba666a4-0be2-4bd0-ad51-39ed7164c241",
     "https://jobs.ashbyhq.com/openai/1bb1f351-41a2-43a5-bac1-259859886cb3",
     "https://jobs.ashbyhq.com/openai/1bbcccd1-777b-4788-b77a-4dffe64fac06",
-    "https://jobs.ashbyhq.com/openai/1bc3cc54-6013-4f0a-882f-a9b6c0e3f6e2",
     "https://jobs.ashbyhq.com/openai/1bec5fd1-9cf2-4678-a82d-2d06385718b2",
     "https://jobs.ashbyhq.com/openai/1c2a411c-eb30-406b-bbd0-454d516ad797",
     "https://jobs.ashbyhq.com/openai/1c48f39f-60ea-4636-87ed-8b4b4f5243e5",
@@ -2446,6 +2448,7 @@
     "https://jobs.ashbyhq.com/openai/77fbf383-bb97-4006-9b2d-e5de2d6f79d3",
     "https://jobs.ashbyhq.com/openai/7809102e-e82a-4678-bf7c-221de8acc0d6",
     "https://jobs.ashbyhq.com/openai/7843f030-485b-44a0-8ab4-745c9e3c5458",
+    "https://jobs.ashbyhq.com/openai/78c2a68b-cc77-4c62-8891-96afb603650a",
     "https://jobs.ashbyhq.com/openai/78fb6f21-e1cd-4963-8614-45cbfcfc92ae",
     "https://jobs.ashbyhq.com/openai/793964ae-d40b-45e3-9798-84f4b6da48c5",
     "https://jobs.ashbyhq.com/openai/79a29efc-ef3e-4178-80dd-9c23dbd88823",
@@ -3085,6 +3088,7 @@
     "https://jobs.lever.co/palantir/e47d4410-2542-47d8-b558-b5295fc28821",
     "https://jobs.lever.co/palantir/e500bcf3-19d8-4d3c-b340-4d76e4a55b40",
     "https://jobs.lever.co/palantir/e5b8c2f0-aa26-4615-ba92-f4b5c175c112",
+    "https://jobs.lever.co/palantir/e65e0d73-1d91-4696-809f-7810ecd474d1",
     "https://jobs.lever.co/palantir/e6789b17-62fb-4226-a079-f8c17ff19e2d",
     "https://jobs.lever.co/palantir/e6ff8bf2-135e-474d-ad37-24f490ae1dd2",
     "https://jobs.lever.co/palantir/e7100322-be11-40c8-9dba-7a21b7302c08",
@@ -3697,12 +3701,11 @@
     "https://www.okta.com/company/careers/opportunity/8068101?gh_jid=8068101",
     "https://www.okta.com/company/careers/opportunity/8068775?gh_jid=8068775",
     "https://www.okta.com/company/careers/opportunity/8070608?gh_jid=8070608",
-    "https://www.okta.com/company/careers/opportunity/8070902?gh_jid=8070902"
+    "https://www.okta.com/company/careers/opportunity/8070902?gh_jid=8070902",
+    "https://www.okta.com/company/careers/opportunity/8072078?gh_jid=8072078"
   ],
   "included_urls": [
     "https://job-boards.greenhouse.io/reddit/jobs/7926627",
-    "https://job-boards.greenhouse.io/reddit/jobs/8072046",
-    "https://job-boards.greenhouse.io/reddit/jobs/8072076",
     "https://www.amazon.jobs/en/jobs/10397131/principal-product-manager-technical-leo-trust-and-privacy",
     "https://www.amazon.jobs/en/jobs/10450545/principal-risk-manager-privacy-ww-sps-tech-pmo",
     "https://www.okta.com/company/careers/opportunity/8050798?gh_jid=8050798"
